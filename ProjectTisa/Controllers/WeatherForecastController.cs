@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Options;
 using ProjectPop.EF.Interfaces;
 using ProjectPop.Models;
 using ProjectTisa.Controllers.GeneralData;
+using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 
 namespace ProjectPop.Controllers
@@ -68,6 +70,7 @@ namespace ProjectPop.Controllers
 
             context.WeatherForecasts.Remove(item);
             await context.SaveChangesAsync();
+            LogMessageCreator.DeletedMessage(logger, item);
 
             return Ok(ResAnswers.Success);
         }

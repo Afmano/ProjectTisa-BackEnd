@@ -18,10 +18,19 @@
         /// Method to generate log message about delete of entity.
         /// </summary>
         /// <param name="logger">ILogger instance.</param>
-        /// <param name="deleteId">Id of deleted entity.</param>
-        public static void DeletedMessage(ILogger logger, uint deleteId)
+        /// <param name="deleteEntity">Deleted entity.</param>
+        public static void DeletedMessage(ILogger logger, object deleteEntity)
         {
-            logger.LogInformation("Deleted element at index {index}", deleteId);
+            logger.LogInformation("Deleted element: \"{entity}\"", deleteEntity);
+        }
+        /// <summary>
+        /// Method to generate log message about granting a token.
+        /// </summary>
+        /// <param name="logger">ILogger instance.</param>
+        /// <param name="user">User entity of granted token.</param>
+        public static void TokenGranted(ILogger logger, string username)
+        {
+            logger.LogInformation("Granted token to user - {entity}", username);
         }
     }
 }

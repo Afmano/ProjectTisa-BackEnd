@@ -1,5 +1,6 @@
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectPop.Models
 {
@@ -8,8 +9,8 @@ namespace ProjectPop.Models
     /// </summary>
     public class WeatherForecast
     {
-        [Key]
-        public int Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; private set; }
         public DateOnly Date { get; set; }
 
         public int TemperatureC { get; set; }
@@ -19,7 +20,7 @@ namespace ProjectPop.Models
         public string? Summary { get; set; }
         public override string ToString()
         {
-            return $"{Id} - {Date}, {TemperatureC}°C, {TemperatureF}°F {(Summary.IsNullOrEmpty() ? ":" + Summary : "")}";
+            return $"{Id}. {Date}, {TemperatureC}°C, {TemperatureF}°F{(Summary.IsNullOrEmpty() ? "" : ", " + Summary)}";
         }
     }
 }

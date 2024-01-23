@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProjectTisa.Controllers.GeneralData {
+namespace ProjectTisa.Controllers.GeneralData.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ProjectTisa.Controllers.GeneralData {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProjectTisa.Controllers.GeneralData.ResAnswers", typeof(ResAnswers).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProjectTisa.Controllers.GeneralData.Resources.ResAnswers", typeof(ResAnswers).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
