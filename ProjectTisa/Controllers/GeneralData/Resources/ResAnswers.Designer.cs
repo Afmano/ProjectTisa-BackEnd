@@ -79,6 +79,15 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Provided data already exist..
+        /// </summary>
+        internal static string EmailUsernameExist {
+            get {
+                return ResourceManager.GetString("EmailUsernameExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while processing request..
         /// </summary>
         internal static string Error {
@@ -111,6 +120,24 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User doesn&apos;t exist in database..
+        /// </summary>
+        internal static string UserNorFound {
+            get {
+                return ResourceManager.GetString("UserNorFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while proccessing JWT token to get values..
+        /// </summary>
+        internal static string WrongJWT {
+            get {
+                return ResourceManager.GetString("WrongJWT", resourceCulture);
             }
         }
     }

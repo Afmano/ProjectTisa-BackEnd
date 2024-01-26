@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectPop.Models;
 using ProjectTisa.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ProjectPop.EF
 {

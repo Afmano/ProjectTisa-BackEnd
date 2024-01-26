@@ -1,5 +1,8 @@
 ﻿namespace ProjectTisa.Controllers.GeneralData
 {
+    /// <summary>
+    /// General config record for appsettings.json data.
+    /// </summary>
     public record RouteConfig
     {
         public required string ApplicationName { get; set; }

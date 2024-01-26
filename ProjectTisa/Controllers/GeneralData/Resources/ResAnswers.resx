@@ -123,6 +123,9 @@
   <data name="Created" xml:space="preserve">
     <value>New entity created successfully.</value>
   </data>
+  <data name="EmailUsernameExist" xml:space="preserve">
+    <value>Provided data already exist.</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Error while processing request.</value>
   </data>
@@ -134,5 +137,11 @@
   </data>
   <data name="Success" xml:space="preserve">
     <value>Request handled successfully.</value>
+  </data>
+  <data name="UserNorFound" xml:space="preserve">
+    <value>User doesn't exist in database.</value>
+  </data>
+  <data name="WrongJWT" xml:space="preserve">
+    <value>Error while proccessing JWT token to get values.</value>
   </data>
 </root>

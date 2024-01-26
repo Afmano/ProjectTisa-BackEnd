@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using ProjectPop.EF.Interfaces;
 using ProjectPop.Models;
-using ProjectTisa.Controllers.GeneralData;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 
@@ -15,10 +12,9 @@ namespace ProjectPop.Controllers
     /// Test controller to check database connection and <b>IActionResult</b> sending.
     /// </summary>
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController(ILogger<WeatherForecastController> logger, MainDbContext context, IOptions<RouteConfig> config) : ControllerBase, ICrud<WeatherForecast>
+    [Route("api/[controller]")]
+    public class WeatherForecastController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase, ICrud<WeatherForecast>
     {
-        private readonly RouteConfig _routeConfig = config.Value;//Not used in current version of controller
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get()
         {
