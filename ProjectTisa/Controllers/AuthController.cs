@@ -56,15 +56,20 @@ namespace ProjectTisa.Controllers
         {
             return Ok(IsUsernameExist(username));
         }
+        /// <summary>
+        /// Get user's info from JWT token in Authorization header.
+        /// </summary>
+        /// <returns>200: JSON of user.</returns>
         [Authorize]
         [HttpGet("GetUser")]
-        public ActionResult<bool> GetUser()
+        public ActionResult<string> GetUser()
         {
             User? user;
             try
             {
                 string currentUsername = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Username")?.Value ?? throw new NullReferenceException(ResAnswers.WrongJWT);
                 user = context.Users.FirstOrDefault(x => x.Username.Equals(currentUsername)) ?? throw new NullReferenceException(ResAnswers.UserNorFound);
+                user.LastSeen = DateTime.UtcNow;
             }
             catch (NullReferenceException ex)
             {
@@ -74,12 +79,13 @@ namespace ProjectTisa.Controllers
             return Ok(user);
         }
         /// <summary>
-        /// Registrate new user at database, using request: <seealso cref="UserCreationReq"/>.
+        /// Registrate new user at database's <b>PendingRegistration</b>, using request: <seealso cref="UserCreationReq"/>. 
+        /// <para>See <seealso cref="Verify"/>.</para>
         /// </summary>
         /// <param name="userCreation">Data for new user creation.</param>
-        /// <returns>200: String represent JWT Token.</returns>
+        /// <returns>200: Pending registration id.</returns>
         [HttpPost("Registrate")]
-        public async Task<ActionResult<string>> Registrate([FromBody] UserCreationReq userCreation)
+        public async Task<ActionResult> Registrate([FromBody] UserCreationReq userCreation)
         {
             ValidationContext valContext = new(userCreation);
             List<ValidationResult> valResults = [];
@@ -92,18 +98,40 @@ namespace ProjectTisa.Controllers
                 return BadRequest(ResAnswers.EmailUsernameExist);
             }
 
-            //check smtp email?
-
+            string verificationCode = AuthTools.GenerateCode();
             byte[] passSalt = AuthTools.CreateSalt(_authData.SaltSize);
-            User user = new()
+            PendingRegistration pendingReg = new()
             {
                 Username = userCreation.Username.ToLower(),
                 Email = userCreation.Email.ToLower(),
-                RegistrationDate = DateTime.UtcNow,
+                ExpireDate = DateTime.UtcNow.AddHours(2),
                 Salt = Convert.ToHexString(passSalt),
-                PasswordHash = AuthTools.HashPasword(userCreation.Password, passSalt, _authData)
+                PasswordHash = AuthTools.HashPasword(userCreation.Password, passSalt, _authData),
+                VerificationCode = verificationCode
             };
+            context.Add(pendingReg);
+            await context.SaveChangesAsync();
+            EmailSender.SendEmailCode(userCreation.Email, verificationCode);
+            //LogMessageCreator.CreatedMessage(logger, pendingReg);
+            return Ok(pendingReg.Id);
+        }
+        /// <summary>
+        /// Verify pending registration request by sending code. If code same in table - create new user.
+        /// </summary>
+        /// <param name="pendingRegId">Id of pending registration from <see cref="Registrate"/>.</param>
+        /// <param name="code">Code sended to registration email address.</param>
+        /// <returns>200: String represent JWT Token.</returns>
+        [HttpPost("Verify")]
+        public async Task<ActionResult<string>> Verify(int pendingRegId, string code)
+        {
+            PendingRegistration request = context.PendingRegistrations.First(r => r.Id == pendingRegId);
+            if (request == null || request.ExpireDate < DateTime.UtcNow || request.VerificationCode != code)
+            {
+                return BadRequest(ResAnswers.BadRequest);
+            }
+            User user = new(request);
             context.Add(user);
+            context.PendingRegistrations.Remove(request);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, user);
             return Ok(AuthTools.CreateToken(user, _authData));

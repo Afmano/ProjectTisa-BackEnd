@@ -6,13 +6,13 @@ using Microsoft.OpenApi.Models;
 using NReco.Logging.File;
 using ProjectTisa.Controllers.GeneralData;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Libs;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 IConfiguration appInfo = builder.Configuration.GetSection("AppInfo");
 builder.Services.Configure<RouteConfig>(appInfo);
-
 builder.Services.AddSwaggerGen(setup =>
 {
     setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Project Tisa API", Version = appInfo.GetValue<string>("Version") });
@@ -56,6 +56,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("Bearer", options =>
     {
         RouteConfig appConfig = appInfo.Get<RouteConfig>() ?? throw new NullReferenceException("appsettings.json RouteConfig is null");
+        EmailSender.Configure(appConfig.SmtpData);
+
         options.Authority = appConfig.CurrentHost;
 
         if (builder.Environment.IsDevelopment())

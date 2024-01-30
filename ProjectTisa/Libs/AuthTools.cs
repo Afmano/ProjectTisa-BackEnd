@@ -64,6 +64,14 @@ namespace ProjectTisa.Libs
             byte[] hashToCompare = Rfc2898DeriveBytes.Pbkdf2(password, salt, authData.IterationCount, authData.HashAlgorithm, salt.Length);
             return CryptographicOperations.FixedTimeEquals(hashToCompare, Convert.FromHexString(hash));
         }
+        /// <summary>
+        /// Generate verification code for send to email.
+        /// </summary>
+        /// <returns>Code with N(default 6) digits</returns>
+        public static string GenerateCode(int digits = 6)
+        {
+            return Random.Shared.Next(0, (int)Math.Pow(10, digits)).ToString("D"+ digits);
+        }
 
     }
 }

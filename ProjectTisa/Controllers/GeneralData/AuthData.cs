@@ -10,10 +10,10 @@ namespace ProjectTisa.Controllers.GeneralData
         public required string Issuer { get; init; }
         public required string Audience { get; init; }
         public required string IssuerSigningKey { get; init; }
-        public required TimeSpan ExpirationTime { get; set; }
-        public required int IterationCount { get; set; }
-        public required int SaltSize { get; set; }
-        public required string HashAlgorithmOID { get; set; }
+        public required TimeSpan ExpirationTime { get; init; }
+        public required int IterationCount { get; init; }
+        public required int SaltSize { get; init; }
+        public required string HashAlgorithmOID { get; init; }
         public HashAlgorithmName HashAlgorithm { get { return HashAlgorithmName.FromOid(HashAlgorithmOID); } }
     };
 }

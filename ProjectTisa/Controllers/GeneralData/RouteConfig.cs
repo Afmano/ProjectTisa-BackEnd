@@ -5,9 +5,10 @@
     /// </summary>
     public record RouteConfig
     {
-        public required string ApplicationName { get; set; }
-        public required string Version { get; set; }
-        public required string CurrentHost { get; set; }
-        public required AuthData AuthData { get; set; }
+        public required string ApplicationName { get; init; }
+        public required string Version { get; init; }
+        public required string CurrentHost { get; init; }
+        public required AuthData AuthData { get; init; }
+        public required SmtpData SmtpData { get; init; }
     }
 }
