@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace ProjectTisa.Controllers.GeneralData
+namespace ProjectTisa.Controllers.GeneralData.Configs
 {
     /// <summary>
     /// Sub-record from appsettings.json for auth proccess.

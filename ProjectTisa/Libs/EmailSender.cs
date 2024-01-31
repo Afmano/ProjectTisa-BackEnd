@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
 using System.Net;
-using ProjectTisa.Controllers.GeneralData;
+using ProjectTisa.Controllers.GeneralData.Configs;
 
 namespace ProjectTisa.Libs
 {

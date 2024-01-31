@@ -1,5 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using ProjectTisa.Controllers.GeneralData;
+using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,9 +14,9 @@ namespace ProjectTisa.Libs
     public static class AuthTools
     {
         /// <summary>
-        /// Create JWT token using user's data.
+        /// Create JWT token using <see cref="User"/>'s data.
         /// </summary>
-        /// <param name="user"><b>User</b> entity.</param>
+        /// <param name="user"><see cref="User"/> entity.</param>
         /// <param name="authData">Configuration data for auth.</param>
         /// <returns>JWT token.</returns>
         public static string CreateToken(User user, AuthData authData)
@@ -34,9 +34,9 @@ namespace ProjectTisa.Libs
         /// </summary>
         /// <param name="size">Size of salt.</param>
         /// <returns>Salt in byte array.</returns>
-        public static byte[] CreateSalt(int size)
+        public static string CreateSalt(int size)
         {
-            return RandomNumberGenerator.GetBytes(size);
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(size));
         }
         /// <summary>
         /// Hash password using auth configuration and salt.
@@ -46,9 +46,9 @@ namespace ProjectTisa.Libs
         /// <param name="salt">Salt added to password.</param>
         /// <param name="authData">Configuration data for auth.</param>
         /// <returns>Password in hash format.</returns>
-        public static string HashPasword(string password, byte[] salt, AuthData authData)
+        public static string HashPasword(string password, string salt, AuthData authData)
         {
-            byte[] hash = Rfc2898DeriveBytes.Pbkdf2(Encoding.UTF8.GetBytes(password), salt, authData.IterationCount, authData.HashAlgorithm, salt.Length);
+            byte[] hash = Rfc2898DeriveBytes.Pbkdf2(Encoding.UTF8.GetBytes(password), Convert.FromHexString(salt), authData.IterationCount, authData.HashAlgorithm, salt.Length);
             return Convert.ToHexString(hash);
         }
         /// <summary>
@@ -59,9 +59,9 @@ namespace ProjectTisa.Libs
         /// <param name="salt">Salt added to password.</param>
         /// <param name="authData">Configuration data for auth.</param>
         /// <returns>Result of verifying: <c>true</c> - password and salt belong to hash, <c>false</c> - password and salt doesn't belong to hash.</returns>
-        public static bool VerifyPassword(string password, string hash, byte[] salt, AuthData authData)
+        public static bool VerifyPassword(string password, string hash, string salt, AuthData authData)
         {
-            byte[] hashToCompare = Rfc2898DeriveBytes.Pbkdf2(password, salt, authData.IterationCount, authData.HashAlgorithm, salt.Length);
+            byte[] hashToCompare = Rfc2898DeriveBytes.Pbkdf2(password, Convert.FromHexString(salt), authData.IterationCount, authData.HashAlgorithm, salt.Length);
             return CryptographicOperations.FixedTimeEquals(hashToCompare, Convert.FromHexString(hash));
         }
         /// <summary>

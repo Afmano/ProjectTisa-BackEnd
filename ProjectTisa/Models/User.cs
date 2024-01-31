@@ -25,16 +25,15 @@ namespace ProjectTisa.Models
         public int Id { get; private init; }
         public required string Username { get; init; }
         public required string Email { get; init; }
-        public string? PhotoPath { get; set; }
         [JsonIgnore]
-        public string? PasswordHash { get; init; }
+        public string? PasswordHash { get; set; }
         [JsonIgnore]
         public string? Salt { get; init; }
         public DateTime RegistrationDate { get; init; }
         public DateTime? LastSeen { get; set; }
         public override string ToString()
         {
-            return $"{Id}. {Username}, {Email}, {PhotoPath}";
+            return $"{Id}. {Username} - {Email}";
         }
     }
 }

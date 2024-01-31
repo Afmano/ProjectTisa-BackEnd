@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ProjectPop.Controllers;
-using ProjectTisa.Controllers.GeneralData;
+using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
@@ -22,7 +21,7 @@ namespace ProjectTisa.Controllers
         /// <summary>
         /// Reveice JWT Token by passing username and password.
         /// </summary>
-        /// <param name="user">User that exist in database.</param>
+        /// <param name="user"><see cref="User"/> that exist in database.</param>
         /// <returns>200: String represent JWT Token.</returns>
         [HttpPost("Authorize")]
         public ActionResult<string> Authorize([FromBody] UserLoginReq loginReq)
@@ -32,7 +31,7 @@ namespace ProjectTisa.Controllers
                 return BadRequest(ResAnswers.BadRequest);
             }
             User? user = string.IsNullOrEmpty(loginReq.Email) ? context.Users.FirstOrDefault(x => x.Username.Equals(loginReq.Username!.ToLower())) : context.Users.FirstOrDefault(x => x.Email.Equals(loginReq.Email.ToLower()));
-            if (user == null || !AuthTools.VerifyPassword(loginReq.Password, user.PasswordHash!, Convert.FromHexString(user.Salt!), _authData))
+            if (user == null || !AuthTools.VerifyPassword(loginReq.Password, user.PasswordHash!, user.Salt!, _authData))
             {
                 return BadRequest(ResAnswers.BadRequest);
             }
@@ -57,39 +56,16 @@ namespace ProjectTisa.Controllers
             return Ok(IsUsernameExist(username));
         }
         /// <summary>
-        /// Get user's info from JWT token in Authorization header.
-        /// </summary>
-        /// <returns>200: JSON of user.</returns>
-        [Authorize]
-        [HttpGet("GetUser")]
-        public ActionResult<string> GetUser()
-        {
-            User? user;
-            try
-            {
-                string currentUsername = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Username")?.Value ?? throw new NullReferenceException(ResAnswers.WrongJWT);
-                user = context.Users.FirstOrDefault(x => x.Username.Equals(currentUsername)) ?? throw new NullReferenceException(ResAnswers.UserNorFound);
-                user.LastSeen = DateTime.UtcNow;
-            }
-            catch (NullReferenceException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            return Ok(user);
-        }
-        /// <summary>
-        /// Registrate new user at database's <b>PendingRegistration</b>, using request: <seealso cref="UserCreationReq"/>. 
+        /// Registrate new user at database's <b>PendingRegistration</b>, using request: <seealso cref="UserInfoReq"/>. 
         /// <para>See <seealso cref="Verify"/>.</para>
         /// </summary>
-        /// <param name="userCreation">Data for new user creation.</param>
+        /// <param name="userCreation">Data for new <see cref="User"/> creation.</param>
         /// <returns>200: Pending registration id.</returns>
         [HttpPost("Registrate")]
-        public async Task<ActionResult> Registrate([FromBody] UserCreationReq userCreation)
+        public async Task<ActionResult> Registrate([FromBody] UserInfoReq userCreation)
         {
-            ValidationContext valContext = new(userCreation);
-            List<ValidationResult> valResults = [];
-            if (!Validator.TryValidateObject(userCreation, valContext, valResults, true))
+            List<ValidationResult> valResults = UserInfoReq.Validate(userCreation);
+            if (valResults.Count > 0)
             {
                 return BadRequest(valResults);
             }
@@ -99,13 +75,13 @@ namespace ProjectTisa.Controllers
             }
 
             string verificationCode = AuthTools.GenerateCode();
-            byte[] passSalt = AuthTools.CreateSalt(_authData.SaltSize);
+            string passSalt = AuthTools.CreateSalt(_authData.SaltSize);
             PendingRegistration pendingReg = new()
             {
                 Username = userCreation.Username.ToLower(),
                 Email = userCreation.Email.ToLower(),
                 ExpireDate = DateTime.UtcNow.AddHours(2),
-                Salt = Convert.ToHexString(passSalt),
+                Salt = passSalt,
                 PasswordHash = AuthTools.HashPasword(userCreation.Password, passSalt, _authData),
                 VerificationCode = verificationCode
             };
@@ -116,7 +92,7 @@ namespace ProjectTisa.Controllers
             return Ok(pendingReg.Id);
         }
         /// <summary>
-        /// Verify pending registration request by sending code. If code same in table - create new user.
+        /// Verify pending registration request by sending code. If code same in table - create new <see cref="User"/>.
         /// </summary>
         /// <param name="pendingRegId">Id of pending registration from <see cref="Registrate"/>.</param>
         /// <param name="code">Code sended to registration email address.</param>
@@ -137,7 +113,7 @@ namespace ProjectTisa.Controllers
             return Ok(AuthTools.CreateToken(user, _authData));
         }
         /// <summary>
-        /// Check is email exist in <b>User</b> table at current context.
+        /// Check is email exist in <see cref="User"/> table at current context.
         /// </summary>
         /// <returns>Result of check: <c>true</c> - email exist, <c>false</c> - email doesn't exist.</returns>
         private bool IsEmailExist(string email)
@@ -145,7 +121,7 @@ namespace ProjectTisa.Controllers
             return context.Users.Any(u => u.Email.Equals(email.ToLower()));
         }
         /// <summary>
-        /// Check is username exist in <b>User</b> table at current context.
+        /// Check is username exist in <see cref="User"/> table at current context.
         /// </summary>
         /// <returns>Result of check: <c>true</c> - username exist, <c>false</c> - username doesn't exist.</returns>
         private bool IsUsernameExist(string username)

@@ -1,4 +1,4 @@
-﻿namespace ProjectTisa.Controllers.GeneralData
+﻿namespace ProjectTisa.Controllers.GeneralData.Configs
 {
     /// <summary>
     /// General config record for appsettings.json data.

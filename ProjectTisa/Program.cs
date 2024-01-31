@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NReco.Logging.File;
-using ProjectTisa.Controllers.GeneralData;
+using ProjectTisa.Controllers.GeneralData.Configs;
+using ProjectTisa.Controllers.GeneralData.Exceptions;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -93,7 +95,7 @@ app.UseExceptionHandler(c => c.Run(async context =>
         ?.Get<IExceptionHandlerPathFeature>()
         ?.Error;
     app.Logger.LogError(exception, "Intercepted error.");
-    await context.Response.WriteAsJsonAsync(ResAnswers.Error);
+    await context.Response.WriteAsJsonAsync(exception is ControllerException ? exception.Message : ResAnswers.Error);
 }));
 
 app.UseHttpsRedirection();
