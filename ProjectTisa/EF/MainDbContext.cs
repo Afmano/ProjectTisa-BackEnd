@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectPop.Models;
 using ProjectTisa.Models;
+using System.Reflection.Metadata;
 
 namespace ProjectPop.EF
 {
@@ -13,6 +14,7 @@ namespace ProjectPop.EF
         public DbSet<WeatherForecast> WeatherForecasts { get; set; }
         public DbSet<PendingRegistration> PendingRegistrations { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();

@@ -14,8 +14,11 @@ namespace ProjectTisa.Models
         public int Id { get; private init; }
         public required string Caption { get; set; }
         public required string Message { get; set; }
-        public required DateTime CreationTime { get; set; }
-        public TimeSpan Exparation { get; set; }
+        public DateTime CreationTime { get; set; }
         public NotificationType NotificationType { get; set; }
+        public override string ToString()
+        {
+            return $"{Id}. {Caption} - {Message}";
+        }
     }
 }

@@ -6,35 +6,36 @@ using ProjectPop.EF.Interfaces;
 using ProjectPop.Models;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
+using ProjectTisa.Models;
 
 namespace ProjectPop.Controllers
 {
     /// <summary>
-    /// Test controller to check database connection and <b>IActionResult</b> sending.
+    /// Standart CRUD controller for <see cref="Notification"/> model.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class WeatherForecastController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase, ICrud<WeatherForecast>
+    public class NotificationController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase, ICrud<Notification>
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get()
+        public async Task<ActionResult<IEnumerable<Notification>>> Get()
         {
             if (IsTableEmpty())
             {
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
 
-            return Ok(await context.WeatherForecasts.ToListAsync());
+            return Ok(await context.Notifications.ToListAsync());
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<WeatherForecast>> Get(int id)
+        public async Task<ActionResult<Notification>> Get(int id)
         {
             if (IsTableEmpty())
             {
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
 
-            WeatherForecast? item = await context.WeatherForecasts.FindAsync(id);
+            Notification? item = await context.Notifications.FindAsync(id);
             if (item == null)
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
@@ -44,9 +45,10 @@ namespace ProjectPop.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Create(WeatherForecast item)
+        public async Task<ActionResult> Create(Notification item)
         {
-            context.WeatherForecasts.Add(item);
+            item.CreationTime = DateTime.UtcNow;
+            context.Notifications.Add(item);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, item);
 
@@ -54,20 +56,20 @@ namespace ProjectPop.Controllers
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult<WeatherForecast>> Delete(int id)
+        public async Task<ActionResult<Notification>> Delete(int id)
         {
             if (IsTableEmpty())
             {
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
 
-            WeatherForecast? item = await context.WeatherForecasts.FindAsync(id);
+            Notification? item = await context.Notifications.FindAsync(id);
             if (item == null)
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            context.WeatherForecasts.Remove(item);
+            context.Notifications.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
 
@@ -75,7 +77,7 @@ namespace ProjectPop.Controllers
         }
         [HttpPut]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Update(WeatherForecast item)
+        public async Task<ActionResult> Update(Notification item)
         {
             if (IsTableEmpty())
             {
@@ -89,7 +91,7 @@ namespace ProjectPop.Controllers
         }
         private bool IsTableEmpty()
         {
-            return context.WeatherForecasts == null || !context.WeatherForecasts.Any();
+            return context.Notifications == null || !context.Notifications.Any();
         }
     }
 }
