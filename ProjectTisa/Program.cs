@@ -8,7 +8,6 @@ using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Exceptions;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
-using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

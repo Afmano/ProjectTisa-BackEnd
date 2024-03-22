@@ -21,7 +21,7 @@ namespace ProjectTisa.Controllers
         /// <returns>200: JSON of <see cref="User"/>.</returns>
         [Authorize]
         [HttpGet("GetUser")]
-        public ActionResult<string> GetUser()
+        public ActionResult<User> GetUser()
         {
             return Ok(GetUserFromContext());
         }
@@ -30,6 +30,7 @@ namespace ProjectTisa.Controllers
         /// </summary>
         /// <param name="password">Password in string format.</param>
         /// <returns>200: message.</returns>
+        [Authorize]
         [HttpPost("ChangePassword")]
         public async Task<ActionResult<string>> ChangePassword([FromBody] string password)
         {
@@ -43,6 +44,7 @@ namespace ProjectTisa.Controllers
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }
+        [Authorize]
         [HttpPost("ChangeEmail")]
         public ActionResult ChangeEmail([FromBody] string email)
         {

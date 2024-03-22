@@ -5,7 +5,7 @@ using ProjectTisa.Models.Enums;
 namespace ProjectTisa.Models
 {
     /// <summary>
-    /// Notification for <see cref="NotificationsUser"/>.
+    /// Model of notification for <see cref="NotificationsUser"/>.
     /// </summary>
     public class Notification
     {
