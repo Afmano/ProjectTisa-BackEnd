@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using ProjectTisa.Models.Enums;
+using System.Text.Json.Serialization;
 
 namespace ProjectTisa.Models
 {
@@ -16,6 +17,8 @@ namespace ProjectTisa.Models
         public required string Message { get; set; }
         public DateTime CreationTime { get; set; }
         public NotificationType NotificationType { get; set; }
+        [JsonIgnore]
+        public virtual List<User> Users { get; } = [];
         public override string ToString()
         {
             return $"{Id}. {Caption} - {Message}";

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectPop.EF.Interfaces;
-using ProjectPop.Models;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
@@ -11,7 +10,7 @@ using ProjectTisa.Models;
 namespace ProjectPop.Controllers
 {
     /// <summary>
-    /// Standart CRUD controller for <see cref="Notification"/> model.
+    /// Standart CRUD controller for <see cref="Notification"/> model. Mostly for testing purposes.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]

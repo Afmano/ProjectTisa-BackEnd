@@ -9,6 +9,7 @@ using ProjectTisa.Controllers.GeneralData.Exceptions;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,8 +46,10 @@ builder.Services.AddSwaggerGen(setup =>
 });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<MainDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddDbContext<MainDbContext>(options => options.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddMvc().AddJsonOptions(o => { 
+    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; 
+});
 builder.Services.AddLogging(conf =>
 {
     conf.AddConsole();

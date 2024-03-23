@@ -17,7 +17,7 @@ namespace ProjectTisa.Controllers.GeneralData.Requests
         public required string Password { get; set; }
         [EmailAddress]
         [RegularExpression(ValidationConst.REGEX_EMAIL)]
-        [StringLength(ValidationConst.MAX_STR_LENGTH, MinimumLength = ValidationConst.MIN_STR_LENGTH)]
+        [StringLength(ValidationConst.MAX_EMAIL_LENGTH, MinimumLength = ValidationConst.MIN_STR_LENGTH)]
         public required string Email { get; set; }
         public static UserInfoReq GetChangePassword(User user, string password)
         {

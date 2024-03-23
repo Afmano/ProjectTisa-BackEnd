@@ -33,7 +33,7 @@ namespace ProjectTisa.Models
         public DateTime RegistrationDate { get; init; }
         public DateTime? LastSeen { get; set; }
         public RoleType Role { get; init; }
-        public List<Notification> Notifications { get; } = [];
+        public virtual List<Notification> Notifications { get; } = [];
         public override string ToString()
         {
             return $"{Id}. {Username} - {Email}";

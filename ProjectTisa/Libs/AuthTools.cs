@@ -25,7 +25,7 @@ namespace ProjectTisa.Libs
             SigningCredentials credentials = new(symKey, SecurityAlgorithms.HmacSha256);
             JwtSecurityToken token = new(
                 issuer: authData.Issuer, audience: authData.Audience,
-                claims: [new Claim(nameof(user.Username), user.Username), new Claim(nameof(user.PasswordHash), user.PasswordHash!), new Claim(ClaimTypes.Role, user.Role.ToString())],
+                claims: [new Claim(ClaimTypes.Name, user.Username), new Claim(ClaimTypes.Email, user.Email), new Claim(ClaimTypes.Role, user.Role.ToString())],
                 expires: DateTime.UtcNow.Add(authData.ExpirationTime), signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
