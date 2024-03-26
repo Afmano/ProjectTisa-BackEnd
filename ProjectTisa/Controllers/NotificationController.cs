@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectPop.EF.Interfaces;
+using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
@@ -10,21 +10,21 @@ using ProjectTisa.Models;
 namespace ProjectPop.Controllers
 {
     /// <summary>
-    /// Standart CRUD controller for <see cref="Notification"/> model. Mostly for testing purposes.
+    /// Standart CRUD controller for <see cref="Notification"/> model. Mostly for testing purposes. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class NotificationController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase, ICrud<Notification>
+    public class NotificationController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Notification>>> Get()
+        public async Task<ActionResult<IEnumerable<Notification>>> Get(PaginationRequest request)
         {
             if (IsTableEmpty())
             {
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
 
-            return Ok(await context.Notifications.ToListAsync());
+            return Ok(request.ApplyRequest(await context.Notifications.OrderBy(on => on.Id).ToListAsync()));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<Notification>> Get(int id)

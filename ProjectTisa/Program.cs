@@ -12,7 +12,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-
 IConfiguration appInfo = builder.Configuration.GetSection("AppInfo");
 builder.Services.Configure<RouteConfig>(appInfo);
 builder.Services.AddSwaggerGen(setup =>

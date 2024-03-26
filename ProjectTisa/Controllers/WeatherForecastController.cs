@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectPop.EF.Interfaces;
 using ProjectPop.Models;
+using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 
@@ -14,17 +14,17 @@ namespace ProjectPop.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class WeatherForecastController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase, ICrud<WeatherForecast>
+    public class WeatherForecastController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get()
+        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get(PaginationRequest request)
         {
             if (IsTableEmpty())
             {
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
-
-            return Ok(await context.WeatherForecasts.ToListAsync());
+            
+            return Ok(request.ApplyRequest(await context.WeatherForecasts.OrderBy(on => on.Id).ToListAsync()));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<WeatherForecast>> Get(int id)

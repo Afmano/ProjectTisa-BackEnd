@@ -15,7 +15,7 @@ namespace ProjectTisa.Models
         public required string Email { get; init; }
         public required string PasswordHash { get; init; }
         public required string Salt { get; init; }
-        public DateTime ExpireDate { get; init; }
+        public required DateTime ExpireDate { get; init; }
         public required string VerificationCode { get; init; } 
     }
 }

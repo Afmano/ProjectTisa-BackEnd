@@ -7,13 +7,14 @@ using ProjectTisa.Models.Enums;
 namespace ProjectTisa.Controllers
 {
     /// <summary>
-    /// Controller with methods for Manager role. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c>.
+    /// Controller with specific methods for Manager role. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c>.
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin, Manager")]
     public class ManagerController(MainDbContext context) : ControllerBase
     {
+        #region Notification
         /// <summary>
         /// Send <see cref="Notification"/> for users by role.
         /// </summary>
@@ -77,5 +78,6 @@ namespace ProjectTisa.Controllers
 
             return Ok(ResAnswers.Success);
         }
+        #endregion
     }
 }
