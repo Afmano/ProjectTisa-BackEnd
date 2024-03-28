@@ -19,14 +19,14 @@ namespace ProjectTisa.Controllers.BusinessControllers
     public class CategoryController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> Get([FromQuery] PaginationRequest request)
+        public async Task<ActionResult<IEnumerable<Category>>> Get([FromQuery] PaginationRequest request, bool haveParent)
         {
             if (IsTableEmpty())
             {
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
 
-            return Ok(request.ApplyRequest(await context.Categories.OrderBy(on => on.Id).ToListAsync()));
+            return Ok(request.ApplyRequest(await context.Categories.OrderBy(on => on.Id).ToListAsync()).Where(x => x.ParentCategory == null || haveParent));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> Get(int id)
@@ -43,13 +43,8 @@ namespace ProjectTisa.Controllers.BusinessControllers
         [Authorize(Roles = "Manager, Admin")]
         public async Task<ActionResult> Create([FromBody] CategoryCreationReq request)
         {
-            Category category = new() { EditInfo = new(User.Identity!.Name!), Name = request.Name, PhotoPath = request.PhotoPath };
-            Category? parent = await context.Categories.FindAsync(request.CategoryId);
-            if (parent != null)
-            {
-                category.SubCategory = parent;
-            }
-
+            Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
+            Category category = new(request, new(User.Identity!.Name!), parentCategory);
             context.Categories.Add(category);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, category);
@@ -80,24 +75,22 @@ namespace ProjectTisa.Controllers.BusinessControllers
         [Authorize(Roles = "Manager, Admin")]
         public async Task<ActionResult> Update(int id, [FromBody] CategoryCreationReq request)
         {
-            Category? item = await context.Categories.FindAsync(id);
-            if (item == null)
+            Category? toEdit = await context.Categories.FindAsync(id);
+            if (toEdit == null)
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
-
-            item.Name = request.Name;
-            item.PhotoPath = request.PhotoPath;
-            Category? parent = await context.Categories.FindAsync(request.CategoryId);
-            if (parent != null)
+            
+            Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
+            if (parentCategory == null)
             {
-                item.SubCategory = parent;
+                return BadRequest(ResAnswers.NotFoundNullEntity);
             }
 
-            item.EditInfo.Modify(User.Identity!.Name!);
-            context.Entry(item).State = EntityState.Modified;
+            toEdit.EditInfo.Modify(User.Identity!.Name!);
+            Category fromCategory = new(request, toEdit.EditInfo, parentCategory);
+            context.Entry(toEdit).CurrentValues.SetValues(fromCategory);
             await context.SaveChangesAsync();
-
             return Ok(ResAnswers.Success);
         }
         private bool IsTableEmpty()

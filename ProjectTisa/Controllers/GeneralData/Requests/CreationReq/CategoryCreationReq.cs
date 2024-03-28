@@ -16,6 +16,6 @@ namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
         [Url]
         [StringRequirements(StringMaxLengthType.Domain, ValidationConst.NO_REGEX)]
         public required string PhotoPath { get; set; }
-        public int CategoryId { get; set; }
+        public int ParentCategoryId { get; set; }
     }
 }

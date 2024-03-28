@@ -20,9 +20,9 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         /// </summary>
         /// <returns>200: JSON of <see cref="User"/>.</returns>
         [HttpGet("GetUser")]
-        public ActionResult<User> GetUser()
+        public async Task<ActionResult<User>> GetUser()
         {
-            return Ok(GetCurrentUser());
+            return Ok(await GetCurrentUser());
         }
         /// <summary>
         /// Change <see cref="User"/>'s password using same salt.
