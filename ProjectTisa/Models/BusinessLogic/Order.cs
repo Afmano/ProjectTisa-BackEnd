@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectTisa.Models.BusinessLogic
 {
+    /// <summary>
+    /// Model for order by <see cref="User"/>.
+    /// </summary>
     public class Order
     {
         [Key]

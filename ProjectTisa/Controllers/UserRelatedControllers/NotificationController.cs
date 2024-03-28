@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
 
-namespace ProjectPop.Controllers
+namespace ProjectTisa.Controllers.UserRelatedControllers
 {
     /// <summary>
     /// Standart CRUD controller for <see cref="Notification"/> model. Mostly for testing purposes. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.

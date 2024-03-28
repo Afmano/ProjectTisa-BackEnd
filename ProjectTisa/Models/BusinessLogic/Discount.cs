@@ -4,6 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace ProjectTisa.Models.BusinessLogic
 {
+    /// <summary>
+    /// Model for discounts of <see cref="Product"/>.
+    /// </summary>
     public class Discount
     {
         [Key]

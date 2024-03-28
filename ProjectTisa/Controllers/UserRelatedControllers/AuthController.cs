@@ -2,13 +2,13 @@
 using Microsoft.Extensions.Options;
 using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Configs;
-using ProjectTisa.Controllers.GeneralData.Requests;
+using ProjectTisa.Controllers.GeneralData.Requests.UserReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ProjectTisa.Controllers
+namespace ProjectTisa.Controllers.UserRelatedControllers
 {
     /// <summary>
     /// Controller for auth at server. Using Bearer JWT Token as authorize method.
@@ -64,7 +64,7 @@ namespace ProjectTisa.Controllers
         [HttpPost("Registrate")]
         public async Task<ActionResult> Registrate([FromBody] UserInfoReq userCreation)
         {
-            List<ValidationResult> valResults = UserInfoReq.Validate(userCreation);
+            List<ValidationResult> valResults = ObjectsUtils.Validate(userCreation);
             if (valResults.Count > 0)
             {
                 return BadRequest(valResults);

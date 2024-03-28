@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectTisa.Models.BusinessLogic
 {
+    /// <summary>
+    /// Model for product. Main model for logic.
+    /// </summary>
     public class Product
     {
         [Key]

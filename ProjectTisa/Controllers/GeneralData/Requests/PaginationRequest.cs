@@ -2,6 +2,9 @@
 
 namespace ProjectTisa.Controllers.GeneralData.Requests
 {
+    /// <summary>
+    /// Request for Get methods in controllers to paginate answer collection.
+    /// </summary>
     public class PaginationRequest
     {
         public int PageNumber { get; set; } = 1;
@@ -14,7 +17,7 @@ namespace ProjectTisa.Controllers.GeneralData.Requests
             }
             set
             {
-                _pageSize = (value > ControllerConts.MAX_PAGE_SIZE) ? ControllerConts.MAX_PAGE_SIZE : value;
+                _pageSize = (value > ValidationConst.MAX_PAGE_SIZE) ? ValidationConst.MAX_PAGE_SIZE : value;
             }
         }
         public List<T> ApplyRequest<T>(List<T> list)

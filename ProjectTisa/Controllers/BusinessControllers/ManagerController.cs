@@ -4,7 +4,7 @@ using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Models;
 using ProjectTisa.Models.Enums;
 
-namespace ProjectTisa.Controllers
+namespace ProjectTisa.Controllers.BusinessControllers
 {
     /// <summary>
     /// Controller with specific methods for Manager role. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c>.

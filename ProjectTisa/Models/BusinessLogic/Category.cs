@@ -1,10 +1,12 @@
-﻿using ProjectTisa.Controllers.GeneralData.Requests;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ProjectTisa.Models.BusinessLogic
 {
+    /// <summary>
+    /// Model for category. Primary use at <see cref="Product"/>.
+    /// </summary>
     public class Category()
     {
         [Key]

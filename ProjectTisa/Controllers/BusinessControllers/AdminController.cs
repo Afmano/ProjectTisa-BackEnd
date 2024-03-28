@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProjectTisa.Controllers
+namespace ProjectTisa.Controllers.BusinessControllers
 {
     /// <summary>
     /// Controller with methods for Admin role. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c>.

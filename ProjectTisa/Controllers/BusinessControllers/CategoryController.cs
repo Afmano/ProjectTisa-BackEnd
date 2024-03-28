@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Requests;
+using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
 
-namespace ProjectTisa.Controllers
+namespace ProjectTisa.Controllers.BusinessControllers
 {
     /// <summary>
     /// Standart CRUD controller for <see cref="Category"/> model. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.
@@ -40,7 +41,7 @@ namespace ProjectTisa.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Create([FromBody] CategoryCreationRequest request)
+        public async Task<ActionResult> Create([FromBody] CategoryCreationReq request)
         {
             Category category = new() { EditInfo = new(User.Identity!.Name!), Name = request.Name, PhotoPath = request.PhotoPath };
             Category? parent = await context.Categories.FindAsync(request.CategoryId);
@@ -77,7 +78,7 @@ namespace ProjectTisa.Controllers
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Update(int id, [FromBody] CategoryCreationRequest request)
+        public async Task<ActionResult> Update(int id, [FromBody] CategoryCreationReq request)
         {
             Category? item = await context.Categories.FindAsync(id);
             if (item == null)

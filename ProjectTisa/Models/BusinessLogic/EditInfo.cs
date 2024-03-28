@@ -3,6 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ProjectTisa.Models.BusinessLogic
 {
+    /// <summary>
+    /// Complex type for storing changes in other models.
+    /// </summary>
     [ComplexType]
     public class EditInfo
     {

@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ProjectTisa.Controllers.GeneralData.Configs;
-using ProjectTisa.Controllers.GeneralData.Requests;
+using ProjectTisa.Controllers.GeneralData.Requests.UserReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ProjectTisa.Controllers
+namespace ProjectTisa.Controllers.UserRelatedControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -32,8 +32,8 @@ namespace ProjectTisa.Controllers
         [HttpPost("ChangePassword")]
         public async Task<ActionResult<string>> ChangePassword([FromBody] string password)
         {
-            User user = GetCurrentUser();
-            List<ValidationResult> valResults = UserInfoReq.Validate(UserInfoReq.GetChangePassword(user, password));
+            User user = await GetCurrentUser();
+            List<ValidationResult> valResults = ObjectsUtils.Validate(UserInfoReq.GetChangePassword(user, password));
             if (valResults.Count > 0)
             {
                 return BadRequest(valResults);
@@ -47,6 +47,6 @@ namespace ProjectTisa.Controllers
         {
             throw new NotImplementedException();
         }
-        private User GetCurrentUser() => UserUtils.GetUserFromContext(HttpContext, context);
+        private async Task<User> GetCurrentUser() => await ObjectsUtils.GetUserFromContext(HttpContext, context);
     }
 }

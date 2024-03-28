@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectTisa.Models.BusinessLogic
 {
+    /// <summary>
+    /// Model for quantity for product. Primary use at <see cref="Order"/>.
+    /// </summary>
     public class ProductQuantity
     {
         [Key]

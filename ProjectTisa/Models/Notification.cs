@@ -19,9 +19,5 @@ namespace ProjectTisa.Models
         public NotificationType NotificationType { get; set; }
         [JsonIgnore]
         public virtual List<User> Users { get; } = [];
-        public override string ToString()
-        {
-            return $"{Id}. {Caption} - {Message}";
-        }
     }
 }
