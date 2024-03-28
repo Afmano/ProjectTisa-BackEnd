@@ -33,11 +33,12 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         public async Task<ActionResult<string>> ChangePassword([FromBody] string password)
         {
             User user = await GetCurrentUser();
-            List<ValidationResult> valResults = ObjectsUtils.Validate(UserInfoReq.GetChangePassword(user, password));
+            List<ValidationResult> valResults = ObjectsUtils.Validate(UserInfoReq.GetChangePassword(user, password));//check is necessary
             if (valResults.Count > 0)
             {
                 return BadRequest(valResults);
             }
+
             user.PasswordHash = AuthTools.HashPasword(password, user.Salt!, config.Value.AuthData);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);

@@ -11,6 +11,9 @@ using ProjectTisa.Models.BusinessLogic;
 
 namespace ProjectTisa.Controllers.BusinessControllers
 {
+    /// <summary>
+    /// CRUD controller for <see cref="Product"/> model. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class ProductController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase

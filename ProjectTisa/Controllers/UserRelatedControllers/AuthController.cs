@@ -64,7 +64,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         [HttpPost("Registrate")]
         public async Task<ActionResult> Registrate([FromBody] UserInfoReq userCreation)
         {
-            List<ValidationResult> valResults = ObjectsUtils.Validate(userCreation);
+            List<ValidationResult> valResults = ObjectsUtils.Validate(userCreation);//check is necessary
             if (valResults.Count > 0)
             {
                 return BadRequest(valResults);
@@ -76,19 +76,11 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
 
             string verificationCode = AuthTools.GenerateCode();
             string passSalt = AuthTools.CreateSalt(_authData.SaltSize);
-            PendingRegistration pendingReg = new()
-            {
-                Username = userCreation.Username.ToLower(),
-                Email = userCreation.Email.ToLower(),
-                ExpireDate = DateTime.UtcNow.AddHours(2),
-                Salt = passSalt,
-                PasswordHash = AuthTools.HashPasword(userCreation.Password, passSalt, _authData),
-                VerificationCode = verificationCode
-            };
+            PendingRegistration pendingReg = new(userCreation, passSalt, AuthTools.HashPasword(userCreation.Password, passSalt, _authData), verificationCode);
             context.Add(pendingReg);
             await context.SaveChangesAsync();
             EmailSender.SendEmailCode(userCreation.Email, verificationCode);
-            //LogMessageCreator.CreatedMessage(logger, pendingReg);
+            LogMessageCreator.CreatedMessage(logger, pendingReg);
             return Ok(pendingReg.Id);
         }
         /// <summary>
@@ -105,6 +97,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
             {
                 return BadRequest(ResAnswers.BadRequest);
             }
+
             User user = new(request);
             context.Add(user);
             context.PendingRegistrations.Remove(request);

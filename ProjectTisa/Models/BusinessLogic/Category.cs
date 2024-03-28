@@ -14,10 +14,10 @@ namespace ProjectTisa.Models.BusinessLogic
     {
         public Category() { }
         [SetsRequiredMembers]
-        public Category(CategoryCreationReq registration, EditInfo editInfo, Category? parentCategory)
+        public Category(CategoryCreationReq request, EditInfo editInfo, Category? parentCategory)
         {
-            Name = registration.Name;
-            PhotoPath = registration.PhotoPath;
+            Name = request.Name;
+            PhotoPath = request.PhotoPath;
             ParentCategory = parentCategory;
             EditInfo = editInfo;
         }

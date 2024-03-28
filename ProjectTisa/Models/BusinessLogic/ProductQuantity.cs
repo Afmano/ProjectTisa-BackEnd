@@ -11,7 +11,7 @@ namespace ProjectTisa.Models.BusinessLogic
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; private init; }
-        public required int ProductId { get; set; }
+        public required virtual Product Product { get; set; }
         public required uint Quantity { get; set; }
     }
 }

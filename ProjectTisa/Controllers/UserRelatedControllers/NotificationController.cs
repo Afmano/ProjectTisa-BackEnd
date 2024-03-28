@@ -51,7 +51,6 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
             context.Notifications.Add(item);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, item);
-
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{item.Id}", ResAnswers.Created);
         }
         [HttpDelete("{id}")]
@@ -72,7 +71,6 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
             context.Notifications.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
-
             return Ok(ResAnswers.Success);
         }
         [HttpPut]
@@ -86,7 +84,6 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
 
             context.Entry(item).State = EntityState.Modified;
             await context.SaveChangesAsync();
-
             return Ok(ResAnswers.Success);
         }
         private bool IsTableEmpty()

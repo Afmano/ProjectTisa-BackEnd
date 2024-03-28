@@ -12,7 +12,7 @@ using ProjectTisa.Models.BusinessLogic;
 namespace ProjectTisa.Controllers.BusinessControllers
 {
     /// <summary>
-    /// Standart CRUD controller for <see cref="Category"/> model. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.
+    /// CRUD controller for <see cref="Category"/> model. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]

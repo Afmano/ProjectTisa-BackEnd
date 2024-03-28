@@ -1,5 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using ProjectTisa.Controllers.GeneralData.Configs;
+using ProjectTisa.Libs;
+using ProjectTisa.Controllers.GeneralData.Requests.UserReq;
 
 namespace ProjectTisa.Models
 {
@@ -8,6 +12,17 @@ namespace ProjectTisa.Models
     /// </summary>
     public class PendingRegistration
     {
+        public PendingRegistration() { }
+        [SetsRequiredMembers]
+        public PendingRegistration(UserInfoReq userCreation, string passSalt, string passHash, string verificationCode)
+        {
+            Username = userCreation.Username.ToLower();
+            Email = userCreation.Email.ToLower();
+            ExpireDate = DateTime.UtcNow.AddHours(2);
+            Salt = passSalt;
+            PasswordHash = passHash;
+            VerificationCode = verificationCode;
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; private init; }
