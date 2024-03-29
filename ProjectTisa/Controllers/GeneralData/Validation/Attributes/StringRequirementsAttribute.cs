@@ -2,7 +2,7 @@
 using ProjectTisa.Controllers.GeneralData.Consts;
 using ProjectTisa.Controllers.GeneralData.Validation.Enums;
 
-namespace ProjectTisa.Controllers.GeneralData.Validation
+namespace ProjectTisa.Controllers.GeneralData.Validation.Attributes
 {
     public class StringRequirementsAttribute(StringMaxLengthType stringType = StringMaxLengthType.None, string regularExpression = ValidationConst.REGEX_NUM_SYMBS, int minStrLength = ValidationConst.MIN_STR_LENGTH) : ValidationAttribute
     {

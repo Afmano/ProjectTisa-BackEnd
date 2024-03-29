@@ -5,6 +5,7 @@
     /// </summary>
     public static class ValidationConst
     {
+        public const int MAX_FILE_SIZE = 4194304;//4MB
         public const int MAX_PAGE_SIZE = 50;
         public const int MAX_STR_LENGTH = 32;
         public const int MAX_USERNAME_LENGTH = 20;

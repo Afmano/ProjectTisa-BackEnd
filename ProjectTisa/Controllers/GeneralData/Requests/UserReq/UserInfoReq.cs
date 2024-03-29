@@ -18,9 +18,5 @@ namespace ProjectTisa.Controllers.GeneralData.Requests.UserReq
         [EmailAddress]
         [StringRequirements(StringMaxLengthType.Domain, ValidationConst.REGEX_EMAIL)]
         public required string Email { get; set; }
-        public static UserInfoReq GetChangePassword(User user, string password)
-        {
-            return new UserInfoReq() { Email = user.Email, Username = user.Username, Password = password };
-        }
     }
 }

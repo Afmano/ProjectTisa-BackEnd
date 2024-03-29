@@ -6,7 +6,6 @@ using ProjectTisa.Controllers.GeneralData.Requests.UserReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace ProjectTisa.Controllers.UserRelatedControllers
 {
@@ -64,11 +63,6 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         [HttpPost("Registrate")]
         public async Task<ActionResult> Registrate([FromBody] UserInfoReq userCreation)
         {
-            List<ValidationResult> valResults = ObjectsUtils.Validate(userCreation);//check is necessary
-            if (valResults.Count > 0)
-            {
-                return BadRequest(valResults);
-            }
             if (IsEmailExist(userCreation.Email) || IsUsernameExist(userCreation.Username))
             {
                 return BadRequest(ResAnswers.EmailUsernameExist);

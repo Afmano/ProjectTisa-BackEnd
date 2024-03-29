@@ -2,11 +2,10 @@
 using ProjectTisa.Controllers.GeneralData.Exceptions;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace ProjectTisa.Libs
 {
-    public class ObjectsUtils
+    public class UserUtils
     {
 
         /// <summary>
@@ -23,23 +22,6 @@ namespace ProjectTisa.Libs
             user.LastSeen = DateTime.UtcNow;
             await dbContext.SaveChangesAsync();
             return user;
-        }
-        /// <summary>
-        /// Validate DTO by validate attributes.
-        /// </summary>
-        /// <param name="item">Object to validate.</param>
-        /// <returns>List of validation results.</returns>
-        /// /// <exception cref="ArgumentNullException">If object is null.</exception>
-        public static List<ValidationResult> Validate<T>(T item)
-        {
-            if(item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-            ValidationContext valContext = new(item);
-            List<ValidationResult> valResults = [];
-            Validator.TryValidateObject(item, valContext, valResults, true);
-            return valResults;
         }
     }
 }

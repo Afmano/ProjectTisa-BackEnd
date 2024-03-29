@@ -141,6 +141,9 @@
   <data name="UserNorFound" xml:space="preserve">
     <value>User doesn't exist in database.</value>
   </data>
+  <data name="ValidationErrorRegEx" xml:space="preserve">
+    <value>String dont match regular expression.</value>
+  </data>
   <data name="WrongJWT" xml:space="preserve">
     <value>Error while proccessing JWT token to get values.</value>
   </data>

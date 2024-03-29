@@ -30,15 +30,10 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         /// <param name="password">Password in string format.</param>
         /// <returns>200: message.</returns>
         [HttpPost("ChangePassword")]
+        [Authorize]
         public async Task<ActionResult<string>> ChangePassword([FromBody] string password)
         {
             User user = await GetCurrentUser();
-            List<ValidationResult> valResults = ObjectsUtils.Validate(UserInfoReq.GetChangePassword(user, password));//check is necessary
-            if (valResults.Count > 0)
-            {
-                return BadRequest(valResults);
-            }
-
             user.PasswordHash = AuthTools.HashPasword(password, user.Salt!, config.Value.AuthData);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
@@ -48,6 +43,6 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         {
             throw new NotImplementedException();
         }
-        private async Task<User> GetCurrentUser() => await ObjectsUtils.GetUserFromContext(HttpContext, context);
+        private async Task<User> GetCurrentUser() => await UserUtils.GetUserFromContext(HttpContext, context);
     }
 }

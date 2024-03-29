@@ -1,4 +1,4 @@
-﻿using ProjectTisa.Controllers.GeneralData.Validation;
+﻿using ProjectTisa.Controllers.GeneralData.Validation.Attributes;
 using ProjectTisa.Controllers.GeneralData.Validation.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,6 +18,7 @@ namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
         public required decimal Price { get; set; }
         public required bool IsAvailable { get; set; }
         public string? Description { get; set; }
+        [ListString]
         public List<string> Tags { get; set; } = [];
         public required int CategoryId { get; set; }
         public int DiscountId { get; set; }

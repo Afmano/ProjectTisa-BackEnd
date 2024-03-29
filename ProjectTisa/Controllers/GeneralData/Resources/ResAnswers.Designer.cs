@@ -133,6 +133,15 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to String dont match regular expression..
+        /// </summary>
+        internal static string ValidationErrorRegEx {
+            get {
+                return ResourceManager.GetString("ValidationErrorRegEx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while proccessing JWT token to get values..
         /// </summary>
         internal static string WrongJWT {
