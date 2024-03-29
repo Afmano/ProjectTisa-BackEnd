@@ -45,7 +45,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> Create([FromBody] OrderCreationReq request)
+        public async Task<ActionResult<string>> Create([FromBody] OrderCreationReq request)
         {
             User? user = await context.Users.FindAsync(request.UserId);
             if (user == null)
@@ -63,7 +63,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         [HttpPut("{id}")]
         [Authorize]
         //add claim
-        public async Task<ActionResult> Update(int id, [FromBody] OrderCreationReq request)
+        public async Task<ActionResult<string>> Update(int id, [FromBody] OrderCreationReq request)
         {
             User? user = await context.Users.FindAsync(request.UserId);
             if (user == null)

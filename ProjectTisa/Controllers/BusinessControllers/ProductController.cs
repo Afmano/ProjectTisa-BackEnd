@@ -44,7 +44,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             Ok(await Task.Run(() => context.Products.Where(product => product.Category.Id == categoryid || product.Category.Name == categoryName).ToList()));
         [HttpPost]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Create([FromBody] ProductCreationReq request)
+        public async Task<ActionResult<string>> Create([FromBody] ProductCreationReq request)
         {
             Discount? discount = await context.Discounts.FindAsync(request.DiscountId);
             Category? category = await context.Categories.FindAsync(request.CategoryId);
@@ -61,7 +61,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult<Product>> Delete(int id)
+        public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
             {
@@ -81,7 +81,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Update(int id, [FromBody] ProductCreationReq request)
+        public async Task<ActionResult<string>> Update(int id, [FromBody] ProductCreationReq request)
         {
             Product? toEdit = await context.Products.FindAsync(id);
             if(toEdit == null) 

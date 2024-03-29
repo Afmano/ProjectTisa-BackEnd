@@ -18,7 +18,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
     public class NotificationController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Notification>>> Get(PaginationRequest request)
+        public async Task<ActionResult<IEnumerable<Notification>>> Get([FromQuery] PaginationRequest request)
         {
             if (IsTableEmpty())
             {
@@ -45,7 +45,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         }
         [HttpPost]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Create(Notification item)
+        public async Task<ActionResult<string>> Create(Notification item)
         {
             item.CreationTime = DateTime.UtcNow;
             context.Notifications.Add(item);
@@ -55,7 +55,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult<Notification>> Delete(int id)
+        public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
             {
@@ -75,7 +75,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         }
         [HttpPut]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Update(Notification item)
+        public async Task<ActionResult<string>> Update(Notification item)
         {
             if (IsTableEmpty())
             {

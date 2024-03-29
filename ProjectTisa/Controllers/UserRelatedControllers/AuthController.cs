@@ -38,17 +38,17 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
             return Ok(AuthTools.CreateToken(user, _authData));
         }
         /// <summary>
-        /// See <see cref="IsEmailExist"/>
+        /// <see cref="IsEmailExist"/>.
         /// </summary>
         /// <returns>200: Result of check: <c>true</c> - email exist, <c>false</c> - email doesn't exist.</returns>
-        [HttpGet("CheckEmail")]
-        public async Task<ActionResult<bool>> CheckEmail(string email) => Ok(await IsEmailExist(email));
+        [HttpGet("CheckIsEmailExist")]
+        public async Task<ActionResult<bool>> CheckIsEmailExist(string email) => Ok(await IsEmailExist(email));
         /// <summary>
-        /// See <see cref="IsUsernameExist"/>
+        /// <see cref="IsUsernameExist"/>.
         /// </summary>
         /// <returns>200: Result of check: <c>true</c> - username exist, <c>false</c> - username doesn't exist.</returns>
-        [HttpGet("CheckUsername")]
-        public async Task<ActionResult<bool>> CheckUsername(string username) => Ok(await IsUsernameExist(username));
+        [HttpGet("CheckIsUsernameExist")]
+        public async Task<ActionResult<bool>> CheckIsUsernameExist(string username) => Ok(await IsUsernameExist(username));
         /// <summary>
         /// Registrate new user at database's <b>PendingRegistration</b>, using request: <seealso cref="UserInfoReq"/>. 
         /// <para>See <seealso cref="Verify"/>.</para>
@@ -56,7 +56,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         /// <param name="userCreation">Data for new <see cref="User"/> creation.</param>
         /// <returns>200: Pending registration id.</returns>
         [HttpPost("Registrate")]
-        public async Task<ActionResult> Registrate([FromBody] UserInfoReq userCreation)
+        public async Task<ActionResult<int>> Registrate([FromBody] UserInfoReq userCreation)
         {
             if (await IsEmailExist(userCreation.Email) || await IsUsernameExist(userCreation.Username))
             {

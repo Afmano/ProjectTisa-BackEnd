@@ -10,14 +10,14 @@ using ProjectTisa.Libs;
 namespace ProjectPop.Controllers
 {
     /// <summary>
-    /// Test controller to check database connection and <b>IActionResult</b> sending.
+    /// Test controller to check database connection and <see cref="IActionResult"/> sending.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class WeatherForecastController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get(PaginationRequest request)
+        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get([FromQuery] PaginationRequest request)
         {
             if (IsTableEmpty())
             {
@@ -44,7 +44,7 @@ namespace ProjectPop.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Create(WeatherForecast item)
+        public async Task<ActionResult<string>> Create(WeatherForecast item)
         {
             context.WeatherForecasts.Add(item);
             await context.SaveChangesAsync();
@@ -54,7 +54,7 @@ namespace ProjectPop.Controllers
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult<WeatherForecast>> Delete(int id)
+        public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
             {
@@ -75,7 +75,7 @@ namespace ProjectPop.Controllers
         }
         [HttpPut]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Update(WeatherForecast item)
+        public async Task<ActionResult<string>> Update(WeatherForecast item)
         {
             if (IsTableEmpty())
             {

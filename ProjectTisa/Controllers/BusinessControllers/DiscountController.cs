@@ -41,7 +41,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpPost]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Create([FromBody] DiscountCreationReq request)
+        public async Task<ActionResult<string>> Create([FromBody] DiscountCreationReq request)
         {
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
 
@@ -53,7 +53,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult<Discount>> Delete(int id)
+        public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
             {
@@ -73,7 +73,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Update(int id, [FromBody] DiscountCreationReq request)
+        public async Task<ActionResult<string>> Update(int id, [FromBody] DiscountCreationReq request)
         {
             Discount? toEdit = await context.Discounts.FindAsync(id);
             if (toEdit == null)

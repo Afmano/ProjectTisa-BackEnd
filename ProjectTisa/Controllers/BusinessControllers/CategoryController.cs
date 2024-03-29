@@ -41,7 +41,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpPost]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Create([FromBody] CategoryCreationReq request)
+        public async Task<ActionResult<string>> Create([FromBody] CategoryCreationReq request)
         {
             Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
             Category category = new(request, new(User.Identity!.Name!), parentCategory);
@@ -52,7 +52,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult<Category>> Delete(int id)
+        public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
             {
@@ -73,7 +73,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Manager, Admin")]
-        public async Task<ActionResult> Update(int id, [FromBody] CategoryCreationReq request)
+        public async Task<ActionResult<string>> Update(int id, [FromBody] CategoryCreationReq request)
         {
             Category? toEdit = await context.Categories.FindAsync(id);
             if (toEdit == null)
