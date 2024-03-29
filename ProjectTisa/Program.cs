@@ -8,6 +8,7 @@ using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Exceptions;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
+using ProjectTisa.Models.Enums;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -80,7 +81,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("admin", policy => policy.RequireRole(RoleType.SuperAdmin.ToString(), RoleType.Admin.ToString()));
+    options.AddPolicy("manage", policy => policy.RequireRole(RoleType.SuperAdmin.ToString(), RoleType.Admin.ToString(), RoleType.Manager.ToString()));
+});
 
 var app = builder.Build();
 

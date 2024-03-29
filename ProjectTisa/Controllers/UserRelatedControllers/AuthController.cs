@@ -30,11 +30,13 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
             {
                 return BadRequest(ResAnswers.BadRequest);
             }
-            User? user = string.IsNullOrEmpty(loginReq.Email) ? await context.Users.FirstOrDefaultAsync(x => x.Username.Equals(loginReq.Username!.ToLower())) : await context.Users.FirstOrDefaultAsync(x => x.Email.Equals(loginReq.Email.ToLower()));//revisit this solution
+
+            User? user = await context.Users.FirstOrDefaultAsync(x => string.IsNullOrEmpty(loginReq.Email) ? x.Username.Equals(loginReq.Username!.ToLower()) : x.Email.Equals(loginReq.Email.ToLower()));
             if (user == null || !AuthTools.VerifyPassword(loginReq.Password, user.PasswordHash!, user.Salt!, _authData))
             {
                 return BadRequest(ResAnswers.BadRequest);
             }
+
             return Ok(AuthTools.CreateToken(user, _authData));
         }
         /// <summary>

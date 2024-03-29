@@ -43,7 +43,7 @@ namespace ProjectPop.Controllers
             return Ok(item);
         }
         [HttpPost]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Create(WeatherForecast item)
         {
             context.WeatherForecasts.Add(item);
@@ -53,7 +53,7 @@ namespace ProjectPop.Controllers
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{item.Id}", ResAnswers.Created);
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
@@ -74,7 +74,7 @@ namespace ProjectPop.Controllers
             return Ok(ResAnswers.Success);
         }
         [HttpPut]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Update(WeatherForecast item)
         {
             if (IsTableEmpty())

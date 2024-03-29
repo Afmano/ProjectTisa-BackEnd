@@ -13,14 +13,14 @@ using ProjectTisa.Models;
 namespace ProjectTisa.Controllers.BusinessControllers
 {
     /// <summary>
-    /// CRU controller for <see cref="Order"/> model. <b>Required <see cref="AuthorizeAttribute"/> role</b> <c>Admin</c>/<c>Manager</c> or specified <c><see cref="User"/></c> claim on some actions.
+    /// CRU controller for <see cref="Order"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> or specified <c><see cref="User"/></c> claim on some actions.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class OrderController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
+    public class OrderController(ILogger<WeatherForecastController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
     {
         [HttpGet]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<IEnumerable<Order>>> Get([FromQuery] PaginationRequest request)
         {
             if (IsTableEmpty())
@@ -32,13 +32,17 @@ namespace ProjectTisa.Controllers.BusinessControllers
         }
         [HttpGet("{id}")]
         [Authorize]
-        //add claim
         public async Task<ActionResult<Order>> Get(int id)
         {
             Order? item = await context.Orders.FindAsync(id);
             if (item == null)
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
+            if(item.User.Username != User.Identity!.Name! && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
+            {
+                return Forbid(ResAnswers.CantAccess);
             }
 
             return Ok(item);
@@ -61,8 +65,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{order.Id}", ResAnswers.Created);
         }
         [HttpPut("{id}")]
-        [Authorize]
-        //add claim
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Update(int id, [FromBody] OrderCreationReq request)
         {
             User? user = await context.Users.FindAsync(request.UserId);

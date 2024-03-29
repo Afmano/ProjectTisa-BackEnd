@@ -11,13 +11,14 @@ using ProjectTisa.Models;
 namespace ProjectTisa.Controllers.UserRelatedControllers
 {
     /// <summary>
-    /// Standart CRUD controller for <see cref="Notification"/> model. Mostly for testing purposes. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.
+    /// Standart CRUD controller for <see cref="Notification"/> model. Mostly for testing purposes. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class NotificationController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
+    public class NotificationController(ILogger<WeatherForecastController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
     {
         [HttpGet]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<IEnumerable<Notification>>> Get([FromQuery] PaginationRequest request)
         {
             if (IsTableEmpty())
@@ -28,6 +29,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
             return Ok(request.ApplyRequest(await context.Notifications.OrderBy(on => on.Id).ToListAsync()));
         }
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Notification>> Get(int id)
         {
             if (IsTableEmpty())
@@ -41,10 +43,15 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
+            if (!item.Users.Any(x => x.Username == User.Identity!.Name!) && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
+            {
+                return Forbid(ResAnswers.CantAccess);
+            }
+
             return Ok(item);
         }
         [HttpPost]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Create(Notification item)
         {
             item.CreationTime = DateTime.UtcNow;
@@ -54,7 +61,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{item.Id}", ResAnswers.Created);
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
@@ -74,7 +81,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
             return Ok(ResAnswers.Success);
         }
         [HttpPut]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Update(Notification item)
         {
             if (IsTableEmpty())

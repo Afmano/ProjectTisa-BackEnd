@@ -12,7 +12,7 @@ using ProjectTisa.Models.BusinessLogic;
 namespace ProjectTisa.Controllers.BusinessControllers
 {
     /// <summary>
-    /// CRUD controller for <see cref="Category"/> model. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.
+    /// CRUD controller for <see cref="Category"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -40,7 +40,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             return Ok(item);
         }
         [HttpPost]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Create([FromBody] CategoryCreationReq request)
         {
             Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
@@ -51,7 +51,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{category.Id}", ResAnswers.Created);
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
@@ -72,7 +72,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             return Ok(ResAnswers.Success);
         }
         [HttpPut("{id}")]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Update(int id, [FromBody] CategoryCreationReq request)
         {
             Category? toEdit = await context.Categories.FindAsync(id);

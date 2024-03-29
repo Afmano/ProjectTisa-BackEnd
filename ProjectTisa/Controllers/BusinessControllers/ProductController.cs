@@ -12,14 +12,14 @@ using ProjectTisa.Models.BusinessLogic;
 namespace ProjectTisa.Controllers.BusinessControllers
 {
     /// <summary>
-    /// CRUD controller for <see cref="Product"/> model. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c> on some actions.
+    /// CRUD controller for <see cref="Product"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class ProductController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive)//add
+        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive)
         {
             if (IsTableEmpty())
             {
@@ -43,7 +43,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         public async Task<ActionResult<List<Product>>> GetAllByCategory(int? categoryid, string? categoryName) =>
             Ok(await Task.Run(() => context.Products.Where(product => product.Category.Id == categoryid || product.Category.Name == categoryName).ToList()));
         [HttpPost]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Create([FromBody] ProductCreationReq request)
         {
             Discount? discount = await context.Discounts.FindAsync(request.DiscountId);
@@ -60,7 +60,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{product.Id}", ResAnswers.Created);
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
             if (IsTableEmpty())
@@ -80,7 +80,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             return Ok(ResAnswers.Success);
         }
         [HttpPut("{id}")]
-        [Authorize(Roles = "Manager, Admin")]
+        [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Update(int id, [FromBody] ProductCreationReq request)
         {
             Product? toEdit = await context.Products.FindAsync(id);

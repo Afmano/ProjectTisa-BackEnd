@@ -11,11 +11,11 @@ using System.Net.Http.Headers;
 namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
 {
     /// <summary>
-    /// Controller with specific methods for Manager role. <b>Required <see cref="AuthorizeAttribute"/> role:</b> <c>Admin</c> or <c>Manager</c>.
+    /// Controller with specific methods for Manager role. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c>.
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin, Manager")]
+    [Authorize(Policy = "manage")]
     public class ManagerController : ControllerBase
     {
         private readonly HttpClient _client;

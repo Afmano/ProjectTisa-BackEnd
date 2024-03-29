@@ -70,6 +70,15 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t access this data with current authorization..
+        /// </summary>
+        internal static string CantAccess {
+            get {
+                return ResourceManager.GetString("CantAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New entity created successfully..
         /// </summary>
         internal static string Created {

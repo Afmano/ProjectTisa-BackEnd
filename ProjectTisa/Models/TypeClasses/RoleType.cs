@@ -10,6 +10,7 @@ namespace ProjectTisa.Models.Enums
     {
         User,
         Manager,
-        Admin
+        Admin,
+        SuperAdmin,
     }
 }

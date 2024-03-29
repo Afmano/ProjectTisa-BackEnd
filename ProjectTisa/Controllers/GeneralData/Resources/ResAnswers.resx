@@ -120,6 +120,9 @@
   <data name="BadRequest" xml:space="preserve">
     <value>Wrong request parameters.</value>
   </data>
+  <data name="CantAccess" xml:space="preserve">
+    <value>Can't access this data with current authorization.</value>
+  </data>
   <data name="Created" xml:space="preserve">
     <value>New entity created successfully.</value>
   </data>
