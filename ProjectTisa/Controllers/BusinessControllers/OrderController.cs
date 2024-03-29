@@ -54,7 +54,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             }
 
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
-            Order order = new(request, new(User.Identity!.Name!), user, []);
+            Order order = new(request, new(User.Identity!.Name!), user, []);//test variant, need to be changed
             context.Orders.Add(order);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, order);
@@ -79,7 +79,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
 
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
             toEdit.EditInfo.Modify(User.Identity!.Name!);
-            Order fromOrder = new(request, toEdit.EditInfo, user, []);
+            Order fromOrder = new(request, toEdit.EditInfo, user, [], toEdit.Id);//test variant, need to be changed
             context.Entry(toEdit).CurrentValues.SetValues(fromOrder);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);

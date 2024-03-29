@@ -88,7 +88,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             }
 
             toEdit.EditInfo.Modify(User.Identity!.Name!);
-            Category fromCategory = new(request, toEdit.EditInfo, parentCategory);
+            Category fromCategory = new(request, toEdit.EditInfo, parentCategory, toEdit.Id);
             context.Entry(toEdit).CurrentValues.SetValues(fromCategory);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);

@@ -14,8 +14,9 @@ namespace ProjectTisa.Models.BusinessLogic
     {
         public Category() { }
         [SetsRequiredMembers]
-        public Category(CategoryCreationReq request, EditInfo editInfo, Category? parentCategory)
+        public Category(CategoryCreationReq request, EditInfo editInfo, Category? parentCategory, int id = 0)
         {
+            Id = id;
             Name = request.Name;
             PhotoPath = request.PhotoPath;
             ParentCategory = parentCategory;

@@ -13,8 +13,9 @@ namespace ProjectTisa.Models.BusinessLogic
     {
         public Discount() { }
         [SetsRequiredMembers]
-        public Discount(DiscountCreationReq request, EditInfo editInfo, List<Product> products)
+        public Discount(DiscountCreationReq request, EditInfo editInfo, List<Product> products, int id = 0)
         {
+            Id = id;
             Name = request.Name;
             Description = request.Description;
             DiscountPercent = request.DiscountPercent;

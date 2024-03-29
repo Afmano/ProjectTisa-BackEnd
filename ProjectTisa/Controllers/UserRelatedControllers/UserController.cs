@@ -41,7 +41,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         [HttpPost("ChangeEmail")]
         public ActionResult ChangeEmail([FromBody] string email)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException();//add later
         }
         private async Task<User> GetCurrentUser() => await UserUtils.GetUserFromContext(HttpContext, context);
     }

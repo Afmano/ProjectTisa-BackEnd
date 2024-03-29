@@ -1,4 +1,6 @@
-﻿namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
+﻿using ProjectTisa.Controllers.BusinessControllers;
+
+namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
 {
     /// <summary>
     /// DTO for <see cref="OrderController"/>.

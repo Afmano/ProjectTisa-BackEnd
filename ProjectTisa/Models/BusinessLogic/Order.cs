@@ -12,8 +12,9 @@ namespace ProjectTisa.Models.BusinessLogic
     {
         public Order() { }
         [SetsRequiredMembers]
-        public Order(OrderCreationReq request, EditInfo editInfo, User user, List<ProductQuantity> productQuantities)
+        public Order(OrderCreationReq request, EditInfo editInfo, User user, List<ProductQuantity> productQuantities, int id = 0)
         {
+            Id = id;
             User = user;
             UpdateNote = request.UpdateNote;
             TotalPrice = productQuantities.Select(x => x.Product.Price * x.Quantity).Sum();

@@ -19,14 +19,14 @@ namespace ProjectTisa.Controllers.BusinessControllers
     public class ProductController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request)
+        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive)//add
         {
             if (IsTableEmpty())
             {
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
 
-            return Ok(request.ApplyRequest(await context.Products.OrderBy(on => on.Id).ToListAsync()));
+            return Ok(request.ApplyRequest(await context.Products.OrderBy(on => on.Id).ToListAsync()).Where(x => x.IsAvailable || !onlyActive));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
@@ -39,6 +39,9 @@ namespace ProjectTisa.Controllers.BusinessControllers
 
             return Ok(item);
         }
+        [HttpGet("GetAllByCategory")]
+        public async Task<ActionResult<List<Product>>> GetAllByCategory(int? categoryid, string? categoryName) =>
+            Ok(await Task.Run(() => context.Products.Where(product => product.Category.Id == categoryid || product.Category.Name == categoryName).ToList()));
         [HttpPost]
         [Authorize(Roles = "Manager, Admin")]
         public async Task<ActionResult> Create([FromBody] ProductCreationReq request)
@@ -94,7 +97,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             }
 
             toEdit.EditInfo.Modify(User.Identity!.Name!);
-            Product fromProduct = new(request, toEdit.EditInfo, category, discount);
+            Product fromProduct = new(request, toEdit.EditInfo, category, discount, toEdit.Id);
             context.Entry(toEdit).CurrentValues.SetValues(fromProduct);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);

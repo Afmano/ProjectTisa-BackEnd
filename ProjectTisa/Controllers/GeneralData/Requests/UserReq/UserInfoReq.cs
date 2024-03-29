@@ -1,7 +1,6 @@
 ﻿using ProjectTisa.Controllers.GeneralData.Consts;
-using ProjectTisa.Controllers.GeneralData.Validation;
+using ProjectTisa.Controllers.GeneralData.Validation.Attributes;
 using ProjectTisa.Controllers.GeneralData.Validation.Enums;
-using ProjectTisa.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectTisa.Controllers.GeneralData.Requests.UserReq

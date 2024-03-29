@@ -1,4 +1,5 @@
-﻿using ProjectTisa.Controllers.GeneralData.Validation;
+﻿using ProjectTisa.Controllers.BusinessControllers;
+using ProjectTisa.Controllers.GeneralData.Validation.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Configs;
@@ -23,13 +24,13 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         /// <param name="user"><see cref="User"/> that exist in database.</param>
         /// <returns>200: String represent JWT Token.</returns>
         [HttpPost("Authorize")]
-        public ActionResult<string> Authorize([FromBody] UserLoginReq loginReq)
+        public async Task<ActionResult<string>> Authorize([FromBody] UserLoginReq loginReq)
         {
             if (loginReq.Username == null && loginReq.Email == null)
             {
                 return BadRequest(ResAnswers.BadRequest);
             }
-            User? user = string.IsNullOrEmpty(loginReq.Email) ? context.Users.FirstOrDefault(x => x.Username.Equals(loginReq.Username!.ToLower())) : context.Users.FirstOrDefault(x => x.Email.Equals(loginReq.Email.ToLower()));
+            User? user = string.IsNullOrEmpty(loginReq.Email) ? await context.Users.FirstOrDefaultAsync(x => x.Username.Equals(loginReq.Username!.ToLower())) : await context.Users.FirstOrDefaultAsync(x => x.Email.Equals(loginReq.Email.ToLower()));//revisit this solution
             if (user == null || !AuthTools.VerifyPassword(loginReq.Password, user.PasswordHash!, user.Salt!, _authData))
             {
                 return BadRequest(ResAnswers.BadRequest);
@@ -41,19 +42,13 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         /// </summary>
         /// <returns>200: Result of check: <c>true</c> - email exist, <c>false</c> - email doesn't exist.</returns>
         [HttpGet("CheckEmail")]
-        public ActionResult<bool> CheckEmail(string email)
-        {
-            return Ok(IsEmailExist(email));
-        }
+        public async Task<ActionResult<bool>> CheckEmail(string email) => Ok(await IsEmailExist(email));
         /// <summary>
         /// See <see cref="IsUsernameExist"/>
         /// </summary>
         /// <returns>200: Result of check: <c>true</c> - username exist, <c>false</c> - username doesn't exist.</returns>
         [HttpGet("CheckUsername")]
-        public ActionResult<bool> CheckUsername(string username)
-        {
-            return Ok(IsUsernameExist(username));
-        }
+        public async Task<ActionResult<bool>> CheckUsername(string username) => Ok(await IsUsernameExist(username));
         /// <summary>
         /// Registrate new user at database's <b>PendingRegistration</b>, using request: <seealso cref="UserInfoReq"/>. 
         /// <para>See <seealso cref="Verify"/>.</para>
@@ -63,7 +58,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         [HttpPost("Registrate")]
         public async Task<ActionResult> Registrate([FromBody] UserInfoReq userCreation)
         {
-            if (IsEmailExist(userCreation.Email) || IsUsernameExist(userCreation.Username))
+            if (await IsEmailExist(userCreation.Email) || await IsUsernameExist(userCreation.Username))
             {
                 return BadRequest(ResAnswers.EmailUsernameExist);
             }
@@ -103,17 +98,17 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         /// Check is email exist in <see cref="User"/> table at current context.
         /// </summary>
         /// <returns>Result of check: <c>true</c> - email exist, <c>false</c> - email doesn't exist.</returns>
-        private bool IsEmailExist(string email)
+        private async Task<bool> IsEmailExist(string email)
         {
-            return context.Users.Any(u => u.Email.Equals(email.ToLower()));
+            return await context.Users.AnyAsync(u => u.Email.Equals(email.ToLower()));
         }
         /// <summary>
         /// Check is username exist in <see cref="User"/> table at current context.
         /// </summary>
         /// <returns>Result of check: <c>true</c> - username exist, <c>false</c> - username doesn't exist.</returns>
-        private bool IsUsernameExist(string username)
+        private async Task<bool> IsUsernameExist(string username)
         {
-            return context.Users.Any(u => u.Username.Equals(username.ToLower()));
+            return await context.Users.AnyAsync(u => u.Username.Equals(username.ToLower()));
         }
     }
 }

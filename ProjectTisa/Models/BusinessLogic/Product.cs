@@ -12,8 +12,9 @@ namespace ProjectTisa.Models.BusinessLogic
     {
         public Product() { }
         [SetsRequiredMembers]
-        public Product(ProductCreationReq request, EditInfo editInfo, Category category, Discount? discount)
+        public Product(ProductCreationReq request, EditInfo editInfo, Category category, Discount? discount, int id = 0)
         {
+            Id = id;
             Name = request.Name;
             PhotoPath = request.PhotoPath;
             Description = request.Description;
