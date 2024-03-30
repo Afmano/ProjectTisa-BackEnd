@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ProjectTisa.Controllers.GeneralData.Configs;
-using ProjectTisa.Controllers.GeneralData.Requests.UserReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace ProjectTisa.Controllers.UserRelatedControllers
 {
@@ -20,10 +18,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         /// </summary>
         /// <returns>200: JSON of <see cref="User"/>.</returns>
         [HttpGet("GetUser")]
-        public async Task<ActionResult<User>> GetUser()
-        {
-            return Ok(await GetCurrentUser());
-        }
+        public async Task<ActionResult<User>> GetUser() => Ok(await GetCurrentUser());
         /// <summary>
         /// Change <see cref="User"/>'s password using same salt.
         /// </summary>

@@ -17,23 +17,11 @@ namespace ProjectPop.Controllers
     public class WeatherForecastController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get([FromQuery] PaginationRequest request)
-        {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-            
-            return Ok(request.ApplyRequest(await context.WeatherForecasts.OrderBy(on => on.Id).ToListAsync()));
-        }
+        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get([FromQuery] PaginationRequest request) =>
+            Ok(request.ApplyRequest(await context.WeatherForecasts.OrderBy(on => on.Id).ToListAsync()));
         [HttpGet("{id}")]
         public async Task<ActionResult<WeatherForecast>> Get(int id)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             WeatherForecast? item = await context.WeatherForecasts.FindAsync(id);
             if (item == null)
             {
@@ -44,23 +32,17 @@ namespace ProjectPop.Controllers
         }
         [HttpPost]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Create(WeatherForecast item)
+        public async Task<ActionResult<string>> Create([FromBody] WeatherForecast item)
         {
             context.WeatherForecasts.Add(item);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, item);
-
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{item.Id}", ResAnswers.Created);
         }
         [HttpDelete("{id}")]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             WeatherForecast? item = await context.WeatherForecasts.FindAsync(id);
             if (item == null)
             {
@@ -70,26 +52,15 @@ namespace ProjectPop.Controllers
             context.WeatherForecasts.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
-
             return Ok(ResAnswers.Success);
         }
         [HttpPut]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Update(WeatherForecast item)
+        public async Task<ActionResult<string>> Update([FromBody] WeatherForecast item)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             context.Entry(item).State = EntityState.Modified;
             await context.SaveChangesAsync();
-
             return Ok(ResAnswers.Success);
-        }
-        private bool IsTableEmpty()
-        {
-            return context.WeatherForecasts == null || !context.WeatherForecasts.Any();
         }
     }
 }

@@ -19,15 +19,8 @@ namespace ProjectTisa.Controllers.BusinessControllers
     public class ProductController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive)
-        {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
-            return Ok(request.ApplyRequest(await context.Products.OrderBy(on => on.Id).ToListAsync()).Where(x => x.IsAvailable || !onlyActive));
-        }
+        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive) => 
+            Ok(request.ApplyRequest(await context.Products.OrderBy(on => on.Id).ToListAsync()).Where(x => x.IsAvailable || !onlyActive));
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
         {
@@ -63,11 +56,6 @@ namespace ProjectTisa.Controllers.BusinessControllers
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             Product? item = await context.Products.FindAsync(id);
             if (item == null)
             {
@@ -101,10 +89,6 @@ namespace ProjectTisa.Controllers.BusinessControllers
             context.Entry(toEdit).CurrentValues.SetValues(fromProduct);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
-        }
-        private bool IsTableEmpty()
-        {
-            return context.Products == null || !context.Products.Any();
         }
     }
 }

@@ -19,15 +19,8 @@ namespace ProjectTisa.Controllers.BusinessControllers
     public class DiscountController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Discount>>> Get([FromQuery] PaginationRequest request)
-        {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
-            return Ok(request.ApplyRequest(await context.Discounts.OrderBy(on => on.Id).ToListAsync()));
-        }
+        public async Task<ActionResult<IEnumerable<Discount>>> Get([FromQuery] PaginationRequest request) =>
+            Ok(request.ApplyRequest(await context.Discounts.OrderBy(on => on.Id).ToListAsync()));
         [HttpGet("{id}")]
         public async Task<ActionResult<Discount>> Get(int id)
         {
@@ -44,7 +37,6 @@ namespace ProjectTisa.Controllers.BusinessControllers
         public async Task<ActionResult<string>> Create([FromBody] DiscountCreationReq request)
         {
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
-
             Discount discount = new(request, new(User.Identity!.Name!), products);
             context.Discounts.Add(discount);
             await context.SaveChangesAsync();
@@ -55,11 +47,6 @@ namespace ProjectTisa.Controllers.BusinessControllers
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             Discount? item = await context.Discounts.FindAsync(id);
             if (item == null)
             {
@@ -87,10 +74,6 @@ namespace ProjectTisa.Controllers.BusinessControllers
             context.Entry(toEdit).CurrentValues.SetValues(fromDiscount);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
-        }
-        private bool IsTableEmpty()
-        {
-            return context.Discounts == null || !context.Discounts.Any();
         }
     }
 }

@@ -81,11 +81,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("admin", policy => policy.RequireRole(RoleType.SuperAdmin.ToString(), RoleType.Admin.ToString()));
-    options.AddPolicy("manage", policy => policy.RequireRole(RoleType.SuperAdmin.ToString(), RoleType.Admin.ToString(), RoleType.Manager.ToString()));
-});
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("admin", policy => policy.RequireRole(RoleType.SuperAdmin.ToString(), RoleType.Admin.ToString()))
+    .AddPolicy("manage", policy => policy.RequireRole(RoleType.SuperAdmin.ToString(), RoleType.Admin.ToString(), RoleType.Manager.ToString()));
 
 var app = builder.Build();
 

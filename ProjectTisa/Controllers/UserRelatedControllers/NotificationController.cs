@@ -19,40 +19,40 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
     {
         [HttpGet]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<IEnumerable<Notification>>> Get([FromQuery] PaginationRequest request)
-        {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
-            return Ok(request.ApplyRequest(await context.Notifications.OrderBy(on => on.Id).ToListAsync()));
-        }
+        public async Task<ActionResult<IEnumerable<Notification>>> Get([FromQuery] PaginationRequest request) =>
+            Ok(request.ApplyRequest(await context.Notifications.OrderBy(on => on.Id).ToListAsync()));
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Notification>> Get(int id)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             Notification? item = await context.Notifications.FindAsync(id);
             if (item == null)
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            if (!item.Users.Any(x => x.Username == User.Identity!.Name!) && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
+            if (!item.Users.Any(x => x.Username == User.Identity!.Name) && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
             {
-                return Forbid(ResAnswers.CantAccess);
+                return Forbid();
             }
 
             return Ok(item);
         }
+        [HttpGet("GetAllNotifsByCurrentUser")]
+        [Authorize]
+        public async Task<ActionResult<Notification>> GetAllNotifsByCurrentUser()
+        {
+            User? user = await context.Users.FirstOrDefaultAsync(user => user.Username == User.Identity!.Name);
+            if (user == null)
+            {
+                return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
+            return Ok(user.Notifications);
+        }
         [HttpPost]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Create(Notification item)
+        public async Task<ActionResult<string>> Create([FromBody] Notification item)
         {
             item.CreationTime = DateTime.UtcNow;
             context.Notifications.Add(item);
@@ -64,11 +64,6 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             Notification? item = await context.Notifications.FindAsync(id);
             if (item == null)
             {
@@ -82,20 +77,11 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         }
         [HttpPut]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Update(Notification item)
+        public async Task<ActionResult<string>> Update([FromBody] Notification item)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             context.Entry(item).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
-        }
-        private bool IsTableEmpty()
-        {
-            return context.Notifications == null || !context.Notifications.Any();
         }
     }
 }

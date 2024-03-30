@@ -9,6 +9,9 @@ using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
 using ProjectTisa.Models;
+using System.Linq;
+using System.Collections.Generic;
+using ProjectTisa.Models.Enums;
 
 namespace ProjectTisa.Controllers.BusinessControllers
 {
@@ -21,15 +24,9 @@ namespace ProjectTisa.Controllers.BusinessControllers
     {
         [HttpGet]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<IEnumerable<Order>>> Get([FromQuery] PaginationRequest request)
-        {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
+        public async Task<ActionResult<IEnumerable<Order>>> Get([FromQuery] PaginationRequest request, [FromQuery] OrderStatus? status) =>
+            Ok(request.ApplyRequest(await context.Orders.OrderBy(on => on.Id).ToListAsync()).Where(x => status == null || x.Status == status));
 
-            return Ok(request.ApplyRequest(await context.Orders.OrderBy(on => on.Id).ToListAsync()));
-        }
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Order>> Get(int id)
@@ -40,9 +37,9 @@ namespace ProjectTisa.Controllers.BusinessControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            if(item.User.Username != User.Identity!.Name! && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
+            if (item.User.Username != User.Identity!.Name! && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
             {
-                return Forbid(ResAnswers.CantAccess);
+                return Forbid();
             }
 
             return Ok(item);
@@ -57,8 +54,22 @@ namespace ProjectTisa.Controllers.BusinessControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
-            Order order = new(request, new(User.Identity!.Name!), user, []);//test variant, need to be changed
+            if(user.Username != User.Identity!.Name)
+            {
+                return Forbid();
+            }
+
+            List<Product> productsInOrder = context.Products.AsEnumerable().Where(p => request.ProductIdQuantities.Any(pq => pq.ProductId.Equals(p.Id))).ToList();
+            List<ProductQuantity> productQuantities = [.. request.ProductIdQuantities.Aggregate(new List<ProductQuantity>(), (list, pq) =>
+            {
+                Product? product = productsInOrder.FirstOrDefault(p => p.Id == pq.ProductId);
+                if (product != null)
+                {
+                    list.Add(new ProductQuantity() { Product = product, Quantity = pq.Quantity });
+                }
+                return list;
+            })];
+            Order order = new(request, new(User.Identity!.Name!), user, productQuantities);//test variant, need to be changed
             context.Orders.Add(order);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, order);
@@ -80,16 +91,64 @@ namespace ProjectTisa.Controllers.BusinessControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
+            IEnumerable<Product> productsInOrder = context.Products.Where(p => request.ProductIdQuantities.Any(pq => pq.ProductId.Equals(p.Id)));
+            List<ProductQuantity> productQuantities = [.. request.ProductIdQuantities.Aggregate(new List<ProductQuantity>(), (list, pq) =>
+            {
+                Product? product = productsInOrder.FirstOrDefault(p => p.Id == pq.ProductId);
+                if (product != null)
+                {
+                    list.Add(new ProductQuantity() { Product = product, Quantity = pq.Quantity });
+                }
+                return list;
+            })];
             toEdit.EditInfo.Modify(User.Identity!.Name!);
-            Order fromOrder = new(request, toEdit.EditInfo, user, [], toEdit.Id);//test variant, need to be changed
+            Order fromOrder = new(request, toEdit.EditInfo, user, productQuantities, toEdit.TotalPrice, toEdit.Id);//test variant, need to be changed
             context.Entry(toEdit).CurrentValues.SetValues(fromOrder);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }
-        private bool IsTableEmpty()
+        [HttpPatch("CompleteOrder")]
+        [Authorize(Policy = "manage")]
+        public async Task<ActionResult<string>> CompleteOrder(int id)
         {
-            return context.Orders == null || !context.Orders.Any();
+            Order? order = await context.Orders.FindAsync(id);
+            if (order == null)
+            {
+                return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
+            if (order.Status != OrderStatus.InProgress)
+            {
+                return BadRequest(ResAnswers.BadRequest);
+            }
+
+            order.Status = OrderStatus.Completed;
+            await context.SaveChangesAsync();
+            return Ok(ResAnswers.Success);
+        }
+        [HttpPatch("CancelOrder")]
+        [Authorize]
+        public async Task<ActionResult<string>> CancelOrder(int id)
+        {
+            Order? order = await context.Orders.FindAsync(id);
+            if (order == null)
+            {
+                return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
+            if (order.Status != OrderStatus.InProgress)
+            {
+                return BadRequest(ResAnswers.BadRequest);
+            }
+
+            if (order.User.Username != User.Identity!.Name && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
+            {
+                return Forbid();
+            }
+
+            order.Status = OrderStatus.Completed;
+            await context.SaveChangesAsync();
+            return Ok(ResAnswers.Success);
         }
     }
 }

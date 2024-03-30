@@ -19,15 +19,8 @@ namespace ProjectTisa.Controllers.BusinessControllers
     public class CategoryController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> Get([FromQuery] PaginationRequest request, bool haveParent)
-        {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
-            return Ok(request.ApplyRequest(await context.Categories.OrderBy(on => on.Id).ToListAsync()).Where(x => x.ParentCategory == null || haveParent));
-        }
+        public async Task<ActionResult<IEnumerable<Category>>> Get([FromQuery] PaginationRequest request, bool haveParent) =>
+            Ok(request.ApplyRequest(await context.Categories.OrderBy(on => on.Id).ToListAsync()).Where(x => x.ParentCategory == null || haveParent));
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> Get(int id)
         {
@@ -54,11 +47,6 @@ namespace ProjectTisa.Controllers.BusinessControllers
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Delete(int id)
         {
-            if (IsTableEmpty())
-            {
-                return NotFound(ResAnswers.NotFoundNullContext);
-            }
-
             Category? item = await context.Categories.FindAsync(id);
             if (item == null)
             {
@@ -80,7 +68,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
-            
+
             Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
             if (parentCategory == null)
             {
@@ -92,10 +80,6 @@ namespace ProjectTisa.Controllers.BusinessControllers
             context.Entry(toEdit).CurrentValues.SetValues(fromCategory);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
-        }
-        private bool IsTableEmpty()
-        {
-            return context.Categories == null || !context.Categories.Any();
         }
     }
 }

@@ -43,11 +43,11 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
             {
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
+
             notification.CreationTime = DateTime.UtcNow;
             notification.Users.AddRange(usersToNotificate);
             _mainDbContext.Notifications.Add(notification);
             await _mainDbContext.SaveChangesAsync();
-
             return Ok(ResAnswers.Success);
         }
         /// <summary>
@@ -64,11 +64,11 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
+
             notification.CreationTime = DateTime.UtcNow;
             notification.Users.Add(userToNotificate);
             _mainDbContext.Notifications.Add(notification);
             await _mainDbContext.SaveChangesAsync();
-
             return Ok(ResAnswers.Success);
         }
         /// <summary>
@@ -85,11 +85,11 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
+
             notification.CreationTime = DateTime.UtcNow;
             notification.Users.Add(userToNotificate);
             _mainDbContext.Notifications.Add(notification);
             await _mainDbContext.SaveChangesAsync();
-
             return Ok(ResAnswers.Success);
         }
         #endregion

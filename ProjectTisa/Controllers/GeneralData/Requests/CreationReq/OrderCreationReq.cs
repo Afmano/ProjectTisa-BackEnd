@@ -8,7 +8,13 @@ namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
     public record OrderCreationReq
     {
         public required int UserId { get; set; }
-        public required List<int> ProductIds { get; set; } = [];
+        public required List<ProductIdQuantity> ProductIdQuantities { get; set; } = [];
         public string? UpdateNote { get; set; }
+        public record ProductIdQuantity
+        {
+            public int ProductId { get; set; }
+            public uint Quantity { get; set; }
+        }
     }
+    
 }
