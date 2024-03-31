@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
@@ -16,11 +15,11 @@ namespace ProjectTisa.Controllers.BusinessControllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
+    public class CategoryController(ILogger<CategoryController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> Get([FromQuery] PaginationRequest request, bool haveParent) =>
-            Ok(request.ApplyRequest(await context.Categories.OrderBy(on => on.Id).ToListAsync()).Where(x => x.ParentCategory == null || haveParent));
+        public async Task<ActionResult<IEnumerable<Category>>> Get([FromQuery] PaginationRequest request, bool haveParent = true) =>
+            Ok(await request.ApplyRequest(context.Categories.OrderBy(on => on.Id).Where(x => x.ParentCategory == null || haveParent)));
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> Get(int id)
         {
@@ -70,11 +69,6 @@ namespace ProjectTisa.Controllers.BusinessControllers
             }
 
             Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
-            if (parentCategory == null)
-            {
-                return BadRequest(ResAnswers.NotFoundNullEntity);
-            }
-
             toEdit.EditInfo.Modify(User.Identity!.Name!);
             Category fromCategory = new(request, toEdit.EditInfo, parentCategory, toEdit.Id);
             context.Entry(toEdit).CurrentValues.SetValues(fromCategory);

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
+﻿using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;

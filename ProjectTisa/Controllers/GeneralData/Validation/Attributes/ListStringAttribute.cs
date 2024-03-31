@@ -5,6 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace ProjectTisa.Controllers.GeneralData.Validation.Attributes
 {
+    /// <summary>
+    /// Custom validation attribute to validate list of strings;
+    /// </summary>
+    /// <param name="regEx">Regular expression to validate in each string.</param>
     public class ListStringAttribute(string regEx = ValidationConst.REGEX_NUM_SYMBS) : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)

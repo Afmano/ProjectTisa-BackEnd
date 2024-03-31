@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Requests.UserReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
@@ -15,7 +14,7 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(ILogger<WeatherForecastController> logger, MainDbContext context, IOptions<RouteConfig> config) : ControllerBase
+    public class AuthController(ILogger<AuthController> logger, MainDbContext context, IOptions<RouteConfig> config) : ControllerBase
     {
         private readonly AuthData _authData = config.Value.AuthData;
         /// <summary>

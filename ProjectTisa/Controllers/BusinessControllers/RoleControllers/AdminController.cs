@@ -14,6 +14,12 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
     [Authorize(Policy = "admin")]
     public class AdminController(MainDbContext context) : ControllerBase
     {
+        /// <summary>
+        /// Set <see cref="RoleType"/> to <see cref="User"/>. Can't interact with <c>Admin</c>+ roles.
+        /// </summary>
+        /// <param name="userId">Id of user to set role.</param>
+        /// <param name="role">Role to set.</param>
+        /// <returns>200: message.</returns>
         [HttpPatch("{userId}")]
         public async Task<ActionResult<string>> SetRoleToUser(int userId, [FromBody] RoleType role)
         {

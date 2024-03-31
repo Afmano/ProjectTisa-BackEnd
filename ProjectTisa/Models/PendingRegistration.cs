@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using ProjectTisa.Controllers.GeneralData.Configs;
-using ProjectTisa.Libs;
 using ProjectTisa.Controllers.GeneralData.Requests.UserReq;
 
 namespace ProjectTisa.Models

@@ -47,8 +47,9 @@ builder.Services.AddSwaggerGen(setup =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<MainDbContext>(options => options.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddMvc().AddJsonOptions(o => { 
-    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; 
+builder.Services.AddMvc().AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 builder.Services.AddLogging(conf =>
 {

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
@@ -11,16 +10,16 @@ using ProjectTisa.Models;
 namespace ProjectTisa.Controllers.UserRelatedControllers
 {
     /// <summary>
-    /// Standart CRUD controller for <see cref="Notification"/> model. Mostly for testing purposes. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.
+    /// Standart CRUD controller for <see cref="Notification"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class NotificationController(ILogger<WeatherForecastController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
+    public class NotificationController(ILogger<NotificationController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
     {
         [HttpGet]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<IEnumerable<Notification>>> Get([FromQuery] PaginationRequest request) =>
-            Ok(request.ApplyRequest(await context.Notifications.OrderBy(on => on.Id).ToListAsync()));
+            Ok(await request.ApplyRequest(context.Notifications.OrderBy(on => on.Id)));
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Notification>> Get(int id)
@@ -40,16 +39,8 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         }
         [HttpGet("GetAllNotifsByCurrentUser")]
         [Authorize]
-        public async Task<ActionResult<Notification>> GetAllNotifsByCurrentUser()
-        {
-            User? user = await context.Users.FirstOrDefaultAsync(user => user.Username == User.Identity!.Name);
-            if (user == null)
-            {
-                return NotFound(ResAnswers.NotFoundNullEntity);
-            }
-
-            return Ok(user.Notifications);
-        }
+        public async Task<ActionResult<Notification>> GetAllNotifsByCurrentUser() =>
+            Ok((await UserUtils.GetUserFromContext(HttpContext, context)).Notifications);
         [HttpPost]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Create([FromBody] Notification item)

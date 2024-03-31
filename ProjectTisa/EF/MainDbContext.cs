@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectPop.Models;
 using ProjectTisa.Models;
 using ProjectTisa.Models.BusinessLogic;
 
-namespace ProjectPop.EF
+namespace ProjectTisa.EF
 {
     /// <summary>
     /// Main database context used in API.
@@ -11,7 +10,6 @@ namespace ProjectPop.EF
     /// <param name="options">Context options provided by app builder.</param>
     public class MainDbContext(DbContextOptions<MainDbContext> options) : DbContext(options)
     {
-        public DbSet<WeatherForecast> WeatherForecasts { get; set; }
         public DbSet<PendingRegistration> PendingRegistrations { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Notification> Notifications { get; set; }

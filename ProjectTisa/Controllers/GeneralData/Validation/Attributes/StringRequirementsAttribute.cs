@@ -4,6 +4,9 @@ using ProjectTisa.Controllers.GeneralData.Validation.Enums;
 
 namespace ProjectTisa.Controllers.GeneralData.Validation.Attributes
 {
+    /// <summary>
+    /// Custom validation attribute to validate string. Implement validations: <see cref="RequiredAttribute"/>, <see cref="StringLengthAttribute"/>, <see cref="MinLengthAttribute"/> and optional <see cref="RegularExpressionAttribute"/>.
+    /// </summary>
     public class StringRequirementsAttribute(StringMaxLengthType stringType = StringMaxLengthType.None, string regularExpression = ValidationConst.REGEX_NUM_SYMBS, int minStrLength = ValidationConst.MIN_STR_LENGTH) : ValidationAttribute
     {
         private readonly List<ValidationAttribute?> _attributes = [

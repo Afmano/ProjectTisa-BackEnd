@@ -1,4 +1,5 @@
-﻿using ProjectTisa.Controllers.GeneralData.Consts;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectTisa.Controllers.GeneralData.Consts;
 
 namespace ProjectTisa.Controllers.GeneralData.Requests
 {
@@ -20,9 +21,9 @@ namespace ProjectTisa.Controllers.GeneralData.Requests
                 _pageSize = (value > ValidationConst.MAX_PAGE_SIZE) ? ValidationConst.MAX_PAGE_SIZE : value;
             }
         }
-        public List<T> ApplyRequest<T>(List<T> list)
+        public async Task<List<T>> ApplyRequest<T>(IQueryable<T> collection)
         {
-            return list.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
+            return await collection.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToListAsync();
         }
     }
 }

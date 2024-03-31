@@ -2,15 +2,12 @@
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
 using ProjectTisa.Models;
-using System.Linq;
-using System.Collections.Generic;
 using ProjectTisa.Models.Enums;
 
 namespace ProjectTisa.Controllers.BusinessControllers
@@ -20,12 +17,12 @@ namespace ProjectTisa.Controllers.BusinessControllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class OrderController(ILogger<WeatherForecastController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
+    public class OrderController(ILogger<OrderController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
     {
         [HttpGet]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<IEnumerable<Order>>> Get([FromQuery] PaginationRequest request, [FromQuery] OrderStatus? status) =>
-            Ok(request.ApplyRequest(await context.Orders.OrderBy(on => on.Id).ToListAsync()).Where(x => status == null || x.Status == status));
+            Ok(await request.ApplyRequest(context.Orders.OrderBy(on => on.Id).Where(x => status == null || x.Status == status)));
 
         [HttpGet("{id}")]
         [Authorize]

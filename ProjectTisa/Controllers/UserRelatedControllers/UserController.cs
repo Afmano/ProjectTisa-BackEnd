@@ -3,11 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Validation.Attributes;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectTisa.Controllers.UserRelatedControllers
 {
+    /// <summary>
+    /// Controller to interact with <see cref="User"/>. <b>Required <see cref="AuthorizeAttribute"/> authorization</b>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="config"></param>
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -25,16 +32,20 @@ namespace ProjectTisa.Controllers.UserRelatedControllers
         /// <param name="password">Password in string format.</param>
         /// <returns>200: message.</returns>
         [HttpPost("ChangePassword")]
-        [Authorize]
-        public async Task<ActionResult<string>> ChangePassword([FromBody] string password)
+        public async Task<ActionResult<string>> ChangePassword([StringRequirements][FromBody] string password)
         {
             User user = await GetCurrentUser();
             user.PasswordHash = AuthTools.HashPasword(password, user.Salt!, config.Value.AuthData);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }
+        /// <summary>
+        /// Currently in development.
+        /// </summary>
+        /// <param name="email">New email to change.</param>
+        /// <returns>200: message.</returns>
         [HttpPost("ChangeEmail")]
-        public ActionResult ChangeEmail([FromBody] string email)
+        public ActionResult ChangeEmail([EmailAddress][StringRequirements][FromBody] string email)
         {
             throw new NotImplementedException();//add later
         }

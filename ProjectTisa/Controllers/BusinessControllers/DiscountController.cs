@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectPop.Controllers;
 using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
@@ -16,11 +15,11 @@ namespace ProjectTisa.Controllers.BusinessControllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class DiscountController(ILogger<WeatherForecastController> logger, MainDbContext context) : ControllerBase
+    public class DiscountController(ILogger<DiscountController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Discount>>> Get([FromQuery] PaginationRequest request) =>
-            Ok(request.ApplyRequest(await context.Discounts.OrderBy(on => on.Id).ToListAsync()));
+            Ok(await request.ApplyRequest(context.Discounts.OrderBy(on => on.Id)));
         [HttpGet("{id}")]
         public async Task<ActionResult<Discount>> Get(int id)
         {

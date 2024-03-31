@@ -2,6 +2,9 @@
 
 namespace ProjectTisa.Controllers.GeneralData.Validation.Enums
 {
+    /// <summary>
+    /// String type for max length in <see cref="Attributes.StringRequirementsAttribute"/>.
+    /// </summary>
     public enum StringMaxLengthType
     {
         None = ValidationConst.MAX_STR_LENGTH,

@@ -32,12 +32,18 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <summary>
         /// Send <see cref="Notification"/> for users by role.
         /// </summary>
+        /// <param name="notificationId">Id of notification to send.</param>
         /// <param name="userRole">Role of users for notificate.</param>
-        /// <param name="notification">Notification to send.</param>
         /// <returns>200: message.</returns>
         [HttpPost("SendNotificationByRole")]
-        public async Task<ActionResult<string>> SendNotificationByRole(RoleType userRole, [FromBody] Notification notification)
+        public async Task<ActionResult<string>> SendNotificationByRole(int notificationId, RoleType userRole)
         {
+            Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
+            if(notification == null)
+            {
+                return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
             List<User> usersToNotificate = [.. _mainDbContext.Users.Where(user => user.Role == userRole)];
             if (usersToNotificate.Count == 0)
             {
@@ -53,12 +59,18 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <summary>
         /// Send <see cref="Notification"/> for user by username.
         /// </summary>
+        /// <param name="notificationId">Id of notification to send.</param>
         /// <param name="username">Username of user for notificate.</param>
-        /// <param name="notification">Notification to send.</param>
         /// <returns>200: message.</returns>
         [HttpPost("SendNotificationByUsername")]
-        public async Task<ActionResult<string>> SendNotificationByUsername(string username, [FromBody] Notification notification)
+        public async Task<ActionResult<string>> SendNotificationByUsername(int notificationId, string username)
         {
+            Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
+            if (notification == null)
+            {
+                return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
             User userToNotificate = _mainDbContext.Users.First(user => user.Username == username);
             if (userToNotificate == null)
             {
@@ -74,12 +86,18 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <summary>
         /// Send <see cref="Notification"/> for user by email.
         /// </summary>
+        /// <param name="notificationId">Id of notification to send.</param>
         /// <param name="email">Email of user for notificate.</param>
-        /// <param name="notification">Notification to send.</param>
         /// <returns>200: message.</returns>
         [HttpPost("SendNotificationByEmail")]
-        public async Task<ActionResult<string>> SendNotificationByEmail(string email, [FromBody] Notification notification)
+        public async Task<ActionResult<string>> SendNotificationByEmail(int notificationId, string email)
         {
+            Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
+            if (notification == null)
+            {
+                return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
             User userToNotificate = _mainDbContext.Users.First(user => user.Email == email);
             if (userToNotificate == null)
             {

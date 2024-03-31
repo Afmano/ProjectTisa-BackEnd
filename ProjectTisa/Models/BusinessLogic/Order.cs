@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace ProjectTisa.Models.BusinessLogic
 {
     /// <summary>
-    /// Model for order by <see cref="User"/>.
+    /// Model for order by <see cref="Models.User"/>.
     /// </summary>
     public class Order
     {
