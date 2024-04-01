@@ -7,7 +7,7 @@ using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
 
-namespace ProjectTisa.Controllers.UserRelatedControllers
+namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
 {
     /// <summary>
     /// Standart CRUD controller for <see cref="Notification"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.

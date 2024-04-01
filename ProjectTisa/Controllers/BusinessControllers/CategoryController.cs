@@ -71,6 +71,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
             toEdit.EditInfo.Modify(User.Identity!.Name!);
             Category fromCategory = new(request, toEdit.EditInfo, parentCategory, toEdit.Id);
+            toEdit.ParentCategory = parentCategory;
             context.Entry(toEdit).CurrentValues.SetValues(fromCategory);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);

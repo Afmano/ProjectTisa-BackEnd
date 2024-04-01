@@ -12,8 +12,8 @@ namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
         public string? UpdateNote { get; set; }
         public record ProductIdQuantity
         {
-            public int ProductId { get; set; }
-            public uint Quantity { get; set; }
+            public required int ProductId { get; set; }
+            public required uint Quantity { get; set; }
         }
     }
     

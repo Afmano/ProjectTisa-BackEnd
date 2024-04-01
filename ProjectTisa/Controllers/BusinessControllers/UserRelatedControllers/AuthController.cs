@@ -7,7 +7,7 @@ using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
 
-namespace ProjectTisa.Controllers.UserRelatedControllers
+namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
 {
     /// <summary>
     /// Controller for auth at server. Using Bearer JWT Token as authorize method.

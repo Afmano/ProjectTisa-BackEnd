@@ -25,4 +25,5 @@ namespace ProjectTisa.EF
             modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
         }
     }
+
 }

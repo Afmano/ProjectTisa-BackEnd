@@ -84,6 +84,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
 
             toEdit.EditInfo.Modify(User.Identity!.Name!);
             Product fromProduct = new(request, toEdit.EditInfo, category, discount, toEdit.Id);
+            toEdit.Category = category;
             context.Entry(toEdit).CurrentValues.SetValues(fromProduct);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);

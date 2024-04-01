@@ -21,7 +21,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
     {
         [HttpGet]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<IEnumerable<Order>>> Get([FromQuery] PaginationRequest request, [FromQuery] OrderStatus? status) =>
+        public async Task<ActionResult<IEnumerable<Order>>> Get([FromQuery] PaginationRequest request, [FromQuery] OrderStatus? status = null) =>
             Ok(await request.ApplyRequest(context.Orders.OrderBy(on => on.Id).Where(x => status == null || x.Status == status)));
 
         [HttpGet("{id}")]
@@ -56,6 +56,11 @@ namespace ProjectTisa.Controllers.BusinessControllers
                 return Forbid();
             }
 
+            if(request.ProductIdQuantities.Count == 0)
+            {
+                return BadRequest(ResAnswers.BadRequest);
+            }
+
             List<Product> productsInOrder = context.Products.AsEnumerable().Where(p => request.ProductIdQuantities.Any(pq => pq.ProductId.Equals(p.Id))).ToList();
             List<ProductQuantity> productQuantities = [.. request.ProductIdQuantities.Aggregate(new List<ProductQuantity>(), (list, pq) =>
             {
@@ -88,7 +93,12 @@ namespace ProjectTisa.Controllers.BusinessControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            IEnumerable<Product> productsInOrder = context.Products.Where(p => request.ProductIdQuantities.Any(pq => pq.ProductId.Equals(p.Id)));
+            if (request.ProductIdQuantities.Count == 0 || toEdit.User.Id != request.UserId)
+            {
+                return BadRequest(ResAnswers.BadRequest);
+            }
+
+            IEnumerable<Product> productsInOrder = context.Products.AsEnumerable().Where(p => request.ProductIdQuantities.Any(pq => pq.ProductId.Equals(p.Id)));
             List<ProductQuantity> productQuantities = [.. request.ProductIdQuantities.Aggregate(new List<ProductQuantity>(), (list, pq) =>
             {
                 Product? product = productsInOrder.FirstOrDefault(p => p.Id == pq.ProductId);
@@ -100,6 +110,8 @@ namespace ProjectTisa.Controllers.BusinessControllers
             })];
             toEdit.EditInfo.Modify(User.Identity!.Name!);
             Order fromOrder = new(request, toEdit.EditInfo, user, productQuantities, toEdit.TotalPrice, toEdit.Id);//test variant, need to be changed
+            toEdit.ProductQuantities = productQuantities;
+            toEdit.User = user;
             context.Entry(toEdit).CurrentValues.SetValues(fromOrder);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
@@ -143,7 +155,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
                 return Forbid();
             }
 
-            order.Status = OrderStatus.Completed;
+            order.Status = OrderStatus.Cancelled;
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }

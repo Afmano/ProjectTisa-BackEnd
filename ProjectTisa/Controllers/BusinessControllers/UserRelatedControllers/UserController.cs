@@ -8,7 +8,7 @@ using ProjectTisa.Libs;
 using ProjectTisa.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ProjectTisa.Controllers.UserRelatedControllers
+namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
 {
     /// <summary>
     /// Controller to interact with <see cref="User"/>. <b>Required <see cref="AuthorizeAttribute"/> authorization</b>.

@@ -70,6 +70,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
             toEdit.EditInfo.Modify(User.Identity!.Name!);
             Discount fromDiscount = new(request, toEdit.EditInfo, products, toEdit.Id);
+            toEdit.Products = products;
             context.Entry(toEdit).CurrentValues.SetValues(fromDiscount);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);

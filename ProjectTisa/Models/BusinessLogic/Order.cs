@@ -26,11 +26,11 @@ namespace ProjectTisa.Models.BusinessLogic
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; private init; }
-        public virtual required User User { get; set; }
+        public required virtual User User { get; set; }
         public string? UpdateNote { get; set; }
         public required OrderStatus Status { get; set; }
         public required decimal TotalPrice { get; set; }
         public required virtual EditInfo EditInfo { get; set; }
-        public virtual List<ProductQuantity> ProductQuantities { get; set; } = [];
+        public required virtual List<ProductQuantity> ProductQuantities { get; set; } = [];
     }
 }
