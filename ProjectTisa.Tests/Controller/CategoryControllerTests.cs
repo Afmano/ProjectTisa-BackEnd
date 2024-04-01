@@ -124,13 +124,13 @@ namespace ProjectTisa.Tests.Controller
             var entity = dbContext.Categories.Add(category).Entity;
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(entity.Id);
-            var okObjectResultResult = result.Result as OkObjectResult;
-            var resultCategory = okObjectResultResult?.Value as Category;
+            var okObjectResult = result.Result as OkObjectResult;
+            var resultCategory = okObjectResult?.Value as Category;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResultResult!.Value.Should().NotBeNull();
-            okObjectResultResult!.Value.Should().BeOfType(typeof(Category));
+            okObjectResult!.Value.Should().NotBeNull();
+            okObjectResult!.Value.Should().BeOfType(typeof(Category));
             resultCategory!.Name.Should().Be(category.Name);
         }
         [Fact]
@@ -144,13 +144,13 @@ namespace ProjectTisa.Tests.Controller
             var entity = dbContext.Categories.Add(category).Entity;
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(entity.Id);
-            var okObjectResultResult = result.Result as OkObjectResult;
-            var resultMessage = okObjectResultResult?.Value as string;
+            var okObjectResult = result.Result as OkObjectResult;
+            var resultMessage = okObjectResult?.Value as string;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResultResult!.Value.Should().NotBeNull();
-            okObjectResultResult!.Value.Should().BeOfType(typeof(string));
+            okObjectResult!.Value.Should().NotBeNull();
+            okObjectResult!.Value.Should().BeOfType(typeof(string));
             resultMessage.Should().Be(ResAnswers.Success);
         }
         [Fact]
@@ -172,13 +172,13 @@ namespace ProjectTisa.Tests.Controller
             var entity = dbContext.Categories.Add(category).Entity;
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(entity.Id, new() { Name = "", PhotoPath = "" });//validation attributes ignored here
-            var okObjectResultResult = result.Result as OkObjectResult;
-            var resultMessage = okObjectResultResult?.Value as string;
+            var okObjectResult = result.Result as OkObjectResult;
+            var resultMessage = okObjectResult?.Value as string;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResultResult!.Value.Should().NotBeNull();
-            okObjectResultResult!.Value.Should().BeOfType(typeof(string));
+            okObjectResult!.Value.Should().NotBeNull();
+            okObjectResult!.Value.Should().BeOfType(typeof(string));
             resultMessage.Should().Be(ResAnswers.Success);
         }
         [Fact]
@@ -197,13 +197,13 @@ namespace ProjectTisa.Tests.Controller
             CategoryController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             // Act
             var result = await controller.Create(new() { Name = "", PhotoPath = "" });//validation attributes ignored here
-            var okObjectResultResult = result.Result as CreatedResult;
-            var resultMessage = okObjectResultResult?.Value as string;
+            var createdResult = result.Result as CreatedResult;
+            var resultMessage = createdResult?.Value as string;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(CreatedResult));
-            okObjectResultResult!.Value.Should().NotBeNull();
-            okObjectResultResult!.Value.Should().BeOfType(typeof(string));
+            createdResult!.Value.Should().NotBeNull();
+            createdResult!.Value.Should().BeOfType(typeof(string));
             resultMessage.Should().Be(ResAnswers.Created);
         }
         [Fact]
@@ -227,13 +227,13 @@ namespace ProjectTisa.Tests.Controller
             var entity = dbContext.Categories.Add(category).Entity;
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(entity.Id, new() { Name = "", PhotoPath = "", ParentCategoryId= parentEntity.Id });//validation attributes ignored here
-            var okObjectResultResult = result.Result as OkObjectResult;
-            var resultMessage = okObjectResultResult?.Value as string;
+            var okObjectResult = result.Result as OkObjectResult;
+            var resultMessage = okObjectResult?.Value as string;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResultResult!.Value.Should().NotBeNull();
-            okObjectResultResult!.Value.Should().BeOfType(typeof(string));
+            okObjectResult!.Value.Should().NotBeNull();
+            okObjectResult!.Value.Should().BeOfType(typeof(string));
             resultMessage.Should().Be(ResAnswers.Success);
         }
         [Fact]
@@ -254,13 +254,13 @@ namespace ProjectTisa.Tests.Controller
             // Act
             var addedParent = dbContext.Categories.Add(categoryParent).Entity;
             var result = await controller.Create(new() { Name = "", PhotoPath = "", ParentCategoryId = addedParent.Id });//validation attributes ignored here
-            var okObjectResultResult = result.Result as CreatedResult;
-            var resultMessage = okObjectResultResult?.Value as string;
+            var createdResult = result.Result as CreatedResult;
+            var resultMessage = createdResult?.Value as string;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(CreatedResult));
-            okObjectResultResult!.Value.Should().NotBeNull();
-            okObjectResultResult!.Value.Should().BeOfType(typeof(string));
+            createdResult!.Value.Should().NotBeNull();
+            createdResult!.Value.Should().BeOfType(typeof(string));
             resultMessage.Should().Be(ResAnswers.Created);
         }
         [Fact]

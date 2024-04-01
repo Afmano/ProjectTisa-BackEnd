@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
@@ -18,7 +17,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
     public class ProductController(ILogger<ProductController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive) => 
+        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive = true) => 
             Ok(await request.ApplyRequest(context.Products.OrderBy(on => on.Id).Where(x => x.IsAvailable || !onlyActive)));
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
@@ -32,8 +31,8 @@ namespace ProjectTisa.Controllers.BusinessControllers
             return Ok(item);
         }
         [HttpGet("GetAllByCategory")]
-        public async Task<ActionResult<List<Product>>> GetAllByCategory(int? categoryid, string? categoryName) =>
-            Ok(await Task.Run(() => context.Products.Where(product => product.Category.Id == categoryid || product.Category.Name == categoryName).ToList()));
+        public async Task<ActionResult<List<Product>>> GetAllByCategory([FromQuery] int? categoryId = null, [FromQuery] string? categoryName = null) =>
+            Ok(await Task.Run(() => context.Products.Where(product => product.Category.Id == categoryId || product.Category.Name == categoryName).ToList()));
         [HttpPost]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<string>> Create([FromBody] ProductCreationReq request)
@@ -42,7 +41,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             Category? category = await context.Categories.FindAsync(request.CategoryId);
             if (category == null)
             {
-                return BadRequest(ResAnswers.NotFoundNullEntity);
+                return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
             Product product = new(request, new(User.Identity!.Name!), category, discount);
@@ -80,7 +79,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
             Category? category = await context.Categories.FindAsync(request.CategoryId);
             if (category == null)
             {
-                return BadRequest(ResAnswers.NotFoundNullEntity);
+                return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
             toEdit.EditInfo.Modify(User.Identity!.Name!);
