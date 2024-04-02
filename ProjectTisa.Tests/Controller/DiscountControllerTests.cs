@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using ProjectTisa.Controllers.BusinessControllers;
+using ProjectTisa.Controllers.BusinessControllers.CrudControllers;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.EF;

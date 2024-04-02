@@ -7,7 +7,7 @@ using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
 
-namespace ProjectTisa.Controllers.BusinessControllers
+namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 {
     /// <summary>
     /// CRUD controller for <see cref="Product"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.
@@ -17,7 +17,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
     public class ProductController(ILogger<ProductController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive = true) => 
+        public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive = true) =>
             Ok(await request.ApplyRequest(context.Products.OrderBy(on => on.Id).Where(x => x.IsAvailable || !onlyActive)));
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
@@ -70,7 +70,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
         public async Task<ActionResult<string>> Update(int id, [FromBody] ProductCreationReq request)
         {
             Product? toEdit = await context.Products.FindAsync(id);
-            if(toEdit == null) 
+            if (toEdit == null)
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
@@ -84,6 +84,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
 
             toEdit.EditInfo.Modify(User.Identity!.Name!);
             Product fromProduct = new(request, toEdit.EditInfo, category, discount, toEdit.Id);
+            toEdit.Discount = discount;
             toEdit.Category = category;
             context.Entry(toEdit).CurrentValues.SetValues(fromProduct);
             await context.SaveChangesAsync();

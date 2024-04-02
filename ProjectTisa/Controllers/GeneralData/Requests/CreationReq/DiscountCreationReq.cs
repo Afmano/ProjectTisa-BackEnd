@@ -1,4 +1,4 @@
-﻿using ProjectTisa.Controllers.BusinessControllers;
+﻿using ProjectTisa.Controllers.BusinessControllers.CrudControllers;
 using ProjectTisa.Controllers.GeneralData.Validation.Attributes;
 using System.ComponentModel.DataAnnotations;
 

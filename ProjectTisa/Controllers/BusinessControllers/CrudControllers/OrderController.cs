@@ -10,7 +10,7 @@ using ProjectTisa.Models.BusinessLogic;
 using ProjectTisa.Models;
 using ProjectTisa.Models.Enums;
 
-namespace ProjectTisa.Controllers.BusinessControllers
+namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 {
     /// <summary>
     /// CRU controller for <see cref="Order"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> or specified <c><see cref="User"/></c> claim on some actions.
@@ -51,12 +51,12 @@ namespace ProjectTisa.Controllers.BusinessControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            if(user.Username != User.Identity!.Name)
+            if (user.Username != User.Identity!.Name)
             {
                 return Forbid();
             }
 
-            if(request.ProductIdQuantities.Count == 0)
+            if (request.ProductIdQuantities.Count == 0)
             {
                 return BadRequest(ResAnswers.BadRequest);
             }
@@ -109,7 +109,7 @@ namespace ProjectTisa.Controllers.BusinessControllers
                 return list;
             })];
             toEdit.EditInfo.Modify(User.Identity!.Name!);
-            Order fromOrder = new(request, toEdit.EditInfo, user, productQuantities, toEdit.TotalPrice, toEdit.Id);//test variant, need to be changed
+            Order fromOrder = new(request, toEdit.EditInfo, user, productQuantities, toEdit.TotalPrice, toEdit.Id);
             toEdit.ProductQuantities = productQuantities;
             toEdit.User = user;
             context.Entry(toEdit).CurrentValues.SetValues(fromOrder);

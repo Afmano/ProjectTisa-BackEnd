@@ -25,6 +25,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
         /// </summary>
         /// <returns>200: JSON of <see cref="User"/>.</returns>
         [HttpGet("GetUser")]
+        [ProducesResponseType(200, Type = typeof(User))]
         public async Task<ActionResult<User>> GetUser() => Ok(await GetCurrentUser());
         /// <summary>
         /// Change <see cref="User"/>'s password using same salt.

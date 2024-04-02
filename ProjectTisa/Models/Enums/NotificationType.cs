@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using ProjectTisa.Models.BusinessLogic;
 
 namespace ProjectTisa.Models.Enums
 {

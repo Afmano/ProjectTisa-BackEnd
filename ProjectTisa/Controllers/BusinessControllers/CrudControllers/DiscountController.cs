@@ -8,7 +8,7 @@ using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
 
-namespace ProjectTisa.Controllers.BusinessControllers
+namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 {
     /// <summary>
     /// CRUD controller for <see cref="Discount"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.

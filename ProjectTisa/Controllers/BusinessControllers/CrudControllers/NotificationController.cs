@@ -1,13 +1,14 @@
+using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ProjectTisa.Controllers.GeneralData.Requests;
+using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
-using ProjectTisa.Models;
+using ProjectTisa.Models.BusinessLogic;
 
-namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
+namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 {
     /// <summary>
     /// Standart CRUD controller for <see cref="Notification"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.
@@ -39,17 +40,17 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
         }
         [HttpGet("GetAllNotifsByCurrentUser")]
         [Authorize]
-        public async Task<ActionResult<Notification>> GetAllNotifsByCurrentUser() =>
-            Ok((await UserUtils.GetUserFromContext(HttpContext, context)).Notifications);
+        public async Task<ActionResult<Notification>> GetAllNotifsByCurrentUser([FromQuery] PaginationRequest request) =>
+            Ok(await request.ApplyRequest((await UserUtils.GetUserFromContext(HttpContext, context)).Notifications));
         [HttpPost]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Create([FromBody] Notification item)
+        public async Task<ActionResult<string>> Create([FromBody] NotificationCreationReq request)
         {
-            item.CreationTime = DateTime.UtcNow;
-            context.Notifications.Add(item);
+            Notification notification = new(request, new(User.Identity!.Name!));
+            context.Notifications.Add(notification);
             await context.SaveChangesAsync();
-            LogMessageCreator.CreatedMessage(logger, item);
-            return Created($"{HttpContext.Request.GetDisplayUrl()}/{item.Id}", ResAnswers.Created);
+            LogMessageCreator.CreatedMessage(logger, notification);
+            return Created($"{HttpContext.Request.GetDisplayUrl()}/{notification.Id}", ResAnswers.Created);
         }
         [HttpDelete("{id}")]
         [Authorize(Policy = "manage")]
@@ -68,9 +69,17 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
         }
         [HttpPut]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Update([FromBody] Notification item)
+        public async Task<ActionResult<string>> Update(int id, [FromBody] NotificationCreationReq request)
         {
-            context.Entry(item).State = EntityState.Modified;
+            Notification? toEdit = await context.Notifications.FindAsync(id);
+            if (toEdit == null)
+            {
+                return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
+            toEdit.EditInfo.Modify(User.Identity!.Name!);
+            Notification fromNotif = new(request, toEdit.EditInfo, toEdit.Id);
+            context.Entry(toEdit).CurrentValues.SetValues(fromNotif);
             await context.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }

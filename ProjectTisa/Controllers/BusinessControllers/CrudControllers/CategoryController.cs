@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
 
-namespace ProjectTisa.Controllers.BusinessControllers
+namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 {
     /// <summary>
     /// CRUD controller for <see cref="Category"/> model. <b>Required <see cref="AuthorizeAttribute"/> policy</b> <c>manage</c> on some actions.

@@ -25,5 +25,9 @@ namespace ProjectTisa.Controllers.GeneralData.Requests
         {
             return await collection.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToListAsync();
         }
+        public async Task<List<T>> ApplyRequest<T>(IEnumerable<T> collection)
+        {
+            return await Task.Run(() => collection.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList());
+        }
     }
 }

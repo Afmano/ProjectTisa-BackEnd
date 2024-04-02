@@ -1,8 +1,8 @@
 ﻿using ProjectTisa.Controllers.GeneralData.Validation.Attributes;
 using ProjectTisa.Controllers.GeneralData.Validation.Enums;
 using System.ComponentModel.DataAnnotations;
-using ProjectTisa.Controllers.BusinessControllers;
 using ProjectTisa.Controllers.GeneralData.Consts;
+using ProjectTisa.Controllers.BusinessControllers.CrudControllers;
 
 namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
 {

@@ -5,6 +5,7 @@ using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Consts;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Models;
+using ProjectTisa.Models.BusinessLogic;
 using ProjectTisa.Models.Enums;
 using System.Net.Http.Headers;
 
@@ -50,9 +51,8 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
                 return NotFound(ResAnswers.NotFoundNullContext);
             }
 
-            notification.CreationTime = DateTime.UtcNow;
+            notification.EditInfo.Modify(User.Identity!.Name!);
             notification.Users.AddRange(usersToNotificate);
-            _mainDbContext.Notifications.Add(notification);
             await _mainDbContext.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }
@@ -77,9 +77,8 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            notification.CreationTime = DateTime.UtcNow;
+            notification.EditInfo.Modify(User.Identity!.Name!);
             notification.Users.Add(userToNotificate);
-            _mainDbContext.Notifications.Add(notification);
             await _mainDbContext.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }
@@ -104,9 +103,8 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            notification.CreationTime = DateTime.UtcNow;
+            notification.EditInfo.Modify(User.Identity!.Name!);
             notification.Users.Add(userToNotificate);
-            _mainDbContext.Notifications.Add(notification);
             await _mainDbContext.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }
