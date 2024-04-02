@@ -17,7 +17,7 @@ namespace ProjectTisa.Tests.Controller
     public class ProductControllerTest
     {
         private readonly ILogger<ProductController> _logger = new Mock<ILogger<ProductController>>().Object;
-        #region empty
+        #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
@@ -127,7 +127,7 @@ namespace ProjectTisa.Tests.Controller
             resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         #endregion
-        #region filled
+        #region Filled
         #region OkResult
         [Fact]
         public async void GetAll_ReturnOk()
@@ -139,7 +139,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
-            dbContext.Products.Add(product);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest);
             var okObjectResult = result.Result as OkObjectResult;
@@ -160,7 +160,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
-            dbContext.Products.Add(product);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(product.Id);
             var okObjectResultResult = result.Result as OkObjectResult;
@@ -181,7 +181,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
-            dbContext.Products.Add(product);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.GetAllByCategory(categoryId: product.Category.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -202,7 +202,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
-            dbContext.Products.Add(product);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.GetAllByCategory(categoryName: product.Category.Name);
             var okObjectResult = result.Result as OkObjectResult;
@@ -223,7 +223,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
-            dbContext.Products.Add(product);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(product.Id);
             var okObjectResultResult = result.Result as OkObjectResult;
@@ -256,8 +256,8 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = categoryOld, IsAvailable = true, Price = 1 };
             string newEntityName = "testNew";
             // Act
-            dbContext.Products.Add(product);
-            dbContext.Categories.Add(categoryNew);
+            dbContext.Add(product);
+            dbContext.Add(categoryNew);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(product.Id, new() { Name = newEntityName, PhotoPath = "", CategoryId = categoryNew.Id, IsAvailable = true, Price = 1 });//validation attributes ignored here
             var okObjectResultResult = result.Result as OkObjectResult;
@@ -288,7 +288,7 @@ namespace ProjectTisa.Tests.Controller
             ProductController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Categories.Add(category);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
             var result = await controller.Create(new() { Name = "", PhotoPath = "", CategoryId = category.Id, IsAvailable = true, Price = 1 });//validation attributes ignored here
             var okObjectResultResult = result.Result as CreatedResult;
@@ -320,7 +320,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
-            dbContext.Products.Add(product);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(product.Id, new() { Name = "", PhotoPath = "", CategoryId = 0, IsAvailable = true, Price = 1 });//validation attributes ignored here
             var notFoundResult = result.Result as NotFoundObjectResult;
@@ -367,7 +367,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
-            dbContext.Products.Add(product);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(idToRequest);
             var notFoundObjectResult = result.Result as NotFoundObjectResult;

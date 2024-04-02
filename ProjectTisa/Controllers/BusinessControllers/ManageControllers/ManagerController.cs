@@ -128,7 +128,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <summary>
         /// Get list of files from external storage.
         /// </summary>
-        /// <returns>200: json with files.</returns>
+        /// <returns>200: json with files data.</returns>
         [HttpGet("GetFiles")]
         public async Task<ActionResult<string>> GetFiles()
         {

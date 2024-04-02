@@ -17,7 +17,7 @@ namespace ProjectTisa.Tests.Controller
     public class DiscountControllerTests
     {
         private readonly ILogger<DiscountController> _logger = new Mock<ILogger<DiscountController>>().Object;
-        #region empty
+        #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
@@ -91,7 +91,7 @@ namespace ProjectTisa.Tests.Controller
             resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         #endregion
-        #region filled
+        #region Filled
         #region OkResult
         [Fact]
         public async void GetAll_ReturnOk()
@@ -102,7 +102,7 @@ namespace ProjectTisa.Tests.Controller
             PaginationRequest paginationRequest = new();
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
-            dbContext.Discounts.Add(discount);
+            dbContext.Add(discount);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest);
             var okObjectResult = result.Result as OkObjectResult;
@@ -122,7 +122,7 @@ namespace ProjectTisa.Tests.Controller
             DiscountController controller = new(_logger, dbContext);
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
-            dbContext.Discounts.Add(discount);
+            dbContext.Add(discount);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(discount.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -142,7 +142,7 @@ namespace ProjectTisa.Tests.Controller
             DiscountController controller = new(_logger, dbContext);
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
-            dbContext.Discounts.Add(discount);
+            dbContext.Add(discount);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(discount.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -171,7 +171,7 @@ namespace ProjectTisa.Tests.Controller
             DiscountController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
-            dbContext.Discounts.Add(discount);
+            dbContext.Add(discount);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(discount.Id, new() { Name = "", DiscountPercent= 0.1m });//validation attributes ignored here
             var okObjectResult = result.Result as OkObjectResult;
@@ -229,8 +229,8 @@ namespace ProjectTisa.Tests.Controller
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester"), Products = [productOld] };
             string newName = "testNew";
             // Act
-            dbContext.Discounts.Add(discount);
-            dbContext.Products.Add(productNew);
+            dbContext.Add(discount);
+            dbContext.Add(productNew);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(discount.Id, new() { Name = newName, DiscountPercent = 0.1m, ProductIds = [productNew.Id] });//validation attributes ignored here
             var okObjectResult = result.Result as OkObjectResult;
@@ -261,7 +261,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
-            dbContext.Products.Add(product);
+            dbContext.Add(product);
             var result = await controller.Create(new() { Name = "", DiscountPercent = 0.1m, ProductIds = [product.Id] });//validation attributes ignored here
             var createdResult = result.Result as CreatedResult;
             var resultMessage = createdResult?.Value as string;
@@ -282,7 +282,7 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = -1;
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
-            dbContext.Discounts.Add(discount);
+            dbContext.Add(discount);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(idToRequest);
             var notFoundObjectResult = result.Result as NotFoundObjectResult;

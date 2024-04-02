@@ -21,7 +21,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <param name="role">Role to set.</param>
         /// <returns>200: message.</returns>
         [HttpPatch("{userId}")]
-        public async Task<ActionResult<string>> SetRoleToUser(int userId, [FromBody] RoleType role)
+        public async Task<ActionResult<string>> SetRole(int userId, [FromBody] RoleType role)
         {
             User? user = await context.Users.FindAsync(userId);
             if (user == null)

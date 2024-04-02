@@ -20,7 +20,7 @@ namespace ProjectTisa.Tests.Controller
     {
         private readonly ILogger<NotificationController> _logger = new Mock<ILogger<NotificationController>>().Object;
         private readonly IAuthorizationService _authorizationService = new Mock<IAuthorizationService>().Object;
-        #region empty
+        #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
@@ -56,7 +56,7 @@ namespace ProjectTisa.Tests.Controller
             PaginationRequest paginationRequest = new();
             User user = new() { Email = "test", Username = "tester" };
             // Act
-            dbContext.Users.Add(user);
+            dbContext.Add(user);
             await dbContext.SaveChangesAsync();
             var result = await controller.GetAllNotifsByCurrentUser(paginationRequest);
             var okObjectResult = result.Result as OkObjectResult;
@@ -123,7 +123,7 @@ namespace ProjectTisa.Tests.Controller
             resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         #endregion
-        #region filled
+        #region Filled
         #region OkResult
         [Fact]
         public async void GetAll_ReturnOk()
@@ -134,7 +134,7 @@ namespace ProjectTisa.Tests.Controller
             PaginationRequest paginationRequest = new();
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
             // Act
-            dbContext.Notifications.Add(notification);
+            dbContext.Add(notification);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest);
             var okObjectResult = result.Result as OkObjectResult;
@@ -163,7 +163,7 @@ namespace ProjectTisa.Tests.Controller
             PaginationRequest paginationRequest = new();
             User user = new() { Email = "test", Username = "tester", Notifications = [new() { Caption = "test", Message = "test", EditInfo = new("tester") }] };
             // Act
-            dbContext.Users.Add(user);
+            dbContext.Add(user);
             await dbContext.SaveChangesAsync();
             var result = await controller.GetAllNotifsByCurrentUser(paginationRequest);
             var okObjectResult = result.Result as OkObjectResult;
@@ -194,7 +194,7 @@ namespace ProjectTisa.Tests.Controller
             User user = new() { Email = "test", Username = "tester" };
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester"), Users = [user] };
             // Act
-            dbContext.Notifications.Add(notification);
+            dbContext.Add(notification);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(notification.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -214,7 +214,7 @@ namespace ProjectTisa.Tests.Controller
             NotificationController controller = new(_logger, dbContext, _authorizationService);
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
             // Act
-            dbContext.Notifications.Add(notification);
+            dbContext.Add(notification);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(notification.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -244,7 +244,7 @@ namespace ProjectTisa.Tests.Controller
             User user = new() { Email = "test", Username = "tester" };
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester"), Users = [user] };
             // Act
-            dbContext.Notifications.Add(notification);
+            dbContext.Add(notification);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(notification.Id, new() { Caption = "", Message = "" });//validation attributes ignored here
             var okObjectResult = result.Result as OkObjectResult;
@@ -294,7 +294,7 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = -1;
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
             // Act
-            dbContext.Notifications.Add(notification);
+            dbContext.Add(notification);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(idToRequest);
             var notFoundObjectResult = result.Result as NotFoundObjectResult;
@@ -323,7 +323,7 @@ namespace ProjectTisa.Tests.Controller
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
             int idToRequest = -1;
             // Act
-            dbContext.Notifications.Add(notification);
+            dbContext.Add(notification);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(idToRequest, new() { Caption = "", Message = "" });//validation attributes ignored here
             var notFoundObjectResult = result.Result as NotFoundObjectResult;
@@ -355,7 +355,7 @@ namespace ProjectTisa.Tests.Controller
             User user = new() { Email = "test", Username = "tester" };
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester"), Users = [user] };
             // Act
-            dbContext.Notifications.Add(notification);
+            dbContext.Add(notification);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(notification.Id);
             // Assert

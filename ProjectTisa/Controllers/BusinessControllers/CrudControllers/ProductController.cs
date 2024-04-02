@@ -45,7 +45,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             }
 
             Product product = new(request, new(User.Identity!.Name!), category, discount);
-            context.Products.Add(product);
+            context.Add(product);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, product);
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{product.Id}", ResAnswers.Created);
@@ -60,7 +60,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            context.Products.Remove(item);
+            context.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
             return Ok(ResAnswers.Success);

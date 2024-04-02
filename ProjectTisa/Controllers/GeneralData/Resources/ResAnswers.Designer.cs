@@ -135,9 +135,9 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         /// <summary>
         ///   Looks up a localized string similar to User doesn&apos;t exist in database..
         /// </summary>
-        public static string UserNorFound {
+        public static string UserNotFound {
             get {
-                return ResourceManager.GetString("UserNorFound", resourceCulture);
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
         

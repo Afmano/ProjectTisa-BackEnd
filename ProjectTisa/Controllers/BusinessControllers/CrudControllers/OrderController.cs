@@ -72,7 +72,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
                 return list;
             })];
             Order order = new(request, new(User.Identity!.Name!), user, productQuantities);//test variant, need to be changed
-            context.Orders.Add(order);
+            context.Add(order);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, order);
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{order.Id}", ResAnswers.Created);

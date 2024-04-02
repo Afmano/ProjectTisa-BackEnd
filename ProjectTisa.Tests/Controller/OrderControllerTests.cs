@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 using ProjectTisa.Controllers.BusinessControllers.CrudControllers;
@@ -22,7 +21,7 @@ namespace ProjectTisa.Tests.Controller
     {
         private readonly ILogger<OrderController> _logger = new Mock<ILogger<OrderController>>().Object;
         private readonly IAuthorizationService _authorizationService = new Mock<IAuthorizationService>().Object;
-        #region empty
+        #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
@@ -70,8 +69,8 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             int idToRequest = 1;
             // Act
-            dbContext.Products.Add(product);
-            dbContext.Users.Add(user);
+            dbContext.Add(product);
+            dbContext.Add(user);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(idToRequest, new() { UserId = user.Id, ProductIdQuantities = [new() { ProductId = product.Id, Quantity = 10 }] });//validation attributes ignored here
             var notFoundObjectResult = result.Result as NotFoundObjectResult;
@@ -120,8 +119,34 @@ namespace ProjectTisa.Tests.Controller
             resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         #endregion
-        #region filled
+        #region Filled
         #region OkResult
+        [Fact]
+        public async void GetAll_ReturnOk()
+        {
+            // Arrange
+            MainDbContext dbContext = DatabaseContext.SetUpContext();
+            OrderController controller = new(_logger, dbContext, _authorizationService);
+            PaginationRequest paginationRequest = new();
+            User user = new() { Email = "", Username = "tester" };
+            Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
+            Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
+            Order orderInProgress = new() { EditInfo = new("tester"), Status = OrderStatus.InProgress, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
+            Order orderCompleted = new() { EditInfo = new("tester"), Status = OrderStatus.Completed, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
+            Order orderCancelled = new() { EditInfo = new("tester"), Status = OrderStatus.Cancelled, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
+            // Act
+            dbContext.Orders.AddRange(orderInProgress, orderCompleted, orderCancelled);
+            await dbContext.SaveChangesAsync();
+            var result = await controller.Get(paginationRequest);
+            var okObjectResult = result.Result as OkObjectResult;
+            var orders = okObjectResult?.Value as List<Order>;
+            // Assert
+            result.Should().NotBeNull();
+            result.Result.Should().BeOfType(typeof(OkObjectResult));
+            okObjectResult?.Value.Should().NotBeNull();
+            okObjectResult!.Value.Should().BeOfType(typeof(List<Order>));
+            orders!.Count.Should().Be(3);
+        }
         [Fact]
         public async void GetAll_ByStatusInProgress_ReturnOk()
         {
@@ -225,7 +250,7 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.InProgress, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(order.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -257,7 +282,7 @@ namespace ProjectTisa.Tests.Controller
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.InProgress, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             uint quantity = 5;
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(order.Id, new() { UserId = user.Id, ProductIdQuantities = [new() { ProductId = product.Id, Quantity = quantity }] });//validation attributes ignored here
             var okObjectResult = result.Result as OkObjectResult;
@@ -289,8 +314,8 @@ namespace ProjectTisa.Tests.Controller
             User user = new() { Email = "", Username = "tester" };
             uint quantity = 5;
             // Act
-            dbContext.Users.Add(user);
-            dbContext.Products.Add(product);
+            dbContext.Add(user);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.Create(new() { UserId = user.Id, ProductIdQuantities = [new() { ProductId = product.Id, Quantity = quantity }] });//validation attributes ignored here
             var createdResult = result.Result as CreatedResult;
@@ -315,7 +340,7 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.InProgress, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CompleteOrder(order.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -347,7 +372,7 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.InProgress, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CancelOrder(order.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -373,7 +398,7 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.Completed, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CompleteOrder(order.Id);
             var badRequestObjectResult = result.Result as BadRequestObjectResult;
@@ -404,7 +429,7 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.Cancelled, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CancelOrder(order.Id);
             var badRequestObjectResult = result.Result as BadRequestObjectResult;
@@ -432,7 +457,7 @@ namespace ProjectTisa.Tests.Controller
             OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
             // Act
-            dbContext.Users.Add(user);
+            dbContext.Add(user);
             await dbContext.SaveChangesAsync();
             var result = await controller.Create(new() { UserId = user.Id, ProductIdQuantities = [] });//validation attributes ignored here
             var badRequestObjectResult = result.Result as BadRequestObjectResult;
@@ -464,7 +489,7 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.InProgress, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(order.Id, new() { UserId = order.User.Id, ProductIdQuantities = [] });//validation attributes ignored here
             var badRequestObjectResult = result.Result as BadRequestObjectResult;
@@ -499,7 +524,7 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.InProgress, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(order.Id);
             // Assert
@@ -524,8 +549,8 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             User user = new() { Email = "", Username = "tester" };
             // Act
-            dbContext.Users.Add(user);
-            dbContext.Products.Add(product);
+            dbContext.Add(user);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.Create(new() { UserId = user.Id, ProductIdQuantities = [new() { ProductId = product.Id, Quantity = 5 }] });//validation attributes ignored here
             // Assert
@@ -553,7 +578,7 @@ namespace ProjectTisa.Tests.Controller
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Order order = new() { EditInfo = new("tester"), Status = OrderStatus.InProgress, TotalPrice = 1, User = user, ProductQuantities = [new() { Product = product, Quantity = 1 }] };
             // Act
-            dbContext.Orders.Add(order);
+            dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CancelOrder(order.Id);
             // Assert

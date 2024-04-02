@@ -17,7 +17,7 @@ namespace ProjectTisa.Tests.Controller
     public class CategoryControllerTests
     {
         private readonly ILogger<CategoryController> _logger = new Mock<ILogger<CategoryController>>().Object;
-        #region empty
+        #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
@@ -91,7 +91,7 @@ namespace ProjectTisa.Tests.Controller
             resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         #endregion
-        #region filled
+        #region Filled
         #region OkResult
         [Fact]
         public async void GetAll_ReturnOk()
@@ -102,7 +102,7 @@ namespace ProjectTisa.Tests.Controller
             PaginationRequest paginationRequest = new();
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Categories.Add(category);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest);
             var okObjectResult = result.Result as OkObjectResult;
@@ -122,7 +122,7 @@ namespace ProjectTisa.Tests.Controller
             CategoryController controller = new(_logger, dbContext);
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Categories.Add(category);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(category.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -142,7 +142,7 @@ namespace ProjectTisa.Tests.Controller
             CategoryController controller = new(_logger, dbContext);
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Categories.Add(category);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(category.Id);
             var okObjectResult = result.Result as OkObjectResult;
@@ -171,7 +171,7 @@ namespace ProjectTisa.Tests.Controller
             CategoryController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Categories.Add(category);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(category.Id, new() { Name = "", PhotoPath = "" });//validation attributes ignored here
             var okObjectResult = result.Result as OkObjectResult;
@@ -229,7 +229,7 @@ namespace ProjectTisa.Tests.Controller
             Category category = new() { Name = "", PhotoPath = "", ParentCategory = categoryOldParent, EditInfo = new("tester")};
             string newEntityName = "testNew";
             // Act
-            dbContext.Categories.AddRange(category, categoryNewParent);
+            dbContext.AddRange(category, categoryNewParent);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(category.Id, new() { Name = newEntityName, PhotoPath = "", ParentCategoryId= categoryNewParent.Id });//validation attributes ignored here
             var okObjectResult = result.Result as OkObjectResult;
@@ -260,7 +260,7 @@ namespace ProjectTisa.Tests.Controller
             CategoryController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category categoryParent = new() { Name = "parent", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Categories.Add(categoryParent);
+            dbContext.Add(categoryParent);
             var result = await controller.Create(new() { Name = "", PhotoPath = "", ParentCategoryId = categoryParent.Id });//validation attributes ignored here
             var createdResult = result.Result as CreatedResult;
             var resultMessage = createdResult?.Value as string;
@@ -281,7 +281,7 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = -1;
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Categories.Add(category);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(idToRequest);
             var notFoundObjectResult = result.Result as NotFoundObjectResult;

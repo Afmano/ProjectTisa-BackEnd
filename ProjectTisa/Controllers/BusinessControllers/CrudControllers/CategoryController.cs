@@ -36,7 +36,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
         {
             Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
             Category category = new(request, new(User.Identity!.Name!), parentCategory);
-            context.Categories.Add(category);
+            context.Add(category);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, category);
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{category.Id}", ResAnswers.Created);
@@ -51,7 +51,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            context.Categories.Remove(item);
+            context.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
 

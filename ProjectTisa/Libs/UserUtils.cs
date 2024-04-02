@@ -17,8 +17,8 @@ namespace ProjectTisa.Libs
         /// <exception cref="ControllerException">If JWT is wrong or user not found.</exception>
         public static async Task<User> GetUserFromContext(HttpContext httpContext, MainDbContext dbContext)
         {
-            string currentUsername = httpContext.User.Identity!.Name ?? throw new ControllerException(ResAnswers.WrongJWT);
-            User user = await dbContext.Users.FirstOrDefaultAsync(x => x.Username.Equals(currentUsername)) ?? throw new ControllerException(ResAnswers.UserNorFound);
+            string currentUsername = httpContext?.User?.Identity?.Name ?? throw new ControllerException(ResAnswers.WrongJWT);
+            User user = await dbContext.Users.FirstOrDefaultAsync(x => x.Username.Equals(currentUsername)) ?? throw new ControllerException(ResAnswers.UserNotFound);
             user.LastSeen = DateTime.UtcNow;
             await dbContext.SaveChangesAsync();
             return user;

@@ -47,7 +47,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
         public async Task<ActionResult<string>> Create([FromBody] NotificationCreationReq request)
         {
             Notification notification = new(request, new(User.Identity!.Name!));
-            context.Notifications.Add(notification);
+            context.Add(notification);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, notification);
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{notification.Id}", ResAnswers.Created);
@@ -62,7 +62,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            context.Notifications.Remove(item);
+            context.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
             return Ok(ResAnswers.Success);

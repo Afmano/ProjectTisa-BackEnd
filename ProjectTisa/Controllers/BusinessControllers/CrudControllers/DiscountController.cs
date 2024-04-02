@@ -37,7 +37,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
         {
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
             Discount discount = new(request, new(User.Identity!.Name!), products);
-            context.Discounts.Add(discount);
+            context.Add(discount);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, discount);
             return Created($"{HttpContext.Request.GetDisplayUrl()}/{discount.Id}", ResAnswers.Created);
@@ -52,7 +52,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            context.Discounts.Remove(item);
+            context.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
             return Ok(ResAnswers.Success);

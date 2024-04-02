@@ -100,7 +100,16 @@ app.UseExceptionHandler(c => c.Run(async context =>
         ?.Get<IExceptionHandlerPathFeature>()
         ?.Error;
     app.Logger.LogError(exception, "Intercepted error.");
-    await context.Response.WriteAsJsonAsync(exception is ControllerException ? exception.Message : ResAnswers.Error);
+    if (exception is ControllerException)
+    {
+        context.Response.StatusCode = 400;
+        await context.Response.WriteAsJsonAsync(exception.Message);
+    }
+    else
+    {
+        await context.Response.WriteAsJsonAsync(ResAnswers.Error);
+    }
+
 }));
 
 app.UseHttpsRedirection();

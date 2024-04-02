@@ -91,7 +91,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
 
             User user = new(request);
             context.Add(user);
-            context.PendingRegistrations.Remove(request);
+            context.Remove(request);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, user);
             return Ok(AuthTools.CreateToken(user, _authData));
