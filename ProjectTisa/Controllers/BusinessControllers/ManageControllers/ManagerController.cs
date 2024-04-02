@@ -36,7 +36,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <param name="notificationId">Id of notification to send.</param>
         /// <param name="userRole">Role of users for notificate.</param>
         /// <returns>200: message.</returns>
-        [HttpPost("SendNotificationByRole")]
+        [HttpPatch("SendNotificationByRole")]
         public async Task<ActionResult<string>> SendNotificationByRole(int notificationId, RoleType userRole)
         {
             Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
@@ -62,7 +62,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <param name="notificationId">Id of notification to send.</param>
         /// <param name="username">Username of user for notificate.</param>
         /// <returns>200: message.</returns>
-        [HttpPost("SendNotificationByUsername")]
+        [HttpPatch("SendNotificationByUsername")]
         public async Task<ActionResult<string>> SendNotificationByUsername(int notificationId, string username)
         {
             Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
@@ -88,7 +88,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <param name="notificationId">Id of notification to send.</param>
         /// <param name="email">Email of user for notificate.</param>
         /// <returns>200: message.</returns>
-        [HttpPost("SendNotificationByEmail")]
+        [HttpPatch("SendNotificationByEmail")]
         public async Task<ActionResult<string>> SendNotificationByEmail(int notificationId, string email)
         {
             Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
@@ -108,7 +108,25 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
             await _mainDbContext.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }
+        /// <summary>
+        /// Detach all users from selected notification.
+        /// </summary>
+        /// <param name="notificationId">Id of notification to edit.</param>
+        /// <returns>200: message.</returns>
         [HttpPatch("DetachNotification")]
+        public async Task<ActionResult<string>> DetachNotification(int notificationId)
+        {
+            Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
+            if (notification == null)
+            {
+                return NotFound(ResAnswers.NotFoundNullEntity);
+            }
+
+            notification.EditInfo.Modify(User.Identity!.Name!);
+            notification.Users.Clear();
+            await _mainDbContext.SaveChangesAsync();
+            return Ok(ResAnswers.Success);
+        }
         #endregion
         #region File
         /// <summary>
