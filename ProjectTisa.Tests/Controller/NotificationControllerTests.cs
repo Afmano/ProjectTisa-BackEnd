@@ -146,7 +146,6 @@ namespace ProjectTisa.Tests.Controller
             okObjectResult!.Value.Should().BeOfType(typeof(List<Notification>));
             notifications!.Count.Should().NotBe(0);
         }
-
         [Fact]
         public async void GetAllNotifsByCurrentUser_ReturnOk()
         {
@@ -162,7 +161,7 @@ namespace ProjectTisa.Tests.Controller
             };
             NotificationController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             PaginationRequest paginationRequest = new();
-            User user = new() { Email = "test", Username = "tester", Notifications = [new() { Caption = "test", Message = "test", EditInfo= new("tester")}] };
+            User user = new() { Email = "test", Username = "tester", Notifications = [new() { Caption = "test", Message = "test", EditInfo = new("tester") }] };
             // Act
             dbContext.Users.Add(user);
             await dbContext.SaveChangesAsync();
@@ -181,10 +180,19 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            var customMockAuthorizeService = new Mock<IAuthorizationService>();
-            customMockAuthorizeService.Setup(service => service.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>())).ReturnsAsync(AuthorizationResult.Success);
-            NotificationController controller = new(_logger, dbContext, customMockAuthorizeService.Object);
-            Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
+            Mock<IAuthorizationService> customMockAuthorizeService = new();
+            DefaultHttpContext httpContext = new()
+            {
+                User = new ClaimsPrincipal(new GenericIdentity("tester", "test"))
+            };
+            ControllerContext controllerContext = new()
+            {
+                HttpContext = httpContext,
+            };
+            customMockAuthorizeService.Setup(service => service.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>())).ReturnsAsync(AuthorizationResult.Failed);
+            NotificationController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
+            User user = new() { Email = "test", Username = "tester" };
+            Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester"), Users = [user] };
             // Act
             dbContext.Notifications.Add(notification);
             await dbContext.SaveChangesAsync();
@@ -328,6 +336,32 @@ namespace ProjectTisa.Tests.Controller
             resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         #endregion
+        [Fact]
+        public async void GetById_ReturnForbid()
+        {
+            // Arrange
+            MainDbContext dbContext = DatabaseContext.SetUpContext();
+            Mock<IAuthorizationService> customMockAuthorizeService = new();
+            customMockAuthorizeService.Setup(service => service.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>())).ReturnsAsync(AuthorizationResult.Failed);
+            DefaultHttpContext httpContext = new()
+            {
+                User = new ClaimsPrincipal(new GenericIdentity("wrongTester", "test"))
+            };
+            ControllerContext controllerContext = new()
+            {
+                HttpContext = httpContext,
+            };
+            NotificationController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
+            User user = new() { Email = "test", Username = "tester" };
+            Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester"), Users = [user] };
+            // Act
+            dbContext.Notifications.Add(notification);
+            await dbContext.SaveChangesAsync();
+            var result = await controller.Get(notification.Id);
+            // Assert
+            result.Should().NotBeNull();
+            result.Result.Should().BeOfType(typeof(ForbidResult));
+        }
         #endregion
     }
 }

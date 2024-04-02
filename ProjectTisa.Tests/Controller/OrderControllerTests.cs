@@ -491,7 +491,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            var customMockAuthorizeService = new Mock<IAuthorizationService>();
+            Mock<IAuthorizationService> customMockAuthorizeService = new();
             customMockAuthorizeService.Setup(service => service.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>())).ReturnsAsync(AuthorizationResult.Failed);
             OrderController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
@@ -545,7 +545,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            var customMockAuthorizeService = new Mock<IAuthorizationService>();
+            Mock<IAuthorizationService> customMockAuthorizeService = new();
             customMockAuthorizeService.Setup(service => service.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>())).ReturnsAsync(AuthorizationResult.Failed);
             OrderController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
