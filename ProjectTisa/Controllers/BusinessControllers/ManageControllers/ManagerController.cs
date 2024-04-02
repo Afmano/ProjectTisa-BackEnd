@@ -108,6 +108,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
             await _mainDbContext.SaveChangesAsync();
             return Ok(ResAnswers.Success);
         }
+        [HttpPatch("DetachNotification")]
         #endregion
         #region File
         /// <summary>
