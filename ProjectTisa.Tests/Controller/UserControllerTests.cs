@@ -75,6 +75,7 @@ namespace ProjectTisa.Tests.Controller
             (await Assert.ThrowsAsync<ControllerException>(() => controller.ChangePassword(newPassword))).Message.Should().Be(ResAnswers.UserNotFound);
         }
         #endregion
+        #region OkObject
         [Fact]
         public async void GetUser_ReturnUser()
         {
@@ -109,6 +110,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             IOptions<RouteConfig> config = Options.Create<RouteConfig>(new()
             {
                 ApplicationName = "",
@@ -127,6 +129,7 @@ namespace ProjectTisa.Tests.Controller
                 ExternalStorage = null,
                 SmtpData = null
             });
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             DefaultHttpContext httpContext = new()
             {
                 User = new ClaimsPrincipal(new GenericIdentity("tester", "test"))
@@ -153,5 +156,6 @@ namespace ProjectTisa.Tests.Controller
             resultMessage!.Should().Be(ResAnswers.Success);
             dbContext.Users.Find(user.Id)!.PasswordHash.Should().Be(newPassHash);
         }
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Consts;
@@ -71,7 +72,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            User userToNotificate = _mainDbContext.Users.First(user => user.Username == username);
+            User? userToNotificate = await _mainDbContext.Users.FirstOrDefaultAsync(user => user.Username == username);
             if (userToNotificate == null)
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
@@ -97,7 +98,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
                 return NotFound(ResAnswers.NotFoundNullEntity);
             }
 
-            User userToNotificate = _mainDbContext.Users.First(user => user.Email == email);
+            User? userToNotificate = await _mainDbContext.Users.FirstOrDefaultAsync(user => user.Email == email);
             if (userToNotificate == null)
             {
                 return NotFound(ResAnswers.NotFoundNullEntity);
