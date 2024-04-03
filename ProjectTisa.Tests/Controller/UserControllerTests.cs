@@ -18,7 +18,26 @@ namespace ProjectTisa.Tests.Controller
 {
     public class UserControllerTests
     {
-        private readonly IOptions<RouteConfig> _config = new Mock<IOptions<RouteConfig>>().Object;
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        private readonly IOptions<RouteConfig> _config = Options.Create<RouteConfig>(new()
+        {
+            ApplicationName = "",
+            AuthData = new()
+            {
+                Audience = "",
+                ExpirationTime = new(),
+                HashAlgorithmOID = "1.3.14.3.2.26",
+                Issuer = "",
+                IssuerSigningKey = "test",
+                IterationCount = 1,
+                SaltSize = 1
+            },
+            CurrentHost = "",
+            Version = "",
+            ExternalStorage = null,
+            SmtpData = null
+        });
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         #region Error
         [Fact]
         public async void GetUser_WrongClaim_ReturnError()
@@ -110,26 +129,6 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            IOptions<RouteConfig> config = Options.Create<RouteConfig>(new()
-            {
-                ApplicationName = "",
-                AuthData = new()
-                {
-                    Audience = "",
-                    ExpirationTime = new(),
-                    HashAlgorithmOID = "1.3.14.3.2.26",
-                    Issuer = "",
-                    IssuerSigningKey = "test",
-                    IterationCount = 1,
-                    SaltSize = 1
-                },
-                CurrentHost = "",
-                Version = "",
-                ExternalStorage = null,
-                SmtpData = null
-            });
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             DefaultHttpContext httpContext = new()
             {
                 User = new ClaimsPrincipal(new GenericIdentity("tester", "test"))
@@ -138,7 +137,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            UserController controller = new(dbContext, config) { ControllerContext = controllerContext };
+            UserController controller = new(dbContext, _config) { ControllerContext = controllerContext };
             User user = new() { Username = "tester", Email = "test", Salt = "9f4e9a", PasswordHash = "" };
             string newPassword = "test";
             // Act
@@ -147,7 +146,7 @@ namespace ProjectTisa.Tests.Controller
             var result = await controller.ChangePassword(newPassword);
             var okObjectResult = result.Result as OkObjectResult;
             var resultMessage = okObjectResult?.Value as string;
-            var newPassHash = AuthTools.HashPasword(newPassword, user.Salt!, config.Value.AuthData);
+            var newPassHash = AuthTools.HashPasword(newPassword, user.Salt!, _config.Value.AuthData);
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));

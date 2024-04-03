@@ -83,7 +83,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
         [HttpPost("Verify")]
         public async Task<ActionResult<string>> Verify(int pendingRegId, [FromBody] string code)
         {
-            PendingRegistration request = context.PendingRegistrations.First(r => r.Id == pendingRegId);
+            PendingRegistration? request = await context.PendingRegistrations.FirstOrDefaultAsync(r => r.Id == pendingRegId);
             if (request == null || request.ExpireDate < DateTime.UtcNow || request.VerificationCode != code)
             {
                 return BadRequest(ResAnswers.BadRequest);

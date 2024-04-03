@@ -10,5 +10,6 @@
         public required string Password { get; init; }
         public required bool DefaultCredentais { get; init; } = false;
         public required bool Ssl { get; init; } = true;
+        public bool IsTest { get; init; } = false;
     }
 }

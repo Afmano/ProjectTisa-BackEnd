@@ -11,6 +11,7 @@ namespace ProjectTisa.Libs
     {
         private static readonly SmtpClient _smtpClient = new("smtp.gmail.com");
         private static string _fromEmail = string.Empty;
+        private static bool _isTest;
         /// <summary>
         /// Initial configuration for sender. Call before sending emails.
         /// </summary>
@@ -22,6 +23,7 @@ namespace ProjectTisa.Libs
             _smtpClient.EnableSsl = smtpData.Ssl;
             _smtpClient.UseDefaultCredentials = smtpData.DefaultCredentais;
             _smtpClient.Credentials = new NetworkCredential(smtpData.FromEmail, smtpData.Password);
+            _isTest = smtpData.IsTest;
         }
         /// <summary>
         /// Send email with string code to user's email.
@@ -32,7 +34,8 @@ namespace ProjectTisa.Libs
         /// <param name="message">Message of email with <c>{code}</c> pattern.</param>
         public static void SendEmailCode(string emailTo, string code, string caption = "Email Verification", string message = "Your verification code is: {code}")
         {
-            _smtpClient.Send(new MailMessage(_fromEmail, emailTo, caption, message.Replace("{code}", code)));
+            if (!_isTest)
+                _smtpClient.Send(new MailMessage(_fromEmail, emailTo, caption, message.Replace("{code}", code)));
         }
     }
 }
