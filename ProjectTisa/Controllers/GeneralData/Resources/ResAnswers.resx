@@ -120,6 +120,9 @@
   <data name="BadRequest" xml:space="preserve">
     <value>Wrong request parameters.</value>
   </data>
+  <data name="CantAccess" xml:space="preserve">
+    <value>Can't access this data with current authorization.</value>
+  </data>
   <data name="Created" xml:space="preserve">
     <value>New entity created successfully.</value>
   </data>
@@ -138,8 +141,11 @@
   <data name="Success" xml:space="preserve">
     <value>Request handled successfully.</value>
   </data>
-  <data name="UserNorFound" xml:space="preserve">
+  <data name="UserNotFound" xml:space="preserve">
     <value>User doesn't exist in database.</value>
+  </data>
+  <data name="ValidationErrorRegEx" xml:space="preserve">
+    <value>String dont match regular expression:</value>
   </data>
   <data name="WrongJWT" xml:space="preserve">
     <value>Error while proccessing JWT token to get values.</value>

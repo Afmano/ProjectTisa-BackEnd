@@ -27,7 +27,7 @@
         /// Generate log message about granting a token.
         /// </summary>
         /// <param name="logger">ILogger instance.</param>
-        /// <param name="user">User entity of granted token.</param>
+        /// <param name="username">User entity of granted token.</param>
         public static void TokenGranted(ILogger logger, string username)
         {
             logger.LogInformation("Granted token to user - {username}", username);

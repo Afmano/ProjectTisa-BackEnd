@@ -22,7 +22,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ResAnswers {
+    public class ResAnswers {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProjectTisa.Controllers.GeneralData.Resources.ResAnswers", typeof(ResAnswers).Assembly);
@@ -51,7 +51,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,16 +63,25 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Wrong request parameters..
         /// </summary>
-        internal static string BadRequest {
+        public static string BadRequest {
             get {
                 return ResourceManager.GetString("BadRequest", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t access this data with current authorization..
+        /// </summary>
+        public static string CantAccess {
+            get {
+                return ResourceManager.GetString("CantAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New entity created successfully..
         /// </summary>
-        internal static string Created {
+        public static string Created {
             get {
                 return ResourceManager.GetString("Created", resourceCulture);
             }
@@ -81,7 +90,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Provided data already exist..
         /// </summary>
-        internal static string EmailUsernameExist {
+        public static string EmailUsernameExist {
             get {
                 return ResourceManager.GetString("EmailUsernameExist", resourceCulture);
             }
@@ -90,7 +99,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Error while processing request..
         /// </summary>
-        internal static string Error {
+        public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
             }
@@ -99,7 +108,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t get any results from database..
         /// </summary>
-        internal static string NotFoundNullContext {
+        public static string NotFoundNullContext {
             get {
                 return ResourceManager.GetString("NotFoundNullContext", resourceCulture);
             }
@@ -108,7 +117,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t get specific result from database..
         /// </summary>
-        internal static string NotFoundNullEntity {
+        public static string NotFoundNullEntity {
             get {
                 return ResourceManager.GetString("NotFoundNullEntity", resourceCulture);
             }
@@ -117,7 +126,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Request handled successfully..
         /// </summary>
-        internal static string Success {
+        public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
             }
@@ -126,16 +135,25 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         /// <summary>
         ///   Looks up a localized string similar to User doesn&apos;t exist in database..
         /// </summary>
-        internal static string UserNorFound {
+        public static string UserNotFound {
             get {
-                return ResourceManager.GetString("UserNorFound", resourceCulture);
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to String dont match regular expression:.
+        /// </summary>
+        public static string ValidationErrorRegEx {
+            get {
+                return ResourceManager.GetString("ValidationErrorRegEx", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Error while proccessing JWT token to get values..
         /// </summary>
-        internal static string WrongJWT {
+        public static string WrongJWT {
             get {
                 return ResourceManager.GetString("WrongJWT", resourceCulture);
             }

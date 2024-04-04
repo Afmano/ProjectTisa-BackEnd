@@ -8,11 +8,11 @@ using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Exceptions;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
-using System;
+using ProjectTisa.Models.Enums;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-
 IConfiguration appInfo = builder.Configuration.GetSection("AppInfo");
 builder.Services.Configure<RouteConfig>(appInfo);
 builder.Services.AddSwaggerGen(setup =>
@@ -46,8 +46,11 @@ builder.Services.AddSwaggerGen(setup =>
 });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<MainDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddDbContext<MainDbContext>(options => options.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddMvc().AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddLogging(conf =>
 {
     conf.AddConsole();
@@ -79,7 +82,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("admin", policy => policy.RequireRole(RoleType.SuperAdmin.ToString(), RoleType.Admin.ToString()))
+    .AddPolicy("manage", policy => policy.RequireRole(RoleType.SuperAdmin.ToString(), RoleType.Admin.ToString(), RoleType.Manager.ToString()));
 
 var app = builder.Build();
 
@@ -95,7 +100,16 @@ app.UseExceptionHandler(c => c.Run(async context =>
         ?.Get<IExceptionHandlerPathFeature>()
         ?.Error;
     app.Logger.LogError(exception, "Intercepted error.");
-    await context.Response.WriteAsJsonAsync(exception is ControllerException ? exception.Message : ResAnswers.Error);
+    if (exception is ControllerException)
+    {
+        context.Response.StatusCode = 400;
+        await context.Response.WriteAsJsonAsync(exception.Message);
+    }
+    else
+    {
+        await context.Response.WriteAsJsonAsync(ResAnswers.Error);
+    }
+
 }));
 
 app.UseHttpsRedirection();

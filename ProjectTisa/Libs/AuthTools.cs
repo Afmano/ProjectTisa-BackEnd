@@ -25,8 +25,8 @@ namespace ProjectTisa.Libs
             SigningCredentials credentials = new(symKey, SecurityAlgorithms.HmacSha256);
             JwtSecurityToken token = new(
                 issuer: authData.Issuer, audience: authData.Audience,
-                claims: [new Claim(nameof(user.Username), user.Username), new Claim(nameof(user.PasswordHash), user.PasswordHash!)],
-                expires: DateTime.Now.Add(authData.ExpirationTime), signingCredentials: credentials);
+                claims: [new Claim(ClaimTypes.Name, user.Username), new Claim(ClaimTypes.Email, user.Email), new Claim(ClaimTypes.Role, user.Role.ToString())],
+                expires: DateTime.UtcNow.Add(authData.ExpirationTime), signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
         /// <summary>
@@ -70,7 +70,7 @@ namespace ProjectTisa.Libs
         /// <returns>Code with N(default 6) digits</returns>
         public static string GenerateCode(int digits = 6)
         {
-            return Random.Shared.Next(0, (int)Math.Pow(10, digits)).ToString("D"+ digits);
+            return Random.Shared.Next(0, (int)Math.Pow(10, digits)).ToString("D" + digits);
         }
 
     }

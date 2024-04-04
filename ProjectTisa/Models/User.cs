@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using ProjectTisa.Models.Enums;
+using ProjectTisa.Models.BusinessLogic;
 
 namespace ProjectTisa.Models
 {
@@ -31,6 +33,9 @@ namespace ProjectTisa.Models
         public string? Salt { get; init; }
         public DateTime RegistrationDate { get; init; }
         public DateTime? LastSeen { get; set; }
+        public RoleType Role { get; set; }
+        [JsonIgnore]
+        public virtual List<Notification> Notifications { get; init; } = [];
         public override string ToString()
         {
             return $"{Id}. {Username} - {Email}";
