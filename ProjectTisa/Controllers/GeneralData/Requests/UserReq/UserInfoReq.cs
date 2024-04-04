@@ -12,7 +12,7 @@ namespace ProjectTisa.Controllers.GeneralData.Requests.UserReq
     {
         [StringRequirements(StringMaxLengthType.Username)]
         public required string Username { get; set; }
-        [StringRequirements]
+        [RegularExpression(ValidationConst.REGEX_PASSWORD)]
         public required string Password { get; set; }
         [EmailAddress]
         [StringRequirements(StringMaxLengthType.Domain, ValidationConst.REGEX_EMAIL)]

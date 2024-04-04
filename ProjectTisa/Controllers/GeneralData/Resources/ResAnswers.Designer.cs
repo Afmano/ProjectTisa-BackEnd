@@ -142,7 +142,7 @@ namespace ProjectTisa.Controllers.GeneralData.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to String dont match regular expression..
+        ///   Looks up a localized string similar to String dont match regular expression:.
         /// </summary>
         public static string ValidationErrorRegEx {
             get {

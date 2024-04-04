@@ -13,6 +13,7 @@
         public const int MIN_STR_LENGTH = 3;
         public const string REGEX_NUM_SYMBS = @"^[a-zA-Z0-9]*$";
         public const string REGEX_EMAIL = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+        public const string REGEX_PASSWORD = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$";
         public const string NO_REGEX = null;
     }
 }
