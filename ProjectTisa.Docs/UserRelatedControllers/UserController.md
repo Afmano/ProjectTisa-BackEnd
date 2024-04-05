@@ -3,7 +3,7 @@
 > Require Authorization header.
 
 Controller to interact with `User` data.
-## GetUser
+## `GET` GetUser
 Return current `User`.
 #### Potential responses:
 * `200 Ok`<br>[User](../../ProjectTisa/Models/User.cs)
@@ -21,9 +21,8 @@ Content type: `application/json`
   "role": "User"
 }
 ```
-## ChangePassword
-Change `User's` password using same salt.
-Return boolean.
+## `PATCH` ChangePassword
+Change `User's` password using same salt.<br>Return message.
 #### Potential responses:
 * `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `400 BadRequest`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
@@ -35,6 +34,6 @@ Content type: `application/json`
   "message": "Request handled successfully."
 }
 ```
-## ChangeEmail
+## `PATCH` ChangeEmail
 > [!CAUTION]
 > NOT IMPLEMENTED YET.

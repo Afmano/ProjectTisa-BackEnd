@@ -1,11 +1,9 @@
 # [ManagerController](../../ProjectTisa/Controllers/BusinessControllers/ManageControllers/ManagerController.cs)
+Controller to interact with `User` data.
 > [!IMPORTANT]
 > Require Authorization header with `Manage` policy.
-
-Controller to interact with `User` data.
-## SendNotificationByRole
-Send `Notification` for `Users` by [role](../../ProjectTisa/Models/Enums/RoleType.cs).
-Return message.
+## `PATCH` SendNotificationByRole
+Send `Notification` for `Users` by [role](../../ProjectTisa/Models/Enums/RoleType.cs).<br>Return message.
 #### Potential responses:
 * `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `401 Unauthorized`
@@ -17,9 +15,8 @@ Content type: `application/json`
   "message": "Request handled successfully."
 }
 ```
-## SendNotificationByUsername
-Send `Notification` for `User` by username.
-Return message.
+## `PATCH` SendNotificationByUsername
+Send `Notification` for `User` by username.<br>Return message.
 #### Potential responses:
 * `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `401 Unauthorized`
@@ -31,9 +28,8 @@ Content type: `application/json`
   "message": "Request handled successfully."
 }
 ```
-## SendNotificationByEmail
-Send `Notification` for `User` by email.
-Return message.
+## `PATCH` SendNotificationByEmail
+Send `Notification` for `User` by email.<br>Return message.
 #### Potential responses:
 * `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `401 Unauthorized`
@@ -45,9 +41,8 @@ Content type: `application/json`
   "message": "Request handled successfully."
 }
 ```
-## DetachNotification
-Detach all `Users` from selected `Notification`.
-Return message.
+## `PATCH` DetachNotification
+Detach all `Users` from selected `Notification`.<br>Return message.
 #### Potential responses:
 * `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `401 Unauthorized`
@@ -62,9 +57,8 @@ Content type: `application/json`
 ## File section
 >[!NOTE]
 > Currently using [Pinata](https://www.pinata.cloud/) service.
-## LoadFile
-Load file to server external storage.
-Return **IpfsHash** with info.
+## `POST` LoadFile
+Load file to server external storage.<br>Return **IpfsHash** with info.
 #### Potential responses:
 * `200 Ok`
 * `400 BadRequest`
@@ -78,9 +72,8 @@ Content type: `application/json`
   "Timestamp": "2024-04-05T11:19:51.122Z"
 }
 ```
-## GetFiles
-Get list of files from external storage.
-Return message.
+## `GET` GetFiles
+Get list of files from external storage.<br>Return message.
 #### Potential responses:
 * `200 Ok`
 * `400 BadRequest`

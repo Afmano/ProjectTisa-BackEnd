@@ -1,7 +1,7 @@
 # [AuthController](../../ProjectTisa/Controllers/BusinessControllers/UserRelatedControllers/AuthController.cs)
 
 Controller for authorization. Using **Bearer JWT token** as auth method.
-## Authorize
+## `POST` Authorize
 Return [JWT token](https://en.wikipedia.org/wiki/JSON_Web_Token) by passing [login data](../../ProjectTisa/Controllers/GeneralData/Requests/UserReq/UserLoginReq.cs).  
 #### Potential responses:
 * `200 Ok`<br>[TokenResponse](../../ProjectTisa/Controllers/GeneralData/Responses/TokenResponse.cs)
@@ -14,9 +14,8 @@ Content type: `application/json`
   "exparationDate": "2024-04-05T14:38:20.230Z"
 }
 ```
-## CheckIsEmailExist
-Check is email exist in `User` table at current context.
-Return boolean.
+## `GET` CheckIsEmailExist
+Check is email exist in `User` table at current context.<br>Return boolean.
 #### Potential responses:
 * `200 Ok`<br>[BooleanResponse](../../ProjectTisa/Controllers/GeneralData/Responses/BooleanResponse.cs)
 ### Success example result:
@@ -26,9 +25,8 @@ Content type: `application/json`
   "result": true
 }
 ```
-## CheckIsUsernameExist
-Check is username exist in `User` table at current context.
-Return boolean.
+## `GET` CheckIsUsernameExist
+Check is username exist in `User` table at current context.<br>Return boolean.
 #### Potential responses:
 * `200 Ok`<br>[BooleanResponse](../../ProjectTisa/Controllers/GeneralData/Responses/BooleanResponse.cs)
 ### Success example result:
@@ -38,9 +36,8 @@ Content type: `application/json`
   "result": true
 }
 ```
-## Registrate
-Registrate new user at database's `PendingRegistration`, using request: [UserInfoReq](../../ProjectTisa/Controllers/GeneralData/Requests/UserReq/UserInfoReq.cs). 
-Return `PendingRegistration` code id.
+## `POST` Registrate
+Registrate new user at database's `PendingRegistration`, using request: [UserInfoReq](../../ProjectTisa/Controllers/GeneralData/Requests/UserReq/UserInfoReq.cs).<br>Return `PendingRegistration` code id.
 #### Potential responses:
 * `200 Ok`<br>[IdResponse](../../ProjectTisa/Controllers/GeneralData/Responses/IdResponse.cs)
 * `400 BadRequest`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
@@ -51,9 +48,8 @@ Content type: `application/json`
   "id": 231
 }
 ```
-## Verify
-Verify pending registration request by sending code. If code same in table - create new `User`.
-Return [JWT token](https://en.wikipedia.org/wiki/JSON_Web_Token).
+## `POST` Verify
+Verify pending registration request by sending code. If code same in table - create new `User`.<br>Return [JWT token](https://en.wikipedia.org/wiki/JSON_Web_Token).
 #### Potential responses:
 * `200 Ok`<br>[TokenResponse](../../ProjectTisa/Controllers/GeneralData/Responses/TokenResponse.cs)
 * `400 BadRequest`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)

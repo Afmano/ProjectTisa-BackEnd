@@ -34,7 +34,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
         /// </summary>
         /// <param name="password">Password in string format.</param>
         /// <returns>200: message.</returns>
-        [HttpPost("ChangePassword")]
+        [HttpPatch("ChangePassword")]
         public async Task<ActionResult<MessageResponse>> ChangePassword([StringRequirements(regularExpression: ValidationConst.REGEX_PASSWORD)][FromBody] string password)
         {
             User user = await GetCurrentUser();
@@ -47,7 +47,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
         /// </summary>
         /// <param name="email">New email to change.</param>
         /// <returns>200: message.</returns>
-        [HttpPost("ChangeEmail")]
+        [HttpPatch("ChangeEmail")]
         public ActionResult ChangeEmail([EmailAddress][StringRequirements][FromBody] string email)
         {
             throw new NotImplementedException();//add later
