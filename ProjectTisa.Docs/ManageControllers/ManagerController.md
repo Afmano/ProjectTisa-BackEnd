@@ -1,4 +1,4 @@
-# [ManagerController](../ProjectTisa/Controllers/BusinessControllers/ManageControllers/ManagerController.cs)
+# [ManagerController](../../ProjectTisa/Controllers/BusinessControllers/ManageControllers/ManagerController.cs)
 > [!IMPORTANT]
 > Require Authorization header with `Manage` policy.
 
@@ -7,11 +7,9 @@ Controller to interact with `User` data.
 Send `Notification` for `Users` by [role](../../ProjectTisa/Models/Enums/RoleType.cs).
 Return message.
 #### Potential responses:
-* `200 Ok`
-[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
+* `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `401 Unauthorized`
-* `404 NotFound`
-[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
+* `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
 ```
@@ -23,11 +21,9 @@ Content type: `application/json`
 Send `Notification` for `User` by username.
 Return message.
 #### Potential responses:
-* `200 Ok`
-[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
+* `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `401 Unauthorized`
-* `404 NotFound`
-[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
+* `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
 ```
@@ -39,11 +35,9 @@ Content type: `application/json`
 Send `Notification` for `User` by email.
 Return message.
 #### Potential responses:
-* `200 Ok`
-[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
+* `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `401 Unauthorized`
-* `404 NotFound`
-[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
+* `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
 ```
@@ -55,11 +49,9 @@ Content type: `application/json`
 Detach all `Users` from selected `Notification`.
 Return message.
 #### Potential responses:
-* `200 Ok`
-[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
+* `200 Ok`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 * `401 Unauthorized`
-* `404 NotFound`
-[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
+* `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
 ```
