@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.Models;
 using ProjectTisa.Models.Enums;
 
@@ -21,22 +22,22 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <param name="role">Role to set.</param>
         /// <returns>200: message.</returns>
         [HttpPatch("{userId}")]
-        public async Task<ActionResult<string>> SetRole(int userId, [FromBody] RoleType role)
+        public async Task<ActionResult<MessageResponse>> SetRole(int userId, [FromBody] RoleType role)
         {
             User? user = await context.Users.FindAsync(userId);
             if (user == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
-            if(user.Role >= RoleType.Admin || role >= RoleType.Admin || user.Username == User.Identity!.Name)
+            if (user.Role >= RoleType.Admin || role >= RoleType.Admin || user.Username == User.Identity!.Name)
             {
-                return BadRequest(ResAnswers.BadRequest);
+                return BadRequest(new MessageResponse(ResAnswers.BadRequest));
             }
 
             user.Role = role;
             await context.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
     }
 }

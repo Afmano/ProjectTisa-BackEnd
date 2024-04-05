@@ -7,6 +7,7 @@ using Moq;
 using ProjectTisa.Controllers.BusinessControllers.CrudControllers;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.EF;
 using ProjectTisa.Models;
 using ProjectTisa.Models.BusinessLogic;
@@ -31,13 +32,13 @@ namespace ProjectTisa.Tests.Controller
             PaginationRequest paginationRequest = new();
             // Act
             var result = await controller.Get(paginationRequest);
-            var okObjectResult = result.Result as OkObjectResult;
-            var orders = okObjectResult?.Value as List<Order>;
+            var objectResult = result.Result as OkObjectResult;
+            var orders = objectResult?.Value as List<Order>;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult?.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(List<Order>));
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(List<Order>));
             orders!.Count.Should().Be(0);
         }
         [Fact]
@@ -49,14 +50,14 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
-            var notFoundObjectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = notFoundObjectResult?.Value as string;
+            var objectResult = result.Result as NotFoundObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
-            notFoundObjectResult!.Value.Should().NotBeNull();
-            notFoundObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         [Fact]
         public async void Update_WrongOrderId_ReturnNotFound()
@@ -73,14 +74,14 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(user);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(idToRequest, new() { UserId = user.Id, ProductIdQuantities = [new() { ProductId = product.Id, Quantity = 10 }] });//validation attributes ignored here
-            var notFoundObjectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = notFoundObjectResult?.Value as string;
+            var objectResult = result.Result as NotFoundObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
-            notFoundObjectResult!.Value.Should().NotBeNull();
-            notFoundObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         [Fact]
         public async void CompleteOrder_ReturnNotFound()
@@ -91,14 +92,14 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
-            var notFoundObjectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = notFoundObjectResult?.Value as string;
+            var objectResult = result.Result as NotFoundObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
-            notFoundObjectResult!.Value.Should().NotBeNull();
-            notFoundObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         [Fact]
         public async void CancelOrder_ReturnNotFound()
@@ -109,14 +110,14 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = 1;
             // Act
             var result = await controller.CancelOrder(idToRequest);
-            var notFoundObjectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = notFoundObjectResult?.Value as string;
+            var objectResult = result.Result as NotFoundObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
-            notFoundObjectResult!.Value.Should().NotBeNull();
-            notFoundObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         #endregion
         #region Filled
@@ -138,13 +139,13 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Orders.AddRange(orderInProgress, orderCompleted, orderCancelled);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest);
-            var okObjectResult = result.Result as OkObjectResult;
-            var orders = okObjectResult?.Value as List<Order>;
+            var objectResult = result.Result as OkObjectResult;
+            var orders = objectResult?.Value as List<Order>;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult?.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(List<Order>));
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(List<Order>));
             orders!.Count.Should().Be(3);
         }
         [Fact]
@@ -165,13 +166,13 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Orders.AddRange(orderInProgress, orderCompleted, orderCancelled);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest, orderStatusToSearch);
-            var okObjectResult = result.Result as OkObjectResult;
-            var orders = okObjectResult?.Value as List<Order>;
+            var objectResult = result.Result as OkObjectResult;
+            var orders = objectResult?.Value as List<Order>;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult?.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(List<Order>));
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(List<Order>));
             orders!.Count.Should().NotBe(0);
             orders!.First().Status.Should().Be(orderStatusToSearch);
         }
@@ -193,13 +194,13 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Orders.AddRange(orderInProgress, orderCompleted, orderCancelled);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest, orderStatusToSearch);
-            var okObjectResult = result.Result as OkObjectResult;
-            var orders = okObjectResult?.Value as List<Order>;
+            var objectResult = result.Result as OkObjectResult;
+            var orders = objectResult?.Value as List<Order>;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult?.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(List<Order>));
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(List<Order>));
             orders!.Count.Should().NotBe(0);
             orders!.First().Status.Should().Be(orderStatusToSearch);
         }
@@ -221,13 +222,13 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Orders.AddRange(orderInProgress, orderCompleted, orderCancelled);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest, orderStatusToSearch);
-            var okObjectResult = result.Result as OkObjectResult;
-            var orders = okObjectResult?.Value as List<Order>;
+            var objectResult = result.Result as OkObjectResult;
+            var orders = objectResult?.Value as List<Order>;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult?.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(List<Order>));
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(List<Order>));
             orders!.Count.Should().NotBe(0);
             orders!.First().Status.Should().Be(orderStatusToSearch);
         }
@@ -253,13 +254,13 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(order.Id);
-            var okObjectResult = result.Result as OkObjectResult;
-            var resultOrder = okObjectResult?.Value as Order;
+            var objectResult = result.Result as OkObjectResult;
+            var resultOrder = objectResult?.Value as Order;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult!.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(Order));
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(Order));
             resultOrder!.TotalPrice.Should().Be(order.TotalPrice);
         }
         [Fact]
@@ -285,14 +286,14 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(order.Id, new() { UserId = user.Id, ProductIdQuantities = [new() { ProductId = product.Id, Quantity = quantity }] });//validation attributes ignored here
-            var okObjectResult = result.Result as OkObjectResult;
-            var resultMessage = okObjectResult?.Value as string;
+            var objectResult = result.Result as OkObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult!.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.Success);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.Success);
             dbContext.Orders.Find(order.Id)!.ProductQuantities.Sum(x => x.Product.Price * x.Quantity).Should().Be(product.Price * quantity);
         }
         [Fact]
@@ -318,15 +319,15 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(product);
             await dbContext.SaveChangesAsync();
             var result = await controller.Create(new() { UserId = user.Id, ProductIdQuantities = [new() { ProductId = product.Id, Quantity = quantity }] });//validation attributes ignored here
-            var createdResult = result.Result as CreatedResult;
-            var resultMessage = createdResult?.Value as string;
+            var objectResult = result.Result as CreatedResult;
+            var resultMessage = objectResult?.Value as IdResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(CreatedResult));
-            createdResult!.Value.Should().NotBeNull();
-            createdResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.Created);
-            dbContext.Orders.Count().Should().Be(1);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(IdResponse));
+            resultMessage!.Id.Should().Be(dbContext.Orders.Count());
+            dbContext.Orders.Count().Should().NotBe(0);
             dbContext.Orders.FirstOrDefault()!.ProductQuantities.Sum(x => x.Product.Price * x.Quantity).Should().Be(product.Price * quantity);
         }
         [Fact]
@@ -343,14 +344,14 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CompleteOrder(order.Id);
-            var okObjectResult = result.Result as OkObjectResult;
-            var resultMessage = okObjectResult?.Value as string;
+            var objectResult = result.Result as OkObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult!.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.Success);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.Success);
             order.Status.Should().Be(OrderStatus.Completed);
         }
         [Fact]
@@ -375,14 +376,14 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CancelOrder(order.Id);
-            var okObjectResult = result.Result as OkObjectResult;
-            var resultMessage = okObjectResult?.Value as string;
+            var objectResult = result.Result as OkObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult!.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.Success);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.Success);
             order.Status.Should().Be(OrderStatus.Cancelled);
         }
         #endregion
@@ -401,14 +402,14 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CompleteOrder(order.Id);
-            var badRequestObjectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = badRequestObjectResult?.Value as string;
+            var objectResult = result.Result as BadRequestObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
-            badRequestObjectResult!.Value.Should().NotBeNull();
-            badRequestObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         [Fact]
         public async void CancelOrder_ReturnBadRequest()
@@ -432,14 +433,14 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.CancelOrder(order.Id);
-            var badRequestObjectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = badRequestObjectResult?.Value as string;
+            var objectResult = result.Result as BadRequestObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
-            badRequestObjectResult!.Value.Should().NotBeNull();
-            badRequestObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         [Fact]
         public async void Create_ReturnBadRequest()
@@ -460,14 +461,14 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(user);
             await dbContext.SaveChangesAsync();
             var result = await controller.Create(new() { UserId = user.Id, ProductIdQuantities = [] });//validation attributes ignored here
-            var badRequestObjectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = badRequestObjectResult?.Value as string;
+            var objectResult = result.Result as BadRequestObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
-            badRequestObjectResult!.Value.Should().NotBeNull();
-            badRequestObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
             dbContext.Orders.Count().Should().Be(0);
         }
         [Fact]
@@ -492,14 +493,14 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(order);
             await dbContext.SaveChangesAsync();
             var result = await controller.Update(order.Id, new() { UserId = order.User.Id, ProductIdQuantities = [] });//validation attributes ignored here
-            var badRequestObjectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = badRequestObjectResult?.Value as string;
+            var objectResult = result.Result as BadRequestObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
-            badRequestObjectResult!.Value.Should().NotBeNull();
-            badRequestObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         #endregion
         #region Forbid

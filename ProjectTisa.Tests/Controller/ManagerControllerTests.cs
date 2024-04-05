@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using ProjectTisa.Controllers.BusinessControllers.RoleControllers;
 using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.EF;
 using ProjectTisa.Models;
 using ProjectTisa.Models.BusinessLogic;
@@ -39,14 +40,14 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = 1;
             // Act
             var result = await controller.SendNotificationByRole(idToRequest, roleToNotif);
-            var notFoundObjectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = notFoundObjectResult?.Value as string;
+            var objectResult = result.Result as NotFoundObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
-            notFoundObjectResult?.Value.Should().NotBeNull();
-            notFoundObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         [Fact]
         public async void SendNotificationByUsername_ReturnNotFound()
@@ -58,14 +59,14 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = 1;
             // Act
             var result = await controller.SendNotificationByUsername(idToRequest, usernameToNotif);
-            var notFoundObjectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = notFoundObjectResult?.Value as string;
+            var objectResult = result.Result as NotFoundObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
-            notFoundObjectResult?.Value.Should().NotBeNull();
-            notFoundObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         [Fact]
         public async void SendNotificationByEmail_ReturnNotFound()
@@ -77,14 +78,14 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = 1;
             // Act
             var result = await controller.SendNotificationByEmail(idToRequest, emailToNotif);
-            var notFoundObjectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = notFoundObjectResult?.Value as string;
+            var objectResult = result.Result as NotFoundObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
-            notFoundObjectResult?.Value.Should().NotBeNull();
-            notFoundObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         [Fact]
         public async void DetachNotification_ReturnNotFound()
@@ -95,14 +96,14 @@ namespace ProjectTisa.Tests.Controller
             int idToRequest = 1;
             // Act
             var result = await controller.DetachNotification(idToRequest);
-            var notFoundObjectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = notFoundObjectResult?.Value as string;
+            var objectResult = result.Result as NotFoundObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
-            notFoundObjectResult?.Value.Should().NotBeNull();
-            notFoundObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult?.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
         }
         #endregion
         #region Filled
@@ -136,13 +137,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.SendNotificationByRole(notification.Id, roleToNotif);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.Success);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.Success);
             dbContext.Notifications.Find(notification.Id)!.Users.Count.Should().Be(users.Where(u => u.Role == roleToNotif).Count());
         }
         [Fact]
@@ -168,13 +169,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.SendNotificationByUsername(notification.Id, usernameToNotif);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.Success);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.Success);
             dbContext.Notifications.Find(notification.Id)!.Users.First().Should().Be(user);
         }
         [Fact]
@@ -200,13 +201,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.SendNotificationByEmail(notification.Id, emailToNotif);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.Success);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.Success);
             dbContext.Notifications.Find(notification.Id)!.Users.First().Should().Be(user);
         }
         [Fact]
@@ -230,13 +231,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.DetachNotification(notification.Id);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.Success);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.Success);
             dbContext.Notifications.Find(notification.Id)!.Users.Count.Should().Be(0);
         }
         #endregion
@@ -262,13 +263,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.SendNotificationByRole(notification.Id, roleToNotif);
             var objectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullContext);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullContext);
         }
         [Fact]
         public async void SendNotificationByUsername_NoUser_ReturnNotFound()
@@ -293,13 +294,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.SendNotificationByUsername(notification.Id, usernameToNotif);
             var objectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
             dbContext.Notifications.Find(notification.Id)!.Users.Count.Should().Be(0);
         }
         [Fact]
@@ -325,13 +326,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.SendNotificationByEmail(notification.Id, emailToNotif);
             var objectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
             dbContext.Notifications.Find(notification.Id)!.Users.Count.Should().Be(0);
         }
 
@@ -358,13 +359,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.DetachNotification(requestId);
             var objectResult = result.Result as NotFoundObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(NotFoundObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.NotFoundNullEntity);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.NotFoundNullEntity);
             dbContext.Notifications.Find(notification.Id)!.Users.Count.Should().Be(1);
         }
         #endregion

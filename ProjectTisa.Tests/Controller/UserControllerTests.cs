@@ -7,6 +7,7 @@ using ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers;
 using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Exceptions;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.EF;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
@@ -114,13 +115,13 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(user);
             await dbContext.SaveChangesAsync();
             var result = await controller.GetUser();
-            var okObjectResult = result.Result as OkObjectResult;
-            var resultUser = okObjectResult?.Value as User;
+            var objectResult = result.Result as OkObjectResult;
+            var resultUser = objectResult?.Value as User;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult!.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(User));
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(User));
             dbContext.Users.Find(user.Id).Should().Be(user);
             resultUser.Should().Be(user);
         }
@@ -144,15 +145,15 @@ namespace ProjectTisa.Tests.Controller
             dbContext.Add(user);
             await dbContext.SaveChangesAsync();
             var result = await controller.ChangePassword(newPassword);
-            var okObjectResult = result.Result as OkObjectResult;
-            var resultMessage = okObjectResult?.Value as string;
+            var objectResult = result.Result as OkObjectResult;
+            var resultMessage = objectResult?.Value as MessageResponse;
             var newPassHash = AuthTools.HashPasword(newPassword, user.Salt!, _config.Value.AuthData);
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
-            okObjectResult!.Value.Should().NotBeNull();
-            okObjectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage!.Should().Be(ResAnswers.Success);
+            objectResult!.Value.Should().NotBeNull();
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.Success);
             dbContext.Users.Find(user.Id)!.PasswordHash.Should().Be(newPassHash);
         }
         #endregion

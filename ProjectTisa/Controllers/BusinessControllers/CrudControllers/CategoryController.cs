@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
 
@@ -25,46 +26,46 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             Category? item = await context.Categories.FindAsync(id);
             if (item == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             return Ok(item);
         }
         [HttpPost]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Create([FromBody] CategoryCreationReq request)
+        public async Task<ActionResult<IdResponse>> Create([FromBody] CategoryCreationReq request)
         {
             Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
             Category category = new(request, new(User.Identity!.Name!), parentCategory);
             context.Add(category);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, category);
-            return Created($"{HttpContext.Request.GetDisplayUrl()}/{category.Id}", ResAnswers.Created);
+            return Created($"{HttpContext.Request.GetDisplayUrl()}/{category.Id}", new IdResponse(category.Id));
         }
         [HttpDelete("{id}")]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Delete(int id)
+        public async Task<ActionResult<MessageResponse>> Delete(int id)
         {
             Category? item = await context.Categories.FindAsync(id);
             if (item == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             context.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
 
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         [HttpPut("{id}")]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Update(int id, [FromBody] CategoryCreationReq request)
+        public async Task<ActionResult<MessageResponse>> Update(int id, [FromBody] CategoryCreationReq request)
         {
             Category? toEdit = await context.Categories.FindAsync(id);
             if (toEdit == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             Category? parentCategory = await context.Categories.FindAsync(request.ParentCategoryId);
@@ -73,7 +74,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             toEdit.ParentCategory = parentCategory;
             context.Entry(toEdit).CurrentValues.SetValues(fromCategory);
             await context.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
     }
 }

@@ -7,6 +7,7 @@ using ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers;
 using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Requests.UserReq;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.EF;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
@@ -48,13 +49,13 @@ namespace ProjectTisa.Tests.Controller
             // Act
             var result = await controller.CheckIsEmailExist(emailToCheck);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as bool?;
+            var resultMessage = objectResult?.Value as BooleanResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(bool));
-            resultMessage.Should().Be(false);
+            objectResult!.Value.Should().BeOfType(typeof(BooleanResponse));
+            resultMessage!.Result.Should().Be(false);
         }
         [Fact]
         public async void CheckIsUsernameExist_Empty_ReturnFalse()
@@ -66,13 +67,13 @@ namespace ProjectTisa.Tests.Controller
             // Act
             var result = await controller.CheckIsUsernameExist(usernameToCheck);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as bool?;
+            var resultMessage = objectResult?.Value as BooleanResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(bool));
-            resultMessage.Should().Be(false);
+            objectResult!.Value.Should().BeOfType(typeof(BooleanResponse));
+            resultMessage!.Result.Should().Be(false);
         }
         [Fact]
         public async void Registrate_ReturnOk()
@@ -85,13 +86,13 @@ namespace ProjectTisa.Tests.Controller
             EmailSender.Configure(_config.Value.SmtpData);
             var result = await controller.Registrate(userInfo);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as int?;
+            var resultMessage = objectResult?.Value as IdResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(int));
-            resultMessage.Should().Be(dbContext.PendingRegistrations.Count());
+            objectResult!.Value.Should().BeOfType(typeof(IdResponse));
+            resultMessage!.Id.Should().Be(dbContext.PendingRegistrations.Count());
         }
         [Fact]
         public async void Authorize_NoLoginEmail_ReturnBadRequest()
@@ -103,13 +104,13 @@ namespace ProjectTisa.Tests.Controller
             // Act
             var result = await controller.Authorize(userLogin);
             var objectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         [Fact]
         public async void Authorize_NoUser_ReturnBadRequest()
@@ -121,13 +122,13 @@ namespace ProjectTisa.Tests.Controller
             // Act
             var result = await controller.Authorize(userLogin);
             var objectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         [Fact]
         public async void Verify_NoRequest_ReturnBadRequest()
@@ -140,13 +141,13 @@ namespace ProjectTisa.Tests.Controller
             // Act
             var result = await controller.Verify(idToRequest, code);
             var objectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         #endregion
         #region Filled
@@ -167,11 +168,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.Authorize(userLogin);
             var objectResult = result.Result as OkObjectResult;
+            var tokenResult = objectResult?.Value as TokenResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
+            objectResult!.Value.Should().BeOfType(typeof(TokenResponse));
+            tokenResult!.Token.Should().NotBeNull();
         }
         [Fact]
         public async void Verify_ReturnOk()
@@ -191,7 +194,7 @@ namespace ProjectTisa.Tests.Controller
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
+            objectResult!.Value.Should().BeOfType(typeof(TokenResponse));
             dbContext.Users.First().Username.Should().Be(username);
         }
         #endregion
@@ -209,13 +212,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.CheckIsEmailExist(emailToCheck);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as bool?;
+            var resultMessage = objectResult?.Value as BooleanResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(bool));
-            resultMessage.Should().Be(false);
+            objectResult!.Value.Should().BeOfType(typeof(BooleanResponse));
+            resultMessage!.Result.Should().Be(false);
         }
         [Fact]
         public async void CheckIsUsernameExist_Filled_ReturnFalse()
@@ -230,13 +233,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.CheckIsUsernameExist(usernameToCheck);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as bool?;
+            var resultMessage = objectResult?.Value as BooleanResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(bool));
-            resultMessage.Should().Be(false);
+            objectResult!.Value.Should().BeOfType(typeof(BooleanResponse));
+            resultMessage!.Result.Should().Be(false);
         }
         [Fact]
         public async void CheckIsEmailExist_Filled_ReturnTrue()
@@ -251,13 +254,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.CheckIsEmailExist(emailToCheck);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as bool?;
+            var resultMessage = objectResult?.Value as BooleanResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(bool));
-            resultMessage.Should().Be(true);
+            objectResult!.Value.Should().BeOfType(typeof(BooleanResponse));
+            resultMessage!.Result.Should().Be(true);
         }
         [Fact]
         public async void CheckIsUsernameExist_Filled_ReturnTrue()
@@ -272,13 +275,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.CheckIsUsernameExist(usernameToCheck);
             var objectResult = result.Result as OkObjectResult;
-            var resultMessage = objectResult?.Value as bool?;
+            var resultMessage = objectResult?.Value as BooleanResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(bool));
-            resultMessage.Should().Be(true);
+            objectResult!.Value.Should().BeOfType(typeof(BooleanResponse));
+            resultMessage!.Result.Should().Be(true);
         }
         [Fact]
         #endregion Bool
@@ -297,13 +300,13 @@ namespace ProjectTisa.Tests.Controller
             EmailSender.Configure(_config.Value.SmtpData);
             var result = await controller.Registrate(userInfo);
             var objectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.EmailUsernameExist);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.EmailUsernameExist);
         }
         [Fact]
         public async void Registrate_UsernameExist_ReturnBadRequest()
@@ -320,13 +323,13 @@ namespace ProjectTisa.Tests.Controller
             EmailSender.Configure(_config.Value.SmtpData);
             var result = await controller.Registrate(userInfo);
             var objectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.EmailUsernameExist);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.EmailUsernameExist);
         }
         [Fact]
         public async void Verify_WrongCode_ReturnBadRequest()
@@ -340,13 +343,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.Verify(pendingRegistration.Id, "2");
             var objectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         [Fact]
         public async void Verify_Expired_ReturnBadRequest()
@@ -361,13 +364,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.Verify(pendingRegistration.Id, code);
             var objectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         [Fact]
         public async void Authorize_WrongPass_ReturnBadRequest()
@@ -383,13 +386,13 @@ namespace ProjectTisa.Tests.Controller
             await dbContext.SaveChangesAsync();
             var result = await controller.Authorize(userLogin);
             var objectResult = result.Result as BadRequestObjectResult;
-            var resultMessage = objectResult?.Value as string;
+            var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(string));
-            resultMessage.Should().Be(ResAnswers.BadRequest);
+            objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
+            resultMessage!.Message.Should().Be(ResAnswers.BadRequest);
         }
         #endregion
         #endregion

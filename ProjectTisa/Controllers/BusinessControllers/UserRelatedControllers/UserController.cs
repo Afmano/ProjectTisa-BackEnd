@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ProjectTisa.Controllers.GeneralData.Configs;
+using ProjectTisa.Controllers.GeneralData.Consts;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.Controllers.GeneralData.Validation.Attributes;
 using ProjectTisa.Libs;
 using ProjectTisa.Models;
@@ -33,12 +35,12 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
         /// <param name="password">Password in string format.</param>
         /// <returns>200: message.</returns>
         [HttpPost("ChangePassword")]
-        public async Task<ActionResult<string>> ChangePassword([StringRequirements][FromBody] string password)
+        public async Task<ActionResult<MessageResponse>> ChangePassword([StringRequirements(regularExpression: ValidationConst.REGEX_PASSWORD)][FromBody] string password)
         {
             User user = await GetCurrentUser();
             user.PasswordHash = AuthTools.HashPasword(password, user.Salt!, config.Value.AuthData);
             await context.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         /// <summary>
         /// Currently in development.
