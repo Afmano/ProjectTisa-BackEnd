@@ -4,8 +4,14 @@ Early development of API.
 
 ## Controllers
 ### ManageControllers
-[AdminController](/ProjectTisa.Docs/ManageControllers/AdminController.md)
-[ManagerController](/ProjectTisa.Docs/ManageControllers/ManagerController.md)
-### UserRelatedController
-[AuthController](/ProjectTisa.Docs/UserRelatedController/AuthController.md)
-[UserController](/ProjectTisa.Docs/UserRelatedController/UserController.md)
+* [AdminController](/ProjectTisa.Docs/ManageControllers/AdminController.md)
+* [ManagerController](/ProjectTisa.Docs/ManageControllers/ManagerController.md)
+### UserRelatedControllers
+* [AuthController](/ProjectTisa.Docs/UserRelatedController/AuthController.md)
+* [UserController](/ProjectTisa.Docs/UserRelatedController/UserController.md)
+### CrudControllers
+* [CategoryController](/ProjectTisa.Docs/CrudControllers/CategoryController.md)
+* [DiscountController](/ProjectTisa.Docs/CrudControllers/DiscountController.md)
+* [NotificationController](/ProjectTisa.Docs/CrudControllers/NotificationController.md)
+* [OrderController](/ProjectTisa.Docs/CrudControllers/OrderController.md)
+* [ProductController](/ProjectTisa.Docs/CrudControllers/ProductController.md)
