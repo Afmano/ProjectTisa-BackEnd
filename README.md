@@ -1,7 +1,7 @@
 # ProjectTisa
-![C#](https://img.shields.io/badge/c%23-%23239120.svg?logo=csharp&logoColor=white)
-![.Net](https://img.shields.io/badge/.NET-5C2D91?logo=.net&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white)
+[![C#](https://img.shields.io/badge/c%23-%23239120.svg?logo=csharp&logoColor=white)](#)
+[![.Net](https://img.shields.io/badge/.NET-5C2D91?logo=.net&logoColor=white)](#)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white)](#)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Fetu56/ProjectTisa-BackEnd/blob/dev/LICENSE.txt)
 
 **Learnin project.**
