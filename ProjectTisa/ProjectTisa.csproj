@@ -63,4 +63,12 @@
     <Using Include="ProjectTisa.EF" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="ProjectTisa.EF" />
+  </ItemGroup>
+
 </Project>

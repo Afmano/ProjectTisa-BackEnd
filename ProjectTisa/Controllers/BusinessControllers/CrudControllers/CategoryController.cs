@@ -55,7 +55,6 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             context.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
-
             return Ok(new MessageResponse(ResAnswers.Success));
         }
         [HttpPut("{id}")]

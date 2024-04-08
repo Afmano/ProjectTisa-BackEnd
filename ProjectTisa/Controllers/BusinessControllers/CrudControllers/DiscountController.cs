@@ -66,6 +66,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             if (toEdit == null)
             {
                 return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
+
             }
 
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();

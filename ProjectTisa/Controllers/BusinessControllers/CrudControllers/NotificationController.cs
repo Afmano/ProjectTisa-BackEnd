@@ -71,6 +71,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
         [HttpPut]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<MessageResponse>> Update(int id, [FromBody] NotificationCreationReq request)
+
         {
             Notification? toEdit = await context.Notifications.FindAsync(id);
             if (toEdit == null)
