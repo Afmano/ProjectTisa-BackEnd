@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using ProjectTisa.Controllers.GeneralData.Configs;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -19,15 +20,16 @@ namespace ProjectTisa.Libs
         /// <param name="user"><see cref="User"/> entity.</param>
         /// <param name="authData">Configuration data for auth.</param>
         /// <returns>JWT token.</returns>
-        public static string CreateToken(User user, AuthData authData)
+        public static TokenResponse CreateToken(User user, AuthData authData)
         {
             SymmetricSecurityKey symKey = new(Encoding.UTF8.GetBytes(authData.IssuerSigningKey));
             SigningCredentials credentials = new(symKey, SecurityAlgorithms.HmacSha256);
+            DateTime expireDateTime = DateTime.UtcNow.Add(authData.ExpirationTime);
             JwtSecurityToken token = new(
                 issuer: authData.Issuer, audience: authData.Audience,
                 claims: [new Claim(ClaimTypes.Name, user.Username), new Claim(ClaimTypes.Email, user.Email), new Claim(ClaimTypes.Role, user.Role.ToString())],
-                expires: DateTime.UtcNow.Add(authData.ExpirationTime), signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                expires: expireDateTime, signingCredentials: credentials);
+            return new(new JwtSecurityTokenHandler().WriteToken(token), expireDateTime);
         }
         /// <summary>
         /// Create random salt form hashing password.

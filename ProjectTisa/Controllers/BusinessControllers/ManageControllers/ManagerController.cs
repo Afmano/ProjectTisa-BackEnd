@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Consts;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.Models;
 using ProjectTisa.Models.BusinessLogic;
 using ProjectTisa.Models.Enums;
@@ -38,24 +39,24 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <param name="userRole">Role of users for notificate.</param>
         /// <returns>200: message.</returns>
         [HttpPatch("SendNotificationByRole")]
-        public async Task<ActionResult<string>> SendNotificationByRole(int notificationId, RoleType userRole)
+        public async Task<ActionResult<MessageResponse>> SendNotificationByRole(int notificationId, RoleType userRole)
         {
             Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
-            if(notification == null)
+            if (notification == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             List<User> usersToNotificate = [.. _mainDbContext.Users.Where(user => user.Role == userRole)];
             if (usersToNotificate.Count == 0)
             {
-                return NotFound(ResAnswers.NotFoundNullContext);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullContext));
             }
 
             notification.EditInfo.Modify(User.Identity!.Name!);
             notification.Users.AddRange(usersToNotificate);
             await _mainDbContext.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         /// <summary>
         /// Send <see cref="Notification"/> for user by username.
@@ -64,24 +65,24 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <param name="username">Username of user for notificate.</param>
         /// <returns>200: message.</returns>
         [HttpPatch("SendNotificationByUsername")]
-        public async Task<ActionResult<string>> SendNotificationByUsername(int notificationId, string username)
+        public async Task<ActionResult<MessageResponse>> SendNotificationByUsername(int notificationId, string username)
         {
             Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
             if (notification == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             User? userToNotificate = await _mainDbContext.Users.FirstOrDefaultAsync(user => user.Username == username);
             if (userToNotificate == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             notification.EditInfo.Modify(User.Identity!.Name!);
             notification.Users.Add(userToNotificate);
             await _mainDbContext.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         /// <summary>
         /// Send <see cref="Notification"/> for user by email.
@@ -90,43 +91,43 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// <param name="email">Email of user for notificate.</param>
         /// <returns>200: message.</returns>
         [HttpPatch("SendNotificationByEmail")]
-        public async Task<ActionResult<string>> SendNotificationByEmail(int notificationId, string email)
+        public async Task<ActionResult<MessageResponse>> SendNotificationByEmail(int notificationId, string email)
         {
             Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
             if (notification == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             User? userToNotificate = await _mainDbContext.Users.FirstOrDefaultAsync(user => user.Email == email);
             if (userToNotificate == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             notification.EditInfo.Modify(User.Identity!.Name!);
             notification.Users.Add(userToNotificate);
             await _mainDbContext.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         /// <summary>
-        /// Detach all users from selected notification.
+        /// Detach all users from selected <see cref="Notification"/>>.
         /// </summary>
         /// <param name="notificationId">Id of notification to edit.</param>
         /// <returns>200: message.</returns>
         [HttpPatch("DetachNotification")]
-        public async Task<ActionResult<string>> DetachNotification(int notificationId)
+        public async Task<ActionResult<MessageResponse>> DetachNotification(int notificationId)
         {
             Notification? notification = await _mainDbContext.Notifications.FindAsync(notificationId);
             if (notification == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             notification.EditInfo.Modify(User.Identity!.Name!);
             notification.Users.Clear();
             await _mainDbContext.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         #endregion
         #region File
@@ -135,6 +136,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
         /// </summary>
         /// <returns>200: <c>IpfsHash</c> to resource.</returns>
         [HttpPost("LoadFile")]
+        [Produces("application/json")]
         [RequestFormLimits(MultipartBodyLengthLimit = ValidationConst.MAX_FILE_SIZE)]
         public async Task<ActionResult<string>> LoadFile(IFormFile file)
         {
@@ -143,17 +145,18 @@ namespace ProjectTisa.Controllers.BusinessControllers.RoleControllers
                 { new StreamContent(file.OpenReadStream()), file.Name, file.FileName }
             };
             HttpResponseMessage response = await _client.PostAsync(_externalStorage.PostUrl, content);
-            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            return StatusCode((int)response.StatusCode, new { response = await response.Content.ReadAsStringAsync() });
         }
         /// <summary>
         /// Get list of files from external storage.
         /// </summary>
         /// <returns>200: json with files data.</returns>
         [HttpGet("GetFiles")]
+        [Produces("application/json")]
         public async Task<ActionResult<string>> GetFiles()
         {
             HttpResponseMessage response = await _client.GetAsync(_externalStorage.GetUrl);
-            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            return StatusCode((int)response.StatusCode, new { response = await response.Content.ReadAsStringAsync() });
         }
         #endregion
     }

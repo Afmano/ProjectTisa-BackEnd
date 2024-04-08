@@ -6,6 +6,7 @@ using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
+using ProjectTisa.Controllers.GeneralData.Responses;
 
 namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 {
@@ -25,7 +26,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             Product? item = await context.Products.FindAsync(id);
             if (item == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             return Ok(item);
@@ -35,51 +36,51 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             Ok(await Task.Run(() => context.Products.Where(product => product.Category.Id == categoryId || product.Category.Name == categoryName).ToList()));
         [HttpPost]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Create([FromBody] ProductCreationReq request)
+        public async Task<ActionResult<IdResponse>> Create([FromBody] ProductCreationReq request)
         {
             Discount? discount = await context.Discounts.FindAsync(request.DiscountId);
             Category? category = await context.Categories.FindAsync(request.CategoryId);
             if (category == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             Product product = new(request, new(User.Identity!.Name!), category, discount);
             context.Add(product);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, product);
-            return Created($"{HttpContext.Request.GetDisplayUrl()}/{product.Id}", ResAnswers.Created);
+            return Created($"{HttpContext.Request.GetDisplayUrl()}/{product.Id}", new IdResponse(product.Id));
         }
         [HttpDelete("{id}")]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Delete(int id)
+        public async Task<ActionResult<MessageResponse>> Delete(int id)
         {
             Product? item = await context.Products.FindAsync(id);
             if (item == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             context.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         [HttpPut("{id}")]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Update(int id, [FromBody] ProductCreationReq request)
+        public async Task<ActionResult<MessageResponse>> Update(int id, [FromBody] ProductCreationReq request)
         {
             Product? toEdit = await context.Products.FindAsync(id);
             if (toEdit == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             Discount? discount = await context.Discounts.FindAsync(request.DiscountId);
             Category? category = await context.Categories.FindAsync(request.CategoryId);
             if (category == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             toEdit.EditInfo.Modify(User.Identity!.Name!);
@@ -88,7 +89,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             toEdit.Category = category;
             context.Entry(toEdit).CurrentValues.SetValues(fromProduct);
             await context.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
     }
 }

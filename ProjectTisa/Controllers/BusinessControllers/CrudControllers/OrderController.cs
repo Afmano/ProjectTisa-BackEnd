@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ProjectTisa.Controllers.GeneralData.Requests.CreationReq;
 using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
@@ -9,6 +8,7 @@ using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
 using ProjectTisa.Models;
 using ProjectTisa.Models.Enums;
+using ProjectTisa.Controllers.GeneralData.Responses;
 
 namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 {
@@ -31,7 +31,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             Order? item = await context.Orders.FindAsync(id);
             if (item == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             if (item.User.Username != User.Identity!.Name! && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
@@ -43,12 +43,12 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
         }
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<string>> Create([FromBody] OrderCreationReq request)
+        public async Task<ActionResult<IdResponse>> Create([FromBody] OrderCreationReq request)
         {
             User? user = await context.Users.FindAsync(request.UserId);
             if (user == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             if (user.Username != User.Identity!.Name)
@@ -58,7 +58,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 
             if (request.ProductIdQuantities.Count == 0)
             {
-                return BadRequest(ResAnswers.BadRequest);
+                return BadRequest(new MessageResponse(ResAnswers.BadRequest));
             }
 
             List<Product> productsInOrder = context.Products.AsEnumerable().Where(p => request.ProductIdQuantities.Any(pq => pq.ProductId.Equals(p.Id))).ToList();
@@ -75,27 +75,27 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             context.Add(order);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, order);
-            return Created($"{HttpContext.Request.GetDisplayUrl()}/{order.Id}", ResAnswers.Created);
+            return Created($"{HttpContext.Request.GetDisplayUrl()}/{order.Id}", new IdResponse(order.Id));
         }
         [HttpPut("{id}")]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Update(int id, [FromBody] OrderCreationReq request)
+        public async Task<ActionResult<MessageResponse>> Update(int id, [FromBody] OrderCreationReq request)
         {
             User? user = await context.Users.FindAsync(request.UserId);
             if (user == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             Order? toEdit = await context.Orders.FindAsync(id);
             if (toEdit == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             if (request.ProductIdQuantities.Count == 0 || toEdit.User.Id != request.UserId)
             {
-                return BadRequest(ResAnswers.BadRequest);
+                return BadRequest(new MessageResponse(ResAnswers.BadRequest));
             }
 
             IEnumerable<Product> productsInOrder = context.Products.AsEnumerable().Where(p => request.ProductIdQuantities.Any(pq => pq.ProductId.Equals(p.Id)));
@@ -114,40 +114,40 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             toEdit.User = user;
             context.Entry(toEdit).CurrentValues.SetValues(fromOrder);
             await context.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         [HttpPatch("CompleteOrder")]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> CompleteOrder(int id)
+        public async Task<ActionResult<MessageResponse>> CompleteOrder(int id)
         {
             Order? order = await context.Orders.FindAsync(id);
             if (order == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             if (order.Status != OrderStatus.InProgress)
             {
-                return BadRequest(ResAnswers.BadRequest);
+                return BadRequest(new MessageResponse(ResAnswers.BadRequest));
             }
 
             order.Status = OrderStatus.Completed;
             await context.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         [HttpPatch("CancelOrder")]
         [Authorize]
-        public async Task<ActionResult<string>> CancelOrder(int id)
+        public async Task<ActionResult<MessageResponse>> CancelOrder(int id)
         {
             Order? order = await context.Orders.FindAsync(id);
             if (order == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             if (order.Status != OrderStatus.InProgress)
             {
-                return BadRequest(ResAnswers.BadRequest);
+                return BadRequest(new MessageResponse(ResAnswers.BadRequest));
             }
 
             if (order.User.Username != User.Identity!.Name && !(await _authorizationService.AuthorizeAsync(User, "manage")).Succeeded)
@@ -157,7 +157,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 
             order.Status = OrderStatus.Cancelled;
             await context.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
     }
 }

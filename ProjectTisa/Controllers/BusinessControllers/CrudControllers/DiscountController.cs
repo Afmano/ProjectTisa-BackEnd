@@ -7,6 +7,7 @@ using ProjectTisa.Controllers.GeneralData.Requests;
 using ProjectTisa.Controllers.GeneralData.Resources;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.BusinessLogic;
+using ProjectTisa.Controllers.GeneralData.Responses;
 
 namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
 {
@@ -26,45 +27,46 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             Discount? item = await context.Discounts.FindAsync(id);
             if (item == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             return Ok(item);
         }
         [HttpPost]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Create([FromBody] DiscountCreationReq request)
+        public async Task<ActionResult<IdResponse>> Create([FromBody] DiscountCreationReq request)
         {
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
             Discount discount = new(request, new(User.Identity!.Name!), products);
             context.Add(discount);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, discount);
-            return Created($"{HttpContext.Request.GetDisplayUrl()}/{discount.Id}", ResAnswers.Created);
+            return Created($"{HttpContext.Request.GetDisplayUrl()}/{discount.Id}", new IdResponse(discount.Id));
         }
         [HttpDelete("{id}")]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Delete(int id)
+        public async Task<ActionResult<MessageResponse>> Delete(int id)
         {
             Discount? item = await context.Discounts.FindAsync(id);
             if (item == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
             }
 
             context.Remove(item);
             await context.SaveChangesAsync();
             LogMessageCreator.DeletedMessage(logger, item);
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
         [HttpPut("{id}")]
         [Authorize(Policy = "manage")]
-        public async Task<ActionResult<string>> Update(int id, [FromBody] DiscountCreationReq request)
+        public async Task<ActionResult<MessageResponse>> Update(int id, [FromBody] DiscountCreationReq request)
         {
             Discount? toEdit = await context.Discounts.FindAsync(id);
             if (toEdit == null)
             {
-                return NotFound(ResAnswers.NotFoundNullEntity);
+                return NotFound(new MessageResponse(ResAnswers.NotFoundNullEntity));
+
             }
 
             List<Product> products = await context.Products.Where(prd => request.ProductIds.Contains(prd.Id)).ToListAsync();
@@ -73,7 +75,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             toEdit.Products = products;
             context.Entry(toEdit).CurrentValues.SetValues(fromDiscount);
             await context.SaveChangesAsync();
-            return Ok(ResAnswers.Success);
+            return Ok(new MessageResponse(ResAnswers.Success));
         }
     }
 }

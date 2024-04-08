@@ -7,6 +7,7 @@ using NReco.Logging.File;
 using ProjectTisa.Controllers.GeneralData.Configs;
 using ProjectTisa.Controllers.GeneralData.Exceptions;
 using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.Controllers.GeneralData.Responses;
 using ProjectTisa.Libs;
 using ProjectTisa.Models.Enums;
 using System.Text;
@@ -103,11 +104,11 @@ app.UseExceptionHandler(c => c.Run(async context =>
     if (exception is ControllerException)
     {
         context.Response.StatusCode = 400;
-        await context.Response.WriteAsJsonAsync(exception.Message);
+        await context.Response.WriteAsJsonAsync(new MessageResponse( exception.Message ));
     }
     else
     {
-        await context.Response.WriteAsJsonAsync(ResAnswers.Error);
+        await context.Response.WriteAsJsonAsync(new MessageResponse( ResAnswers.Error ));
     }
 
 }));
