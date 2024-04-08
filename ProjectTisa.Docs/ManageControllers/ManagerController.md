@@ -10,7 +10,7 @@ Send `Notification` for `Users` by [role](../../ProjectTisa/Models/Enums/RoleTyp
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -23,7 +23,7 @@ Send `Notification` for `User` by username.<br>Return message.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -36,7 +36,7 @@ Send `Notification` for `User` by email.<br>Return message.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -49,7 +49,7 @@ Detach all `Users` from selected `Notification`.<br>Return message.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -65,7 +65,7 @@ Load file to server external storage.<br>Return **IpfsHash** with info.
 * `401 Unauthorized`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "IpfsHash": "Qmetf8kQ2Lvoe31S36cxcvuPhysET35cQGhEcVPJDHSjT7",
   "PinSize": 71057,
@@ -80,7 +80,7 @@ Get list of files from external storage.<br>Return message.
 * `401 Unauthorized`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "count": 1,
   "rows": [

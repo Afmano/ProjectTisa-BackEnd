@@ -8,7 +8,7 @@ Return collection of `Categories`.
 * `200 Ok`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 [
  {
     "id": 1,
@@ -32,7 +32,7 @@ Return `Category` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
  {
     "id": 1,
     "name": "Category",
@@ -56,7 +56,7 @@ Create `Category` by [CategoryCreationReq](../../ProjectTisa/Controllers/General
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -69,7 +69,7 @@ Delete `Category` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -83,7 +83,7 @@ Update `Category` by id with [CategoryCreationReq](../../ProjectTisa/Controllers
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }

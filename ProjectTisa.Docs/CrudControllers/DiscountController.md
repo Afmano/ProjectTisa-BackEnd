@@ -8,7 +8,7 @@ Return collection of `Discounts`.
 * `200 Ok`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 [
  {
     "id": 1,
@@ -31,7 +31,7 @@ Return `Discount` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
     "id": 1,
     "name": "Discount",
@@ -53,7 +53,7 @@ Create `Discount` by [DiscountCreationReq](../../ProjectTisa/Controllers/General
 * `401 Unauthorized`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -66,7 +66,7 @@ Delete `Discount` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -80,7 +80,7 @@ Update `Discount` by id with [DiscountCreationReq](../../ProjectTisa/Controllers
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }

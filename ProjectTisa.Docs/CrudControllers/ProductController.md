@@ -8,7 +8,7 @@ Return collection of `Products`.
 * `200 Ok`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 [
  {
     "id": 1,
@@ -45,7 +45,7 @@ Return `Product` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
  {
     "id": 1,
     "name": "Test Product",
@@ -79,7 +79,7 @@ Return `Product` by [Category](../../ProjectTisa/Models/BusinessLogic/Category.c
 * `200 Ok`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 [
  {
     "id": 1,
@@ -118,7 +118,7 @@ Create `Product` by [ProductCreationReq](../../ProjectTisa/Controllers/GeneralDa
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -131,7 +131,7 @@ Delete `Product` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -145,7 +145,7 @@ Update `Product` by id with [ProductCreationReq](../../ProjectTisa/Controllers/G
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }

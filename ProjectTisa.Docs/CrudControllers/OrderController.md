@@ -1,7 +1,7 @@
 # [OrderController](../../ProjectTisa/Controllers/BusinessControllers/CrudControllers/OrderController.cs)
 CRUD controller for [Order](../../ProjectTisa/Models/BusinessLogic/Order.cs).
 > [!IMPORTANT]
-> Require Authorization header. **Some** methods only by `Manage` policy
+> Require Authorization header. **Some** methods only by `Manage` policy.
 ## `Get` 
 Return collection of `Orders`.
 #### Potential responses:
@@ -9,7 +9,7 @@ Return collection of `Orders`.
 * `401 Unauthorized`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 [
  {
     "id": 1,
@@ -36,7 +36,7 @@ Return `Order` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
     "id": 1,
     "user": { },
@@ -62,7 +62,7 @@ Create `Order` by [OrderCreationReq](../../ProjectTisa/Controllers/GeneralData/R
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -76,7 +76,7 @@ Update `Order` by id with [OrderCreationReq](../../ProjectTisa/Controllers/Gener
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -90,7 +90,7 @@ Set `Order` status to `Completed` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -105,7 +105,7 @@ Set `Order` status to `Cancelled` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }

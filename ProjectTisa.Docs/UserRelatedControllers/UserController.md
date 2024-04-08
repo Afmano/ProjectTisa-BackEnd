@@ -11,7 +11,7 @@ Return current `User`.
 * `401 Unauthorized`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "id": 0,
   "username": "string",
@@ -29,7 +29,7 @@ Change `User's` password using same salt.<br>Return message.
 * `401 Unauthorized`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }

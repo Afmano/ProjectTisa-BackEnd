@@ -11,7 +11,7 @@ Set [role](../../ProjectTisa/Models/Enums/RoleType.cs) to `User`. Can't interact
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }

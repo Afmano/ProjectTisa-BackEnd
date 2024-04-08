@@ -1,7 +1,7 @@
 # [NotificationController](../../ProjectTisa/Controllers/BusinessControllers/CrudControllers/NotificationController.cs)
 CRUD controller for [Notification](../../ProjectTisa/Models/BusinessLogic/Notification.cs).
 > [!IMPORTANT]
-> Require Authorization header. **Some** methods only by `Manage` policy
+> Require Authorization header. **Some** methods only by `Manage` policy.
 ## `Get` 
 Return collection of `Notifications`.
 #### Potential responses:
@@ -9,7 +9,7 @@ Return collection of `Notifications`.
 * `401 Unauthorized`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 [
  {
     "id": 1,
@@ -34,7 +34,7 @@ Return `Notification` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
     "id": 1,
     "caption": "Notif caption",
@@ -56,7 +56,7 @@ Create `Notification` by [NotificationCreationReq](../../ProjectTisa/Controllers
 * `401 Unauthorized`
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -69,7 +69,7 @@ Delete `Notification` by id.
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
@@ -83,7 +83,7 @@ Update `Notification` by id with [NotificationCreationReq](../../ProjectTisa/Con
 * `404 NotFound`<br>[MessageResponse](../../ProjectTisa/Controllers/GeneralData/Responses/MessageResponse.cs)
 ### Success example result:
 Content type: `application/json`
-```
+```json
 {
   "message": "Request handled successfully."
 }
