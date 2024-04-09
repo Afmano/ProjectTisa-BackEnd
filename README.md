@@ -4,7 +4,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white)](#)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Fetu56/ProjectTisa-BackEnd/blob/dev/LICENSE.txt)
 
-**Learnin project.**
+**Learning project.**
 API for online shop with authorization.
 
 Using **Entity Framework** as ORM for access databases:
@@ -77,8 +77,8 @@ For successful usage of project need to set up `appsettings.json` configuration 
 }
 ```
 `**` has to be changed.
-## Code-first database creation
-For Code-first approach with Entity Framework use following steps:
+## [Code-first](https://www.entityframeworktutorial.net/code-first/what-is-code-first.aspx) database creation
+For [Code-first](https://www.entityframeworktutorial.net/code-first/what-is-code-first.aspx) approach with Entity Framework use following steps:
 1. Open Package Manager Console in VS.
 2. Run `PM> add-migration Initial`
 3. Run `PM> update-database Initial`
