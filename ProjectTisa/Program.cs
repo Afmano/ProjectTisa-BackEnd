@@ -39,7 +39,6 @@ builder.Services.AddSwaggerGen(setup =>
               Scheme = "oauth2",
               Name = "Bearer",
               In = ParameterLocation.Header,
-
             },
             new List<string>()
           }
@@ -104,11 +103,11 @@ app.UseExceptionHandler(c => c.Run(async context =>
     if (exception is ControllerException)
     {
         context.Response.StatusCode = 400;
-        await context.Response.WriteAsJsonAsync(new MessageResponse( exception.Message ));
+        await context.Response.WriteAsJsonAsync(new MessageResponse(exception.Message));
     }
     else
     {
-        await context.Response.WriteAsJsonAsync(new MessageResponse( ResAnswers.Error ));
+        await context.Response.WriteAsJsonAsync(new MessageResponse(ResAnswers.Error));
     }
 
 }));

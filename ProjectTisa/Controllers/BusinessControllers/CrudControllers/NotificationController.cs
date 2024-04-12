@@ -68,7 +68,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             LogMessageCreator.DeletedMessage(logger, item);
             return Ok(new MessageResponse(ResAnswers.Success));
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<MessageResponse>> Update(int id, [FromBody] NotificationCreationReq request)
 

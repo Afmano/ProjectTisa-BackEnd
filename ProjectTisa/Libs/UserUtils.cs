@@ -5,6 +5,9 @@ using ProjectTisa.Models;
 
 namespace ProjectTisa.Libs
 {
+    /// <summary>
+    /// Class about external methods to <see cref="User"/>.
+    /// </summary>
     public class UserUtils
     {
 
