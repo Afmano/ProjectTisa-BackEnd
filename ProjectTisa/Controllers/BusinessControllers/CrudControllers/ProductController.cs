@@ -19,7 +19,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive = true) =>
-            Ok(await request.ApplyRequest(context.Products.OrderBy(on => on.Id).Where(x => x.IsAvailable || !onlyActive)));
+            Ok(await request.ApplyRequestAsync(context.Products.OrderBy(on => on.Id).Where(x => x.IsAvailable || !onlyActive)));
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id)
         {

@@ -11,7 +11,7 @@ namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
     /// </summary>
     public record ProductCreationReq
     {
-        [StringRequirements]
+        [StringRequirements(regularExpression: ValidationConst.REGEX_NUM_SYMBS_SPACE)]
         public required string Name { get; set; }
         [Url]
         [StringRequirements(StringMaxLengthType.Domain, ValidationConst.NO_REGEX)]

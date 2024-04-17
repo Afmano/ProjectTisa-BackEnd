@@ -8,7 +8,7 @@ namespace ProjectTisa.Controllers.GeneralData.Requests.UserReq
     /// <summary>
     /// Request for creating user. Contains <c>Username</c>, <c>Password</c> and <c>Email</c>.
     /// </summary>
-    public record class UserInfoReq
+    public record UserInfoReq
     {
         [StringRequirements(StringMaxLengthType.Username)]
         public required string Username { get; set; }

@@ -20,7 +20,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Discount>>> Get([FromQuery] PaginationRequest request) =>
-            Ok(await request.ApplyRequest(context.Discounts.OrderBy(on => on.Id)));
+            Ok(await request.ApplyRequestAsync(context.Discounts.OrderBy(on => on.Id)));
         [HttpGet("{id}")]
         public async Task<ActionResult<Discount>> Get(int id)
         {

@@ -38,6 +38,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
                 return BadRequest(new MessageResponse(ResAnswers.BadRequest));
             }
 
+            LogMessageCreator.TokenGranted(logger, user);
             return Ok(AuthTools.CreateToken(user, _authData));
         }
         /// <summary>
@@ -53,7 +54,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
         [HttpGet("CheckIsUsernameExist")]
         public async Task<ActionResult<BooleanResponse>> CheckIsUsernameExist(string username) => Ok(new BooleanResponse(await IsUsernameExist(username)));
         /// <summary>
-        /// Registrate new user at database's <b>PendingRegistration</b>, using request: <seealso cref="UserInfoReq"/>.
+        /// Registrate new user at database's <b>PendingRegistration</b>, using request: <see cref="UserInfoReq"/>.
         /// <para>See <seealso cref="Verify"/>.</para>
         /// </summary>
         /// <param name="userCreation">Data for new <see cref="User"/> creation.</param>
@@ -95,6 +96,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.UserRelatedControllers
             context.Remove(request);
             await context.SaveChangesAsync();
             LogMessageCreator.CreatedMessage(logger, user);
+            LogMessageCreator.TokenGranted(logger, user);
             return Ok(AuthTools.CreateToken(user, _authData));
         }
         /// <summary>

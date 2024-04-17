@@ -12,22 +12,12 @@ namespace ProjectTisa.Controllers.GeneralData.Requests
         private int _pageSize = 10;
         public int PageSize
         {
-            get
-            {
-                return _pageSize;
-            }
-            set
-            {
-                _pageSize = (value > ValidationConst.MAX_PAGE_SIZE) ? ValidationConst.MAX_PAGE_SIZE : value;
-            }
+            get => _pageSize;
+            set => _pageSize = (value > ValidationConst.MAX_PAGE_SIZE) ? ValidationConst.MAX_PAGE_SIZE : value;
         }
-        public async Task<List<T>> ApplyRequest<T>(IQueryable<T> collection)
-        {
-            return await collection.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToListAsync();
-        }
-        public async Task<List<T>> ApplyRequest<T>(IEnumerable<T> collection)
-        {
-            return await Task.Run(() => collection.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList());
-        }
+        public async Task<List<T>> ApplyRequestAsync<T>(IQueryable<T> collection) =>
+            await collection.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToListAsync();
+        public List<T> ApplyRequest<T>(IEnumerable<T> collection) =>
+            collection.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
     }
 }

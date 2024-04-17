@@ -1,7 +1,7 @@
 ﻿namespace ProjectTisa.Controllers.GeneralData.Responses
 {
-    public class BooleanResponse(bool result)
-    {
-        public bool Result { get; set; } = result;
-    }
+    /// <summary>
+    /// Response class to return <see cref="bool"/> value.
+    /// </summary>
+    public record BooleanResponse(bool Result);
 }

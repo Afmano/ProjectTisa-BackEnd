@@ -1,7 +1,7 @@
 ﻿namespace ProjectTisa.Controllers.GeneralData.Responses
 {
-    public class MessageResponse(string messsage)
-    {
-        public string Message { get; set; } = messsage;
-    }
+    /// <summary>
+    /// Response class to return <see cref="string"/> message.
+    /// </summary>
+    public record MessageResponse(string Message);
 }

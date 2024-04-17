@@ -21,7 +21,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
         [HttpGet]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<IEnumerable<Notification>>> Get([FromQuery] PaginationRequest request) =>
-            Ok(await request.ApplyRequest(context.Notifications.OrderBy(on => on.Id)));
+            Ok(await request.ApplyRequestAsync(context.Notifications.OrderBy(on => on.Id)));
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Notification>> Get(int id)
@@ -42,7 +42,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
         [HttpGet("GetAllNotifsByCurrentUser")]
         [Authorize]
         public async Task<ActionResult<Notification>> GetAllNotifsByCurrentUser([FromQuery] PaginationRequest request) =>
-            Ok(await request.ApplyRequest((await UserUtils.GetUserFromContext(HttpContext, context)).Notifications));
+            Ok(request.ApplyRequest((await UserUtils.GetUserFromContext(HttpContext, context)).Notifications));
         [HttpPost]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<IdResponse>> Create([FromBody] NotificationCreationReq request)
@@ -68,10 +68,9 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
             LogMessageCreator.DeletedMessage(logger, item);
             return Ok(new MessageResponse(ResAnswers.Success));
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<MessageResponse>> Update(int id, [FromBody] NotificationCreationReq request)
-
         {
             Notification? toEdit = await context.Notifications.FindAsync(id);
             if (toEdit == null)
