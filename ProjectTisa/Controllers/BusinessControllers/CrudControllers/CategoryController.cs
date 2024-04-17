@@ -19,7 +19,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> Get([FromQuery] PaginationRequest request, bool haveParent = true) =>
-            Ok(await request.ApplyRequest(context.Categories.OrderBy(on => on.Id).Where(x => x.ParentCategory == null || haveParent)));
+            Ok(await request.ApplyRequestAsync(context.Categories.OrderBy(on => on.Id).Where(x => x.ParentCategory == null || haveParent)));
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> Get(int id)
         {

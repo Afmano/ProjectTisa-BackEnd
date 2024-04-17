@@ -74,6 +74,5 @@ namespace ProjectTisa.Libs
         {
             return Random.Shared.Next(0, (int)Math.Pow(10, digits)).ToString("D" + digits);
         }
-
     }
 }

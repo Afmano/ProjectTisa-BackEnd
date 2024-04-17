@@ -1,4 +1,6 @@
-﻿namespace ProjectTisa.Libs
+﻿using ProjectTisa.Models;
+
+namespace ProjectTisa.Libs
 {
     /// <summary>
     /// Class for create and send to ILogger log message about different event.
@@ -28,9 +30,9 @@
         /// </summary>
         /// <param name="logger">ILogger instance.</param>
         /// <param name="username">User entity of granted token.</param>
-        public static void TokenGranted(ILogger logger, string username)
+        public static void TokenGranted(ILogger logger, User user)
         {
-            logger.LogInformation("Granted token to user - {username}", username);
+            logger.LogInformation("Granted token to user - {username}", user.Username);
         }
     }
 }

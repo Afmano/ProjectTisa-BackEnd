@@ -22,7 +22,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
         [HttpGet]
         [Authorize(Policy = "manage")]
         public async Task<ActionResult<IEnumerable<Order>>> Get([FromQuery] PaginationRequest request, [FromQuery] OrderStatus? status = null) =>
-            Ok(await request.ApplyRequest(context.Orders.OrderBy(on => on.Id).Where(x => status == null || x.Status == status)));
+            Ok(await request.ApplyRequestAsync(context.Orders.OrderBy(on => on.Id).Where(x => status == null || x.Status == status)));
 
         [HttpGet("{id}")]
         [Authorize]
