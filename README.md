@@ -21,11 +21,11 @@ Using **[Pinata](https://www.pinata.cloud/)** as external storage for content.
 * [AuthController](/ProjectTisa.Docs/UserRelatedControllers/AuthController.md)
 * [UserController](/ProjectTisa.Docs/UserRelatedControllers/UserController.md)
 ### CrudControllers
-* [CategoryController](/ProjectTisa.Docs/CrudControllers/CategoryController.md)
-* [DiscountController](/ProjectTisa.Docs/CrudControllers/DiscountController.md)
-* [NotificationController](/ProjectTisa.Docs/CrudControllers/NotificationController.md)
-* [OrderController](/ProjectTisa.Docs/CrudControllers/OrderController.md)
-* [ProductController](/ProjectTisa.Docs/CrudControllers/ProductController.md)
+* [CategoriesController](/ProjectTisa.Docs/CrudControllers/CategoriesController.md)
+* [DiscountsController](/ProjectTisa.Docs/CrudControllers/DiscountsController.md)
+* [NotificationsController](/ProjectTisa.Docs/CrudControllers/NotificationsController.md)
+* [OrdersController](/ProjectTisa.Docs/CrudControllers/OrdersController.md)
+* [ProductsController](/ProjectTisa.Docs/CrudControllers/ProductsController.md)
 
 # Set up
 ## Configuration file
