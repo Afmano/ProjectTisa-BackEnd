@@ -1,48 +1,48 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Moq;
-using ProjectTisa.Controllers.BusinessControllers.CrudControllers;
-using ProjectTisa.Controllers.GeneralData.Requests;
-using ProjectTisa.Controllers.GeneralData.Resources;
-using ProjectTisa.Controllers.GeneralData.Responses;
-using ProjectTisa.EF;
-using ProjectTisa.Models.BusinessLogic;
+﻿using Microsoft.Extensions.Logging;
 using ProjectTisa.Tests.Contexts;
+using ProjectTisa.Controllers.GeneralData.Requests;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using ProjectTisa.Models.BusinessLogic;
+using ProjectTisa.Controllers.GeneralData.Resources;
+using ProjectTisa.EF;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Security.Principal;
+using Moq;
+using ProjectTisa.Controllers.BusinessControllers.CrudControllers;
+using ProjectTisa.Controllers.GeneralData.Responses;
 
 namespace ProjectTisa.Tests.Controller
 {
-    public class DiscountControllerTests
+    public class CategoriesControllerTests
     {
-        private readonly ILogger<DiscountsController> _logger = new Mock<ILogger<DiscountsController>>().Object;
+        private readonly ILogger<CategoriesController> _logger = new Mock<ILogger<CategoriesController>>().Object;
         #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountsController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             PaginationRequest paginationRequest = new();
             // Act
             var result = await controller.Get(paginationRequest);
             var objectResult = result.Result as OkObjectResult;
-            var discounts = objectResult?.Value as List<Discount>;
+            var categories = objectResult?.Value as List<Category>;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(List<Discount>));
-            discounts!.Count.Should().Be(0);
+            objectResult!.Value.Should().BeOfType(typeof(List<Category>));
+            categories!.Count.Should().Be(0);
         }
         [Fact]
         public async void GetById_ReturnNotFound()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountsController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
@@ -60,7 +60,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountsController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Delete(idToRequest);
@@ -78,10 +78,10 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountsController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
-            var result = await controller.Update(idToRequest, new() { Name = "", DiscountPercent= 0.1m });//validation attributes ignored here
+            var result = await controller.Update(idToRequest, new() { Name = "", PhotoPath = "" });//validation attributes ignored here
             var objectResult = result.Result as NotFoundObjectResult;
             var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
@@ -99,53 +99,53 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountsController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             PaginationRequest paginationRequest = new();
-            Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
+            Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Add(discount);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
             var result = await controller.Get(paginationRequest);
             var objectResult = result.Result as OkObjectResult;
-            var discounts = objectResult?.Value as List<Discount>;
+            var categories = objectResult?.Value as List<Category>;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult?.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(List<Discount>));
-            discounts!.Count.Should().NotBe(0);
+            objectResult!.Value.Should().BeOfType(typeof(List<Category>));
+            categories!.Count.Should().NotBe(0);
         }
         [Fact]
         public async void GetById_ReturnOk()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountsController controller = new(_logger, dbContext);
-            Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
+            CategoriesController controller = new(_logger, dbContext);
+            Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Add(discount);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
-            var result = await controller.Get(discount.Id);
+            var result = await controller.Get(category.Id);
             var objectResult = result.Result as OkObjectResult;
-            var resultDiscount = objectResult?.Value as Discount;
+            var resultCategory = objectResult?.Value as Category;
             // Assert
             result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(OkObjectResult));
             objectResult!.Value.Should().NotBeNull();
-            objectResult!.Value.Should().BeOfType(typeof(Discount));
-            resultDiscount!.Name.Should().Be(discount.Name);
+            objectResult!.Value.Should().BeOfType(typeof(Category));
+            resultCategory!.Name.Should().Be(category.Name);
         }
         [Fact]
         public async void Delete_ReturnOk()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountsController controller = new(_logger, dbContext);
-            Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
+            CategoriesController controller = new(_logger, dbContext);
+            Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Add(discount);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
-            var result = await controller.Delete(discount.Id);
+            var result = await controller.Delete(category.Id);
             var objectResult = result.Result as OkObjectResult;
             var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
@@ -154,7 +154,7 @@ namespace ProjectTisa.Tests.Controller
             objectResult!.Value.Should().NotBeNull();
             objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
             resultMessage!.Message.Should().Be(ResAnswers.Success);
-            dbContext.Discounts.Count().Should().Be(0);
+            dbContext.Categories.Count().Should().Be(0);
         }
         [Fact]
         public async void Update_ReturnOk()
@@ -169,12 +169,12 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            DiscountsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
-            Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
+            CategoriesController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Add(discount);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
-            var result = await controller.Update(discount.Id, new() { Name = "", DiscountPercent= 0.1m });//validation attributes ignored here
+            var result = await controller.Update(category.Id, new() { Name = "", PhotoPath = "" });//validation attributes ignored here
             var objectResult = result.Result as OkObjectResult;
             var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
@@ -197,9 +197,9 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            DiscountsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            CategoriesController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             // Act
-            var result = await controller.Create(new() { Name = "", DiscountPercent= 0.1m });//validation attributes ignored here
+            var result = await controller.Create(new() { Name = "", PhotoPath = "" });//validation attributes ignored here
             var objectResult = result.Result as CreatedResult;
             var resultMessage = objectResult?.Value as IdResponse;
             // Assert
@@ -207,11 +207,11 @@ namespace ProjectTisa.Tests.Controller
             result.Result.Should().BeOfType(typeof(CreatedResult));
             objectResult!.Value.Should().NotBeNull();
             objectResult!.Value.Should().BeOfType(typeof(IdResponse));
-            resultMessage!.Id.Should().Be(dbContext.Discounts.Count());
-            dbContext.Discounts.Count().Should().NotBe(0);
+            resultMessage!.Id.Should().Be(dbContext.Categories.Count());
+            dbContext.Categories.Count().Should().NotBe(0);
         }
         [Fact]
-        public async void Update_WithProductIds_ReturnOk()
+        public async void Update_WithParentCat_ReturnOk()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
@@ -223,17 +223,16 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            DiscountsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
-            Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
-            Product productOld = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
-            Product productNew = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 2 };
-            Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester"), Products = [productOld] };
-            string newName = "testNew";
+            CategoriesController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            Category categoryOldParent = new() { Name = "parent", PhotoPath = "", EditInfo = new("tester")};
+            string newCatName = "testNew";
+            Category categoryNewParent = new() { Name = newCatName, PhotoPath = "", EditInfo = new("tester")};
+            Category category = new() { Name = "", PhotoPath = "", ParentCategory = categoryOldParent, EditInfo = new("tester")};
+            string newEntityName = "testNew";
             // Act
-            dbContext.Add(discount);
-            dbContext.Add(productNew);
+            dbContext.AddRange(category, categoryNewParent);
             await dbContext.SaveChangesAsync();
-            var result = await controller.Update(discount.Id, new() { Name = newName, DiscountPercent = 0.1m, ProductIds = [productNew.Id] });//validation attributes ignored here
+            var result = await controller.Update(category.Id, new() { Name = newEntityName, PhotoPath = "", ParentCategoryId= categoryNewParent.Id });//validation attributes ignored here
             var objectResult = result.Result as OkObjectResult;
             var resultMessage = objectResult?.Value as MessageResponse;
             // Assert
@@ -242,11 +241,12 @@ namespace ProjectTisa.Tests.Controller
             objectResult!.Value.Should().NotBeNull();
             objectResult!.Value.Should().BeOfType(typeof(MessageResponse));
             resultMessage!.Message.Should().Be(ResAnswers.Success);
-            dbContext.Discounts.Find(discount.Id)!.Products.First().Id.Should().Be(productNew.Id);
-            dbContext.Discounts.Find(discount.Id)!.Name.Should().Be(newName);
+            dbContext.Categories.Find(category.Id)!.ParentCategory!.Id.Should().Be(categoryNewParent.Id);
+            dbContext.Categories.Find(category.Id)!.ParentCategory!.Name.Should().Be(newCatName);
+            dbContext.Categories.Find(category.Id)!.Name.Should().Be(newEntityName);
         }
         [Fact]
-        public async void Create_WithProductIds_ReturnOk()
+        public async void Create_WithParentCat_ReturnOk()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
@@ -258,12 +258,11 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            DiscountsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
-            Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
-            Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
+            CategoriesController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            Category categoryParent = new() { Name = "parent", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Add(product);
-            var result = await controller.Create(new() { Name = "", DiscountPercent = 0.1m, ProductIds = [product.Id] });//validation attributes ignored here
+            dbContext.Add(categoryParent);
+            var result = await controller.Create(new() { Name = "", PhotoPath = "", ParentCategoryId = categoryParent.Id });//validation attributes ignored here
             var objectResult = result.Result as CreatedResult;
             var resultMessage = objectResult?.Value as IdResponse;
             // Assert
@@ -271,8 +270,8 @@ namespace ProjectTisa.Tests.Controller
             result.Result.Should().BeOfType(typeof(CreatedResult));
             objectResult!.Value.Should().NotBeNull();
             objectResult!.Value.Should().BeOfType(typeof(IdResponse));
-            resultMessage!.Id.Should().Be(dbContext.Products.Count());
-            dbContext.Products.Count().Should().NotBe(0);
+            resultMessage!.Id.Should().Be(dbContext.Categories.Count());
+            dbContext.Categories.Count().Should().NotBe(0);
         }
         #endregion
         [Fact]
@@ -280,11 +279,11 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountsController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             int idToRequest = -1;
-            Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
+            Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
-            dbContext.Add(discount);
+            dbContext.Add(category);
             await dbContext.SaveChangesAsync();
             var result = await controller.Delete(idToRequest);
             var objectResult = result.Result as NotFoundObjectResult;

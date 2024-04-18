@@ -15,7 +15,7 @@ using System.Security.Principal;
 
 namespace ProjectTisa.Tests.Controller
 {
-    public class ProductControllerTest
+    public class ProductsControllerTest
     {
         private readonly ILogger<ProductsController> _logger = new Mock<ILogger<ProductsController>>().Object;
         #region Empty

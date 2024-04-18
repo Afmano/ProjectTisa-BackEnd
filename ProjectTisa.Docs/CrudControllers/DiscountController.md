@@ -1,4 +1,4 @@
-# [DiscountController](../../ProjectTisa/Controllers/BusinessControllers/CrudControllers/DiscountController.cs)
+# [DiscountsController](../../ProjectTisa/Controllers/BusinessControllers/CrudControllers/DiscountsController.cs)
 CRUD controller for [Discount](../../ProjectTisa/Models/BusinessLogic/Discount.cs).
 > [!NOTE]
 > **Some** methods require Authorization header with `Manage` policy.

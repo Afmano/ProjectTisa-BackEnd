@@ -1,4 +1,4 @@
-# [NotificationController](../../ProjectTisa/Controllers/BusinessControllers/CrudControllers/NotificationController.cs)
+# [NotificationsController](../../ProjectTisa/Controllers/BusinessControllers/CrudControllers/NotificationsController.cs)
 CRUD controller for [Notification](../../ProjectTisa/Models/BusinessLogic/Notification.cs).
 > [!IMPORTANT]
 > Require Authorization header. **Some** methods only by `Manage` policy.

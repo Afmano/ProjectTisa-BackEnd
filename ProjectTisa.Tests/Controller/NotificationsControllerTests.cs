@@ -17,7 +17,7 @@ using System.Security.Principal;
 
 namespace ProjectTisa.Tests.Controller
 {
-    public class NotificationControllerTests
+    public class NotificationsControllerTests
     {
         private readonly ILogger<NotificationsController> _logger = new Mock<ILogger<NotificationsController>>().Object;
         private readonly IAuthorizationService _authorizationService = new Mock<IAuthorizationService>().Object;

@@ -1,4 +1,4 @@
-# [ProductController](../../ProjectTisa/Controllers/BusinessControllers/CrudControllers/ProductController.cs)
+# [ProductsController](../../ProjectTisa/Controllers/BusinessControllers/CrudControllers/ProductsController.cs)
 CRUD controller for [Product](../../ProjectTisa/Models/BusinessLogic/Product.cs).
 > [!NOTE]
 > **Some** methods require Authorization header with `Manage` policy.
