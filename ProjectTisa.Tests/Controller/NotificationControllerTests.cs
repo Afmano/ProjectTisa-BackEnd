@@ -19,7 +19,7 @@ namespace ProjectTisa.Tests.Controller
 {
     public class NotificationControllerTests
     {
-        private readonly ILogger<NotificationController> _logger = new Mock<ILogger<NotificationController>>().Object;
+        private readonly ILogger<NotificationsController> _logger = new Mock<ILogger<NotificationsController>>().Object;
         private readonly IAuthorizationService _authorizationService = new Mock<IAuthorizationService>().Object;
         #region Empty
         [Fact]
@@ -27,7 +27,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            NotificationController controller = new(_logger, dbContext, _authorizationService);
+            NotificationsController controller = new(_logger, dbContext, _authorizationService);
             PaginationRequest paginationRequest = new();
             // Act
             var result = await controller.Get(paginationRequest);
@@ -53,7 +53,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            NotificationController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            NotificationsController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             PaginationRequest paginationRequest = new();
             User user = new() { Email = "test", Username = "tester" };
             // Act
@@ -74,7 +74,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            NotificationController controller = new(_logger, dbContext, _authorizationService);
+            NotificationsController controller = new(_logger, dbContext, _authorizationService);
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
@@ -92,7 +92,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            NotificationController controller = new(_logger, dbContext, _authorizationService);
+            NotificationsController controller = new(_logger, dbContext, _authorizationService);
             int idToRequest = 1;
             // Act
             var result = await controller.Delete(idToRequest);
@@ -110,7 +110,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            NotificationController controller = new(_logger, dbContext, _authorizationService);
+            NotificationsController controller = new(_logger, dbContext, _authorizationService);
             int idToRequest = 1;
             // Act
             var result = await controller.Update(idToRequest, new() { Caption = "", Message = "" });//validation attributes ignored here
@@ -131,7 +131,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            NotificationController controller = new(_logger, dbContext, _authorizationService);
+            NotificationsController controller = new(_logger, dbContext, _authorizationService);
             PaginationRequest paginationRequest = new();
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
             // Act
@@ -160,7 +160,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            NotificationController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            NotificationsController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             PaginationRequest paginationRequest = new();
             User user = new() { Email = "test", Username = "tester", Notifications = [new() { Caption = "test", Message = "test", EditInfo = new("tester") }] };
             // Act
@@ -191,7 +191,7 @@ namespace ProjectTisa.Tests.Controller
                 HttpContext = httpContext,
             };
             customMockAuthorizeService.Setup(service => service.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>())).ReturnsAsync(AuthorizationResult.Failed);
-            NotificationController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
+            NotificationsController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
             User user = new() { Email = "test", Username = "tester" };
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester"), Users = [user] };
             // Act
@@ -212,7 +212,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            NotificationController controller = new(_logger, dbContext, _authorizationService);
+            NotificationsController controller = new(_logger, dbContext, _authorizationService);
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
             // Act
             dbContext.Add(notification);
@@ -241,7 +241,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            NotificationController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            NotificationsController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             User user = new() { Email = "test", Username = "tester" };
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester"), Users = [user] };
             // Act
@@ -271,7 +271,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            NotificationController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            NotificationsController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             // Act
             var result = await controller.Create(new() { Caption = "", Message = "" });//validation attributes ignored here
             var objectResult = result.Result as CreatedResult;
@@ -291,7 +291,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            NotificationController controller = new(_logger, dbContext, _authorizationService);
+            NotificationsController controller = new(_logger, dbContext, _authorizationService);
             int idToRequest = -1;
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
             // Act
@@ -320,7 +320,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            NotificationController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            NotificationsController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester") };
             int idToRequest = -1;
             // Act
@@ -352,7 +352,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            NotificationController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
+            NotificationsController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
             User user = new() { Email = "test", Username = "tester" };
             Notification notification = new() { Caption = "", Message = "", EditInfo = new("tester"), Users = [user] };
             // Act

@@ -6,7 +6,7 @@ using ProjectTisa.Controllers.GeneralData.Consts;
 namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
 {
     /// <summary>
-    /// DTO for <see cref="NotificationController"/>.
+    /// DTO for <see cref="NotificationsController"/>.
     /// </summary>
     public record NotificationCreationReq
     {

@@ -17,14 +17,14 @@ namespace ProjectTisa.Tests.Controller
 {
     public class ProductControllerTest
     {
-        private readonly ILogger<ProductController> _logger = new Mock<ILogger<ProductController>>().Object;
+        private readonly ILogger<ProductsController> _logger = new Mock<ILogger<ProductsController>>().Object;
         #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             PaginationRequest paginationRequest = new();
             // Act
             var result = await controller.Get(paginationRequest);
@@ -42,7 +42,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
@@ -60,7 +60,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             int categoryIdToRequest = 1;
             // Act
             var result = await controller.GetAllByCategory(categoryId: categoryIdToRequest);
@@ -78,7 +78,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             string categoryNameToRequest = "test";
             // Act
             var result = await controller.GetAllByCategory(categoryName: categoryNameToRequest);
@@ -96,7 +96,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Delete(idToRequest);
@@ -114,7 +114,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Update(idToRequest, new() { Name = "", PhotoPath = "", CategoryId = 1, IsAvailable = true, Price = 1 });//validation attributes ignored here
@@ -135,7 +135,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             PaginationRequest paginationRequest = new();
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -157,7 +157,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
@@ -178,7 +178,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
@@ -199,7 +199,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
@@ -220,7 +220,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
@@ -250,7 +250,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            ProductController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            ProductsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category categoryOld = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             string newCatName = "testNew";
             Category categoryNew = new() { Name = newCatName, PhotoPath = "", EditInfo = new("tester") };
@@ -286,7 +286,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            ProductController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            ProductsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
             dbContext.Add(category);
@@ -317,7 +317,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            ProductController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            ProductsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
@@ -346,7 +346,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            ProductController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            ProductsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             // Act
             var result = await controller.Create(new() { Name = "", PhotoPath = "", CategoryId = 0, IsAvailable = true, Price = 1 });//validation attributes ignored here
             var objectResult = result.Result as NotFoundObjectResult;
@@ -363,7 +363,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            ProductController controller = new(_logger, dbContext);
+            ProductsController controller = new(_logger, dbContext);
             int idToRequest = -1;
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };

@@ -16,7 +16,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class NotificationController(ILogger<NotificationController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
+    public class NotificationsController(ILogger<NotificationsController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
     {
         [HttpGet]
         [Authorize(Policy = "manage")]

@@ -17,14 +17,14 @@ namespace ProjectTisa.Tests.Controller
 {
     public class CategoryControllerTests
     {
-        private readonly ILogger<CategoryController> _logger = new Mock<ILogger<CategoryController>>().Object;
+        private readonly ILogger<CategoriesController> _logger = new Mock<ILogger<CategoriesController>>().Object;
         #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            CategoryController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             PaginationRequest paginationRequest = new();
             // Act
             var result = await controller.Get(paginationRequest);
@@ -42,7 +42,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            CategoryController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
@@ -60,7 +60,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            CategoryController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Delete(idToRequest);
@@ -78,7 +78,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            CategoryController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Update(idToRequest, new() { Name = "", PhotoPath = "" });//validation attributes ignored here
@@ -99,7 +99,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            CategoryController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             PaginationRequest paginationRequest = new();
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
@@ -120,7 +120,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            CategoryController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
             dbContext.Add(category);
@@ -140,7 +140,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            CategoryController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
             dbContext.Add(category);
@@ -169,7 +169,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            CategoryController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            CategoriesController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act
             dbContext.Add(category);
@@ -197,7 +197,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            CategoryController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            CategoriesController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             // Act
             var result = await controller.Create(new() { Name = "", PhotoPath = "" });//validation attributes ignored here
             var objectResult = result.Result as CreatedResult;
@@ -223,7 +223,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            CategoryController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            CategoriesController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category categoryOldParent = new() { Name = "parent", PhotoPath = "", EditInfo = new("tester")};
             string newCatName = "testNew";
             Category categoryNewParent = new() { Name = newCatName, PhotoPath = "", EditInfo = new("tester")};
@@ -258,7 +258,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            CategoryController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            CategoriesController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category categoryParent = new() { Name = "parent", PhotoPath = "", EditInfo = new("tester") };
             // Act
             dbContext.Add(categoryParent);
@@ -279,7 +279,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            CategoryController controller = new(_logger, dbContext);
+            CategoriesController controller = new(_logger, dbContext);
             int idToRequest = -1;
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             // Act

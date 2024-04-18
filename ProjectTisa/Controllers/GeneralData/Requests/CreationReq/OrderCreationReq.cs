@@ -3,7 +3,7 @@
 namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
 {
     /// <summary>
-    /// DTO for <see cref="OrderController"/>.
+    /// DTO for <see cref="OrdersController"/>.
     /// </summary>
     public record OrderCreationReq
     {

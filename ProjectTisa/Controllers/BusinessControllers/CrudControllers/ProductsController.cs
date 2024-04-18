@@ -15,7 +15,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductController(ILogger<ProductController> logger, MainDbContext context) : ControllerBase
+    public class ProductsController(ILogger<ProductsController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] PaginationRequest request, bool onlyActive = true) =>

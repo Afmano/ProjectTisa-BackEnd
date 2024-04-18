@@ -17,7 +17,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class OrderController(ILogger<OrderController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
+    public class OrdersController(ILogger<OrdersController> logger, MainDbContext context, IAuthorizationService _authorizationService) : ControllerBase
     {
         [HttpGet]
         [Authorize(Policy = "manage")]

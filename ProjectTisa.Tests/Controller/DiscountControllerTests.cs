@@ -17,14 +17,14 @@ namespace ProjectTisa.Tests.Controller
 {
     public class DiscountControllerTests
     {
-        private readonly ILogger<DiscountController> _logger = new Mock<ILogger<DiscountController>>().Object;
+        private readonly ILogger<DiscountsController> _logger = new Mock<ILogger<DiscountsController>>().Object;
         #region Empty
         [Fact]
         public async void GetAll_ReturnEmptyList()
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountController controller = new(_logger, dbContext);
+            DiscountsController controller = new(_logger, dbContext);
             PaginationRequest paginationRequest = new();
             // Act
             var result = await controller.Get(paginationRequest);
@@ -42,7 +42,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountController controller = new(_logger, dbContext);
+            DiscountsController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
@@ -60,7 +60,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountController controller = new(_logger, dbContext);
+            DiscountsController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Delete(idToRequest);
@@ -78,7 +78,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountController controller = new(_logger, dbContext);
+            DiscountsController controller = new(_logger, dbContext);
             int idToRequest = 1;
             // Act
             var result = await controller.Update(idToRequest, new() { Name = "", DiscountPercent= 0.1m });//validation attributes ignored here
@@ -99,7 +99,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountController controller = new(_logger, dbContext);
+            DiscountsController controller = new(_logger, dbContext);
             PaginationRequest paginationRequest = new();
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
@@ -120,7 +120,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountController controller = new(_logger, dbContext);
+            DiscountsController controller = new(_logger, dbContext);
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
             dbContext.Add(discount);
@@ -140,7 +140,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountController controller = new(_logger, dbContext);
+            DiscountsController controller = new(_logger, dbContext);
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
             dbContext.Add(discount);
@@ -169,7 +169,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            DiscountController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            DiscountsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act
             dbContext.Add(discount);
@@ -197,7 +197,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            DiscountController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            DiscountsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             // Act
             var result = await controller.Create(new() { Name = "", DiscountPercent= 0.1m });//validation attributes ignored here
             var objectResult = result.Result as CreatedResult;
@@ -223,7 +223,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            DiscountController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            DiscountsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product productOld = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             Product productNew = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 2 };
@@ -258,7 +258,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            DiscountController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
+            DiscountsController controller = new(_logger, dbContext) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             // Act
@@ -280,7 +280,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            DiscountController controller = new(_logger, dbContext);
+            DiscountsController controller = new(_logger, dbContext);
             int idToRequest = -1;
             Discount discount = new() { Name = "", DiscountPercent = 0.1m, EditInfo = new("tester") };
             // Act

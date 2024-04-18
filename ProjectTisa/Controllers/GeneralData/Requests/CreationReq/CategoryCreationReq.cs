@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
 {
     /// <summary>
-    /// DTO for <see cref="CategoryController"/>.
+    /// DTO for <see cref="CategoriesController"/>.
     /// </summary>
     public record CategoryCreationReq
     {

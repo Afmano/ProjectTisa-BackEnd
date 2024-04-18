@@ -7,7 +7,7 @@ using ProjectTisa.Controllers.BusinessControllers.CrudControllers;
 namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
 {
     /// <summary>
-    /// DTO for <see cref="ProductController"/>.
+    /// DTO for <see cref="ProductsController"/>.
     /// </summary>
     public record ProductCreationReq
     {

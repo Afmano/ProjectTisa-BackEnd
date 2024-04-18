@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ProjectTisa.Controllers.GeneralData.Requests.CreationReq
 {
     /// <summary>
-    /// DTO for <see cref="DiscountController"/>.
+    /// DTO for <see cref="DiscountsController"/>.
     /// </summary>
     public record DiscountCreationReq
     {

@@ -15,7 +15,7 @@ namespace ProjectTisa.Controllers.BusinessControllers.CrudControllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController(ILogger<CategoryController> logger, MainDbContext context) : ControllerBase
+    public class CategoriesController(ILogger<CategoriesController> logger, MainDbContext context) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> Get([FromQuery] PaginationRequest request, bool haveParent = true) =>

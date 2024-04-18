@@ -20,7 +20,7 @@ namespace ProjectTisa.Tests.Controller
 {
     public class OrderControllerTests
     {
-        private readonly ILogger<OrderController> _logger = new Mock<ILogger<OrderController>>().Object;
+        private readonly ILogger<OrdersController> _logger = new Mock<ILogger<OrdersController>>().Object;
         private readonly IAuthorizationService _authorizationService = new Mock<IAuthorizationService>().Object;
         #region Empty
         [Fact]
@@ -28,7 +28,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             PaginationRequest paginationRequest = new();
             // Act
             var result = await controller.Get(paginationRequest);
@@ -46,7 +46,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
@@ -64,7 +64,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -88,7 +88,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             int idToRequest = 1;
             // Act
             var result = await controller.Get(idToRequest);
@@ -106,7 +106,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             int idToRequest = 1;
             // Act
             var result = await controller.CancelOrder(idToRequest);
@@ -127,7 +127,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             PaginationRequest paginationRequest = new();
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
@@ -153,7 +153,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             PaginationRequest paginationRequest = new();
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
@@ -181,7 +181,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             PaginationRequest paginationRequest = new();
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
@@ -209,7 +209,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             PaginationRequest paginationRequest = new();
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
@@ -245,7 +245,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -276,7 +276,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             User user = new() { Email = "email", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -309,7 +309,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             User user = new() { Email = "", Username = "tester" };
@@ -335,7 +335,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -367,7 +367,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -393,7 +393,7 @@ namespace ProjectTisa.Tests.Controller
         {
             // Arrange
             MainDbContext dbContext = DatabaseContext.SetUpContext();
-            OrderController controller = new(_logger, dbContext, _authorizationService);
+            OrdersController controller = new(_logger, dbContext, _authorizationService);
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -424,7 +424,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -455,7 +455,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
             // Act
             dbContext.Add(user);
@@ -484,7 +484,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -519,7 +519,7 @@ namespace ProjectTisa.Tests.Controller
             };
             Mock<IAuthorizationService> customMockAuthorizeService = new();
             customMockAuthorizeService.Setup(service => service.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>())).ReturnsAsync(AuthorizationResult.Failed);
-            OrderController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
@@ -545,7 +545,7 @@ namespace ProjectTisa.Tests.Controller
             {
                 HttpContext = httpContext,
             };
-            OrderController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, _authorizationService) { ControllerContext = controllerContext };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
             User user = new() { Email = "", Username = "tester" };
@@ -573,7 +573,7 @@ namespace ProjectTisa.Tests.Controller
             };
             Mock<IAuthorizationService> customMockAuthorizeService = new();
             customMockAuthorizeService.Setup(service => service.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>())).ReturnsAsync(AuthorizationResult.Failed);
-            OrderController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
+            OrdersController controller = new(_logger, dbContext, customMockAuthorizeService.Object) { ControllerContext = controllerContext };
             User user = new() { Email = "", Username = "tester" };
             Category category = new() { Name = "", PhotoPath = "", EditInfo = new("tester") };
             Product product = new() { Name = "", PhotoPath = "", EditInfo = new("tester"), Category = category, IsAvailable = true, Price = 1 };
