@@ -16,6 +16,7 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 IConfiguration appInfo = builder.Configuration.GetSection("AppInfo");
 builder.Services.Configure<RouteConfig>(appInfo);
+builder.Services.AddCors();
 builder.Services.AddSwaggerGen(setup =>
 {
     setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Project Tisa API", Version = appInfo.GetValue<string>("Version") });
@@ -61,6 +62,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("Bearer", options =>
     {
         RouteConfig appConfig = appInfo.Get<RouteConfig>() ?? throw new NullReferenceException("appsettings.json RouteConfig is null");
+
         EmailSender.Configure(appConfig.SmtpData);
 
         options.Authority = appConfig.CurrentHost;
@@ -93,6 +95,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseExceptionHandler(c => c.Run(async context =>
 {
@@ -112,7 +118,12 @@ app.UseExceptionHandler(c => c.Run(async context =>
 
 }));
 
-app.UseHttpsRedirection();
+app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed((host) => true)
+                .AllowCredentials()
+            );
 app.UseAuthorization();
 app.MapControllers();
 
