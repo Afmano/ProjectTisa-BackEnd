@@ -18,9 +18,9 @@ Content type: `application/json`
     "subCategories": [],
     "editInfo": {
       "creationTime": "2024-03-28T12:19:56.708452Z",
-      "createdBy": "alpritor",
+      "createdBy": "SomeCoolName",
       "modificationTime": "2024-03-28T12:19:56.708452Z",
-      "modifiedBy": "alpritor"
+      "modifiedBy": "SomeCoolName"
     }
   },
 ]
@@ -41,9 +41,9 @@ Content type: `application/json`
     "subCategories": [],
     "editInfo": {
       "creationTime": "2024-03-28T12:19:56.708452Z",
-      "createdBy": "alpritor",
+      "createdBy": "SomeCoolName",
       "modificationTime": "2024-03-28T12:19:56.708452Z",
-      "modifiedBy": "alpritor"
+      "modifiedBy": "SomeCoolName"
     }
   }
 ```

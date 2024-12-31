@@ -18,9 +18,9 @@ Content type: `application/json`
     "notificationType": "None",
     "editInfo": {
       "creationTime": "2024-04-02T09:11:38.77613Z",
-      "createdBy": "alpritor",
+      "createdBy": "SomeCoolName",
       "modificationTime": "2024-04-02T17:00:38.357759Z",
-      "modifiedBy": "alpritor"
+      "modifiedBy": "SomeCoolName"
     }
   },
 ]
@@ -42,9 +42,9 @@ Content type: `application/json`
     "notificationType": "None",
     "editInfo": {
       "creationTime": "2024-04-02T09:11:38.77613Z",
-      "createdBy": "alpritor",
+      "createdBy": "SomeCoolName",
       "modificationTime": "2024-04-02T17:00:38.357759Z",
-      "modifiedBy": "alpritor"
+      "modifiedBy": "SomeCoolName"
     }
 }
 ```

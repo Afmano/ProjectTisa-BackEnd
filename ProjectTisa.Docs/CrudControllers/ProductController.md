@@ -31,9 +31,9 @@ Content type: `application/json`
     },
     "editInfo": {
         "creationTime": "2024-03-29T18:14:06.606743Z",
-        "createdBy": "alpritor",
+        "createdBy": "SomeCoolName",
         "modificationTime": "2024-03-29T18:14:06.606743Z",
-        "modifiedBy": "alpritor"
+        "modifiedBy": "SomeCoolName"
     }
   },
 ]
@@ -67,9 +67,9 @@ Content type: `application/json`
     },
     "editInfo": {
         "creationTime": "2024-03-29T18:14:06.606743Z",
-        "createdBy": "alpritor",
+        "createdBy": "SomeCoolName",
         "modificationTime": "2024-03-29T18:14:06.606743Z",
-        "modifiedBy": "alpritor"
+        "modifiedBy": "SomeCoolName"
     }
   }
 ```
@@ -102,9 +102,9 @@ Content type: `application/json`
     },
     "editInfo": {
         "creationTime": "2024-03-29T18:14:06.606743Z",
-        "createdBy": "alpritor",
+        "createdBy": "SomeCoolName",
         "modificationTime": "2024-03-29T18:14:06.606743Z",
-        "modifiedBy": "alpritor"
+        "modifiedBy": "SomeCoolName"
     }
   },
 ]

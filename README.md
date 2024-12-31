@@ -82,10 +82,3 @@ For [Code-first](https://www.entityframeworktutorial.net/code-first/what-is-code
 1. Open Package Manager Console in VS.
 2. Run `PM> add-migration Initial`
 3. Run `PM> update-database Initial`
-
-# Contacts
-[![Outlook email](https://img.shields.io/badge/Outlook-0078D4?logo=microsoft-outlook&logoColor=white)](mailto:alpritor@outlook.com)
-<br>alpritor@outlook.com
-
-[![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?logo=telegram&logoColor=white)](https://t.me/alpritor)
-<br>@Alpritor
